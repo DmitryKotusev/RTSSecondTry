@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: M_flower_common_Saint_John's_wort_01
   m_Shader: {fileID: 4800000, guid: e7e3fa6205f1c3b4999f678b922e5301, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _DOUBLESIDED_ON _MASKMAP _MATERIAL_FEATURE_TRANSMISSION
@@ -136,7 +137,7 @@ Material:
     - _BumpScale: 0.837
     - _CoatMask: 0
     - _ColorNoiseSpread: 15
-    - _CullFarDistance: 5
+    - _CullFarDistance: 175
     - _CullFarStart: 40
     - _CullMode: 0
     - _CullModeForward: 0

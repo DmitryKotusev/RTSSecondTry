@@ -4,8 +4,9 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: M_grass_meadow_01
   m_Shader: {fileID: 4800000, guid: e7e3fa6205f1c3b4999f678b922e5301, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _DISABLE_DBUFFER _DOUBLESIDED_ON _MASKMAP _MATERIAL_FEATURE_TRANSMISSION
@@ -136,8 +137,8 @@ Material:
     - _BumpScale: 0.783
     - _CoatMask: 0
     - _ColorNoiseSpread: 15
-    - _CullFarDistance: 5
-    - _CullFarStart: 40
+    - _CullFarDistance: 300
+    - _CullFarStart: 300
     - _CullMode: 0
     - _CullModeForward: 0
     - _Cutoff: 0.178
@@ -246,10 +247,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _DryColor: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
+    - _DryColor: {r: 0.54850316, g: 0.764151, b: 0.47218764, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HealthyColor: {r: 0.875, g: 0.875, b: 0.875, a: 1}
+    - _HealthyColor: {r: 0.77792555, g: 0.8773585, b: 0.6580189, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _NewNormal: {r: 1, g: 4, b: 1, a: 0}
