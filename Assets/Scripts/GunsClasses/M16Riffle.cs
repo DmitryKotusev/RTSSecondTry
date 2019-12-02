@@ -21,12 +21,17 @@ public class M16Riffle : Gun
         bulletGameObject.transform.position = roundEmitter.position;
         bulletGameObject.transform.rotation = roundEmitter.rotation;
 
+        // Reset tail
         TrailRenderer trailRenderer = bulletGameObject.GetComponent<TrailRenderer>();
         trailRenderer.Clear();
 
         //Play sound
-
         //Show effects from the barrel
+        GameObject effectGameObject = PoolsManager.GetObjectPool(Poolskeys.m16ShotEffectsPoolKey).GetObject();
+        effectGameObject.transform.position = roundEmitter.position;
+        effectGameObject.transform.rotation = roundEmitter.rotation;
+        ShotEffect shotEffect = effectGameObject.GetComponent<ShotEffect>();
+        shotEffect.ShowEffect();
     }
 
     private void Update()
