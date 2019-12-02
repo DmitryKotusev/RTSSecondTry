@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d902c8db81a468e488ab03ca008e5208
+guid: db1f9e0845fab3d45b22627fe98f5ef2
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
@@ -296,14 +296,6 @@ ModelImporter:
         modified: 0
     - boneName: def.eye.r
       humanName: RightEye
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: def.jaw
-      humanName: Jaw
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}

@@ -13,6 +13,14 @@ public class SoldierBasic : MonoBehaviour
     [SerializeField]
     GameObject headBone;
 
+    [BoxGroup("Bones")]
+    [SerializeField]
+    GameObject leftHand;
+
+    [BoxGroup("Bones")]
+    [SerializeField]
+    GameObject rightHand;
+
     [SerializeField]
     GameObject helmet;
 
