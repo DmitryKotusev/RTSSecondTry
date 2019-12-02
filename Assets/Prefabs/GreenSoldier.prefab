@@ -927,8 +927,9 @@ GameObject:
   - component: {fileID: 1626384517128679534}
   - component: {fileID: 8653692902044785940}
   - component: {fileID: 2362504971329503868}
+  - component: {fileID: 1418686247}
   m_Layer: 0
-  m_Name: SoldierModel
+  m_Name: GreenSoldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -991,6 +992,19 @@ MonoBehaviour:
   rightHand: {fileID: 4450129835465059166}
   helmet: {fileID: 7124847321143798047}
   team: 0
+--- !u!114 &1418686247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2362504971329503869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172a78e16015f5b4d8cdd949cb992f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 8653692902044785940}
 --- !u!1 &2421579085195535801
 GameObject:
   m_ObjectHideFlags: 0
