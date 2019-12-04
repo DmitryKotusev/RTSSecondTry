@@ -23,15 +23,4 @@ public class SoldierBasic : MonoBehaviour
 
     [SerializeField]
     GameObject helmet;
-
-    [SerializeField]
-    Team team;
-
-    public Team Team
-    {
-        get
-        {
-            return team;
-        }
-    }
 }

@@ -10,6 +10,11 @@ public class AnimatorHandler : MonoBehaviour
     void Start()
     {
         Assert.IsNotNull(animator);
+        SetRandomIdleAnimationOffset();
+    }
+
+    private void SetRandomIdleAnimationOffset()
+    {
         animator.SetFloat("IdleCycleOffset", Random.Range(0f, 4f));
     }
 }

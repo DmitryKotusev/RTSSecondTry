@@ -5,4 +5,8 @@ using Sirenix.OdinInspector;
 
 public class PlayerController : Controller
 {
+    [SerializeField]
+    Camera playersCamera;
+    [SerializeField]
+    SelectionManager selectionManager;
 }
