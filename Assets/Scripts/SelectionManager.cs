@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using System.Linq;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -11,8 +12,25 @@ public class SelectionManager : MonoBehaviour
     [Tooltip("Selection box accuracy")]
     float selectionBoxAccuracy = 0.05f;
 
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Does  frustrum collider distance equal to camera far clip distance")]
+    bool equalToCameraFarDistance = false;
+
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Selection box collider distance")]
+    [HideIf("equalToCameraFarDistance")]
+    float selectionBoxColliderDistance = 200;
+
     [SerializeField]
     Camera playersCamera;
+
+    [SerializeField]
+    Frustrum frustrumMeshBuilder;
+
+    [SerializeField]
+    MeshCollider meshCollider;
 
     [Tooltip("Units available for selection")]
     [SerializeField]
@@ -21,9 +39,14 @@ public class SelectionManager : MonoBehaviour
     RectDrawer rectDrawer = new RectDrawer();
     Vector3 startMousePosition;
     Vector3 finishMousePosition;
+    Vector3 normalizedStartMousePosition;
+    Vector3 normalizedFinishMousePosition;
 
     Formation currentFormation = null;
     List<Formation> availableFormations = new List<Formation>();
+
+    private bool leftMouseButtonUpTriggered = false;
+    private bool leftShiftButtonTriggered = false;
 
     // Getters and setters
     #region
@@ -37,7 +60,8 @@ public class SelectionManager : MonoBehaviour
     {
         rectDrawer.MouseClickControl();
         RegisterMousePositions();
-        // SelectWithRect(); -> Goes to FixedUpdate probably, needs investigation
+        RegisterKeyBoardTriggers();
+        CheckSelectionWithRect(); // -> Goes to FixedUpdate probably, needs investigation
         CheckSelectionWithSingleClick();
     }
 
@@ -46,16 +70,82 @@ public class SelectionManager : MonoBehaviour
         rectDrawer.DrawRect(selectionBoxAccuracy, playersCamera);
     }
 
+    private void RegisterKeyBoardTriggers()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            leftShiftButtonTriggered = true;
+        }
+    }
+
     private void RegisterMousePositions()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            startMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+            startMousePosition = Input.mousePosition;
+            normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
         }
         if (Input.GetMouseButtonUp(0))
         {
-            finishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+            finishMousePosition = Input.mousePosition;
+            normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+            leftMouseButtonUpTriggered = true;
         }
+    }
+
+    private void CheckSelectionWithRect()
+    {
+        if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
+        {
+            // TODO: Cancel triggers
+            leftMouseButtonUpTriggered = false;
+            leftShiftButtonTriggered = false;
+            return;
+        }
+
+        if (!leftMouseButtonUpTriggered)
+        {
+            // TODO: Cancel triggers
+            leftMouseButtonUpTriggered = false;
+            leftShiftButtonTriggered = false;
+            return;
+        }
+
+        // TODO: Cancel triggers
+        leftMouseButtonUpTriggered = false;
+        leftShiftButtonTriggered = false;
+
+        List<GameObject> remObjects = new List<GameObject>();
+
+        if (!leftShiftButtonTriggered)
+        {
+            ClearCurrentSelection();
+        }
+
+        var topLeft = Vector3.Min(normalizedStartMousePosition, normalizedFinishMousePosition);
+        var bottomRight = Vector3.Max(normalizedStartMousePosition, normalizedFinishMousePosition);
+        Rect selectRect = Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+
+        var nearClipCorners = new Vector3[4];
+        playersCamera.CalculateFrustumCorners(selectRect, playersCamera.nearClipPlane, Camera.MonoOrStereoscopicEye.Mono, nearClipCorners);
+        List<Vector3> nearClipCornersWorld = new List<Vector3>(nearClipCorners.Select((localPoint) =>
+        {
+            return playersCamera.transform.TransformPoint(localPoint);
+        }));
+
+        var farClipCorners = new Vector3[4];
+        playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        List<Vector3> farClipCornersWorld = new List<Vector3>(farClipCorners.Select((localPoint) =>
+        {
+            return playersCamera.transform.TransformPoint(localPoint);
+        }));
+
+        frustrumMeshBuilder.SetNearPlanePoints(nearClipCornersWorld);
+        frustrumMeshBuilder.SetFarPlanePoints(farClipCornersWorld);
+        frustrumMeshBuilder.GenerateNewMesh();
+
+        meshCollider.sharedMesh = frustrumMeshBuilder.FrustumMesh;
+        // Logic
     }
 
     private void CheckSelectionWithSingleClick()

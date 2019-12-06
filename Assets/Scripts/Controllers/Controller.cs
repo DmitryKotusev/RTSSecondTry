@@ -19,7 +19,7 @@ abstract public class Controller : MonoBehaviour
     [ReadOnly]
     short controllerId;
 
-    public Controller()
+    public void Awake()
     {
         controllerId = GetFreeId();
         RegisterNewId(controllerId);
@@ -57,6 +57,7 @@ abstract public class Controller : MonoBehaviour
         {
             throw new System.Exception($"Id {id} already belongs to other controller");
         }
+        controllerIdsPool.Add(id);
     }
 
     static bool UnregisterId(short id)
@@ -96,9 +97,8 @@ abstract public class Controller : MonoBehaviour
     }
     #endregion
 
-    ~Controller()
+    void OnDestroy()
     {
         UnregisterId(controllerId);
-        Debug.Log($"Controller with id {controllerId} destroyed");
     }
 }
