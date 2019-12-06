@@ -27,7 +27,7 @@ public class SelectionManager : MonoBehaviour
     Camera playersCamera;
 
     [SerializeField]
-    Frustrum frustrumMeshBuilder;
+    Frustum frustumMeshBuilder;
 
     [SerializeField]
     MeshCollider meshCollider;
@@ -45,8 +45,15 @@ public class SelectionManager : MonoBehaviour
     Formation currentFormation = null;
     List<Formation> availableFormations = new List<Formation>();
 
-    private bool leftMouseButtonUpTriggered = false;
-    private bool leftShiftButtonTriggered = false;
+
+    // Selection box variables
+    #region
+    private bool leftMousePhysicsUp = false;
+    private bool leftShiftPhysics = false;
+
+    private HashSet<GameObject> latestDetectedSelectionBoxObjects = new HashSet<GameObject>();
+    // private bool wasOnTriggerAbleToBeCalled = false;
+    #endregion
 
     // Getters and setters
     #region
@@ -60,9 +67,45 @@ public class SelectionManager : MonoBehaviour
     {
         rectDrawer.MouseClickControl();
         RegisterMousePositions();
-        RegisterKeyBoardTriggers();
-        CheckSelectionWithRect(); // -> Goes to FixedUpdate probably, needs investigation
         CheckSelectionWithSingleClick();
+    }
+
+    private void FixedUpdate()
+    {
+        CheckSelectionWithRect();
+    }
+
+    private void CheckSelectionWithRect()
+    {
+        if (leftMousePhysicsUp)
+        {
+            if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
+            {
+                leftMousePhysicsUp = false;
+                leftShiftPhysics = false;
+                return;
+            }
+
+            if (meshCollider.enabled)
+            {
+                SelectionWithRect();
+                leftMousePhysicsUp = false;
+                leftShiftPhysics = false;
+                meshCollider.enabled = false;
+                // Clear collider hashset
+                latestDetectedSelectionBoxObjects.Clear();
+            }
+            else
+            {
+                BuildColliderMesh();
+                meshCollider.enabled = true;
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        latestDetectedSelectionBoxObjects.Add(other.attachedRigidbody.gameObject);
     }
 
     private void OnGUI()
@@ -74,7 +117,11 @@ public class SelectionManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            leftShiftButtonTriggered = true;
+            leftShiftPhysics = true;
+        }
+        else
+        {
+            leftShiftPhysics = false;
         }
     }
 
@@ -89,39 +136,35 @@ public class SelectionManager : MonoBehaviour
         {
             finishMousePosition = Input.mousePosition;
             normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
-            leftMouseButtonUpTriggered = true;
+            leftMousePhysicsUp = true;
+            RegisterKeyBoardTriggers();
         }
     }
 
-    private void CheckSelectionWithRect()
+    private void SelectionWithRect()
     {
-        if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
-        {
-            // TODO: Cancel triggers
-            leftMouseButtonUpTriggered = false;
-            leftShiftButtonTriggered = false;
-            return;
-        }
-
-        if (!leftMouseButtonUpTriggered)
-        {
-            // TODO: Cancel triggers
-            leftMouseButtonUpTriggered = false;
-            leftShiftButtonTriggered = false;
-            return;
-        }
-
-        // TODO: Cancel triggers
-        leftMouseButtonUpTriggered = false;
-        leftShiftButtonTriggered = false;
-
-        List<GameObject> remObjects = new List<GameObject>();
-
-        if (!leftShiftButtonTriggered)
+        if (!leftShiftPhysics)
         {
             ClearCurrentSelection();
         }
 
+        // Logic
+        List<GameObject> selectablesList = new List<GameObject>(latestDetectedSelectionBoxObjects.Where((selectionBoxObject) =>
+        {
+            if (selectionBoxObject.tag == "Selectable")
+            {
+                Agent agent = selectionBoxObject.GetComponent<Agent>();
+                if (GetComponent<Controller>() == agent.GetController())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }));
+    }
+
+    private void BuildColliderMesh()
+    {
         var topLeft = Vector3.Min(normalizedStartMousePosition, normalizedFinishMousePosition);
         var bottomRight = Vector3.Max(normalizedStartMousePosition, normalizedFinishMousePosition);
         Rect selectRect = Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
@@ -134,18 +177,26 @@ public class SelectionManager : MonoBehaviour
         }));
 
         var farClipCorners = new Vector3[4];
-        playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        if (equalToCameraFarDistance)
+        {
+            playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        }
+        else
+        {
+            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionBoxColliderDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
+                Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        }
+
         List<Vector3> farClipCornersWorld = new List<Vector3>(farClipCorners.Select((localPoint) =>
         {
             return playersCamera.transform.TransformPoint(localPoint);
         }));
 
-        frustrumMeshBuilder.SetNearPlanePoints(nearClipCornersWorld);
-        frustrumMeshBuilder.SetFarPlanePoints(farClipCornersWorld);
-        frustrumMeshBuilder.GenerateNewMesh();
+        frustumMeshBuilder.SetNearPlanePoints(nearClipCornersWorld);
+        frustumMeshBuilder.SetFarPlanePoints(farClipCornersWorld);
+        frustumMeshBuilder.GenerateNewMesh();
 
-        meshCollider.sharedMesh = frustrumMeshBuilder.FrustumMesh;
-        // Logic
+        meshCollider.sharedMesh = frustumMeshBuilder.FrustumMesh;
     }
 
     private void CheckSelectionWithSingleClick()
@@ -166,14 +217,21 @@ public class SelectionManager : MonoBehaviour
             if (raycastHit.transform.tag == "Selectable")
             {
                 Agent agent = raycastHit.transform.GetComponent<Agent>();
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (GetComponent<Controller>() != agent.GetController())
                 {
-                    ModifyCurrentFormation(agent);
+                    ClearCurrentSelection();
                 }
                 else
                 {
-                    ClearCurrentSelection();
-                    ModifyCurrentFormation(agent);
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        ModifyCurrentFormation(agent);
+                    }
+                    else
+                    {
+                        ClearCurrentSelection();
+                        ModifyCurrentFormation(agent);
+                    }
                 }
             }
             else
@@ -191,7 +249,7 @@ public class SelectionManager : MonoBehaviour
     {
         // Find agents old formation
         Formation agentsOldFormation = null;
-        foreach(Formation availableFormation in availableFormations)
+        foreach (Formation availableFormation in availableFormations)
         {
             if (availableFormation.DoesBelongToFormation(newAgent))
             {

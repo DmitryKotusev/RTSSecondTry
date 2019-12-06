@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Frustrum : MonoBehaviour
+public class Frustum : MonoBehaviour
 {
     [Tooltip("Whether to divide vertices when building mesh or not")]
     [SerializeField]
