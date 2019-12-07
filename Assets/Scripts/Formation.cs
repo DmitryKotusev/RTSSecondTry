@@ -25,12 +25,14 @@ public class Formation : IEnumerable<Agent>
             foreach (Agent agent in formationAgents)
             {
                 AddAgentToFormation(agent);
+                agent.SetCurrentFormation(this);
             }
         }
 
         RemoveAgentFromFormation(formationLeader);
 
         this.formationLeader = formationLeader;
+        formationLeader.SetCurrentFormation(this);
     }
 
     public bool DoesBelongToFormation(Agent agent)
@@ -67,6 +69,7 @@ public class Formation : IEnumerable<Agent>
         this.formationLeader = formationLeader;
         formationAgents.Remove(formationLeader);
         formationAgents.Add(oldLeader);
+        formationLeader.SetCurrentFormation(this);
     }
 
     public List<Agent> GetFormationAgentsWithoutLeader()
@@ -101,6 +104,7 @@ public class Formation : IEnumerable<Agent>
         if (formationLeader == null)
         {
             formationLeader = formationAgent;
+            formationAgent.SetCurrentFormation(this);
             return true;
         }
 
@@ -109,6 +113,7 @@ public class Formation : IEnumerable<Agent>
             return false;
         }
         formationAgents.Add(formationAgent);
+        formationAgent.SetCurrentFormation(this);
 
         return true;
     }
@@ -120,15 +125,27 @@ public class Formation : IEnumerable<Agent>
             if (formationAgents.Count >= 1)
             {
                 formationLeader = formationAgents[formationAgents.Count - 1];
-                return formationAgents.Remove(formationLeader);
+                if (formationAgents.Remove(formationLeader))
+                {
+                    formationAgent.ClearCurrentFormation();
+                    return true;
+                }
+                return false;
             }
             else
             {
                 formationLeader = null;
+                formationAgent.ClearCurrentFormation();
                 return true;
             }
         }
-        return formationAgents.Remove(formationAgent);
+
+        if (formationAgents.Remove(formationAgent))
+        {
+            formationAgent.ClearCurrentFormation();
+            return true;
+        }
+        return false;
     }
 
     public override bool Equals(object obj)

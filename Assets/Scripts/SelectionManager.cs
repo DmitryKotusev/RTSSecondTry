@@ -146,21 +146,124 @@ public class SelectionManager : MonoBehaviour
         if (!leftShiftPhysics)
         {
             ClearCurrentSelection();
+            FormNewFormationFromBoxSelection();
         }
+        else
+        {
+            if (currentFormation != null)
+            {
+                AddNewAgentsToCurrentFormation();
+            }
+            else
+            {
+                FormNewFormationFromBoxSelection();
+            }
+        }
+        Debug.Log("Available formations count:" + availableFormations.Count);
+    }
 
-        // Logic
-        List<GameObject> selectablesList = new List<GameObject>(latestDetectedSelectionBoxObjects.Where((selectionBoxObject) =>
+    private void AddNewAgentsToCurrentFormation()
+    {
+        List<Agent> agentsList = new List<Agent>();
+
+        foreach (var selectionBoxObject in latestDetectedSelectionBoxObjects)
         {
             if (selectionBoxObject.tag == "Selectable")
             {
                 Agent agent = selectionBoxObject.GetComponent<Agent>();
                 if (GetComponent<Controller>() == agent.GetController())
                 {
-                    return true;
+                    agentsList.Add(agent);
                 }
             }
-            return false;
-        }));
+        }
+
+        if (agentsList.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var agent in agentsList)
+        {
+            if (!currentFormation.DoesBelongToFormation(agent))
+            {
+                Formation oldAgentsFormation = agent.GetCurrentFormation();
+                oldAgentsFormation?.RemoveAgentFromFormation(agent);
+                if (oldAgentsFormation != null && oldAgentsFormation.IsEmpty())
+                {
+                    availableFormations.Remove(oldAgentsFormation);
+                }
+                currentFormation.AddAgentToFormation(agent);
+            }
+        }
+        MarkAgentsAsSelected(currentFormation);
+    }
+
+    private void FormNewFormationFromBoxSelection()
+    {
+        // Logic
+        List<Agent> agentsList = new List<Agent>();
+
+        foreach (var selectionBoxObject in latestDetectedSelectionBoxObjects)
+        {
+            if (selectionBoxObject.tag == "Selectable")
+            {
+                Agent agent = selectionBoxObject.GetComponent<Agent>();
+                if (GetComponent<Controller>() == agent.GetController())
+                {
+                    agentsList.Add(agent);
+                }
+            }
+        }
+
+        if (agentsList.Count == 0)
+        {
+            return;
+        }
+
+        Formation maxAgentsFormation = GetMaxAgentsFormation(agentsList);
+
+        if (maxAgentsFormation == null)
+        {
+            maxAgentsFormation = new Formation();
+            availableFormations.Add(maxAgentsFormation);
+        }
+
+        if (DoesAgentsListContainWholeFormation(agentsList, maxAgentsFormation))
+        {
+            foreach (var agent in agentsList)
+            {
+                if (!maxAgentsFormation.DoesBelongToFormation(agent))
+                {
+                    Formation oldAgentsFormation = agent.GetCurrentFormation();
+                    oldAgentsFormation?.RemoveAgentFromFormation(agent);
+                    if (oldAgentsFormation != null && oldAgentsFormation.IsEmpty())
+                    {
+                        availableFormations.Remove(oldAgentsFormation);
+                    }
+
+                    maxAgentsFormation.AddAgentToFormation(agent);
+                }
+            }
+            currentFormation = maxAgentsFormation;
+            MarkAgentsAsSelected(currentFormation);
+            return;
+        }
+
+        Formation newCurrentFormation = new Formation();
+        foreach (var agent in agentsList)
+        {
+            Formation oldAgentsFormation = agent.GetCurrentFormation();
+            oldAgentsFormation?.RemoveAgentFromFormation(agent);
+            if (oldAgentsFormation != null && oldAgentsFormation.IsEmpty())
+            {
+                availableFormations.Remove(oldAgentsFormation);
+            }
+            newCurrentFormation.AddAgentToFormation(agent);
+        }
+        currentFormation = newCurrentFormation;
+        availableFormations.Add(newCurrentFormation);
+        MarkAgentsAsSelected(currentFormation);
     }
 
     private void BuildColliderMesh()
@@ -225,12 +328,12 @@ public class SelectionManager : MonoBehaviour
                 {
                     if (Input.GetKey(KeyCode.LeftShift))
                     {
-                        ModifyCurrentFormation(agent);
+                        ModifyCurrentFormationSingleClick(agent);
                     }
                     else
                     {
                         ClearCurrentSelection();
-                        ModifyCurrentFormation(agent);
+                        ModifyCurrentFormationSingleClick(agent);
                     }
                 }
             }
@@ -243,20 +346,13 @@ public class SelectionManager : MonoBehaviour
         {
             ClearCurrentSelection();
         }
+        Debug.Log("Available formations count:" + availableFormations.Count);
     }
 
-    private void ModifyCurrentFormation(Agent newAgent)
+    private void ModifyCurrentFormationSingleClick(Agent newAgent)
     {
         // Find agents old formation
-        Formation agentsOldFormation = null;
-        foreach (Formation availableFormation in availableFormations)
-        {
-            if (availableFormation.DoesBelongToFormation(newAgent))
-            {
-                agentsOldFormation = availableFormation;
-                break;
-            }
-        }
+        Formation agentsOldFormation = newAgent.GetCurrentFormation();
         if (agentsOldFormation == null)
         {
             Debug.Log("Selected agents had no formations!");
@@ -321,6 +417,58 @@ public class SelectionManager : MonoBehaviour
                 agent.MarkAsUnselected();
             }
             currentFormation = null;
+        }
+    }
+
+    private Formation GetMaxAgentsFormation(List<Agent> agentsList)
+    {
+        Dictionary<Formation, int> formationsAgentsCounts = new Dictionary<Formation, int>();
+
+        foreach (var agent in agentsList)
+        {
+            if (agent.GetCurrentFormation() != null)
+            {
+                if (formationsAgentsCounts.ContainsKey(agent.GetCurrentFormation()))
+                {
+                    formationsAgentsCounts[agent.GetCurrentFormation()]++;
+                }
+                else
+                {
+                    formationsAgentsCounts.Add(agent.GetCurrentFormation(), 1);
+                }
+            }
+        }
+
+        Formation maxAgentsFormation = null;
+
+        int maxCount = -1;
+        foreach (var formation in formationsAgentsCounts.Keys)
+        {
+            if (formationsAgentsCounts[formation] > maxCount)
+            {
+                maxCount = formationsAgentsCounts[formation];
+                maxAgentsFormation = formation;
+            }
+        }
+
+        return maxAgentsFormation;
+    }
+
+    private bool DoesAgentsListContainWholeFormation(List<Agent> agentsList, Formation maxAgentsFormation)
+    {
+        return maxAgentsFormation.GetAllFormationAgents().All((agent) =>
+        {
+            return agentsList.Contains(agent);
+        });
+    }
+
+    private void MarkAgentsAsSelected(Formation currentFormation)
+    {
+        currentFormation.GetFormationLeader()?.MarkAsMainSelected();
+
+        foreach(var agent in currentFormation.GetFormationAgentsWithoutLeader())
+        {
+            agent.MarkAsSelected();
         }
     }
 }

@@ -15,6 +15,8 @@ public class Agent : MonoBehaviour
     [Tooltip("Controller that is able to give commands to this unit")]
     Controller controller;
 
+    private Formation currentFormation = null;
+
     // Getters and setters
     #region
     public void SetController(Controller controller)
@@ -25,6 +27,21 @@ public class Agent : MonoBehaviour
     public Controller GetController()
     {
         return controller;
+    }
+
+    public void SetCurrentFormation(Formation currentFormation)
+    {
+        this.currentFormation = currentFormation;
+    }
+
+    public Formation GetCurrentFormation()
+    {
+        return currentFormation;
+    }
+
+    public void ClearCurrentFormation()
+    {
+        currentFormation = null;
     }
     #endregion
 
