@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2087484016457414429}
   - component: {fileID: 2087484016457414431}
   - component: {fileID: 2087484016457414428}
+  - component: {fileID: 1269837867}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -84,6 +85,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087484016457414426}
   m_Enabled: 1
+--- !u!64 &1269837867
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087484016457414426}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
 --- !u!1 &2087484017097720661
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +204,8 @@ GameObject:
   - component: {fileID: 2087484017487523541}
   - component: {fileID: 2087484017487523538}
   - component: {fileID: 7651748224454485430}
-  - component: {fileID: 554800195}
+  - component: {fileID: 7858940874721320903}
+  - component: {fileID: 1100235904}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -228,6 +244,7 @@ MonoBehaviour:
   controllerId: 0
   playersCamera: {fileID: 2087484016457414431}
   selectionManager: {fileID: 2087484017487523538}
+  commandsManager: {fileID: 7858940874721320903}
 --- !u!114 &2087484017487523538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,10 +259,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionBoxAccuracy: 0.1
   equalToCameraFarDistance: 0
-  selectionBoxColliderDistance: 50
+  selectionDistance: 50
   playersCamera: {fileID: 2087484016457414431}
   frustumMeshBuilder: {fileID: 43552245}
-  meshCollider: {fileID: 554800195}
+  meshCollider: {fileID: 1269837867}
 --- !u!114 &7651748224454485430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,25 +276,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCameraTransform: {fileID: 2087484016457414429}
-  planeSpeed: 20
-  verticalSpeed: 10
+  planeSpeed: 25
+  verticalSpeed: 30
   takeBordersIntoAccount: 0
   panBorderThickness: 10
   minVerticalRotation: 0
   maxVerticalRotation: 65
-  minVerticalPosition: 2
-  maxVerticalPosition: 15
---- !u!64 &554800195
-MeshCollider:
+  minVerticalPosition: 10
+  maxVerticalPosition: 20
+--- !u!114 &7858940874721320903
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087484017487523536}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85f813cece597c34a95527b172a9f8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &1100235904
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087484017487523536}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

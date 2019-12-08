@@ -9,7 +9,8 @@ public class PoolsManager : SerializedMonoBehaviour
     Dictionary<string, ObjectPool> poolsCollection = new Dictionary<string, ObjectPool>()
     {
         { Poolskeys.m16BulletsPoolKey, null },
-        { Poolskeys.m16ShotEffectsPoolKey, null }
+        { Poolskeys.m16ShotEffectsPoolKey, null },
+        { Poolskeys.clickEffectsPoolKey, null }
     };
 
     static PoolsManager instance = null;
@@ -45,4 +46,5 @@ static public class Poolskeys
 {
     static public readonly string m16BulletsPoolKey = "M16BulletsPoolKey";
     static public readonly string m16ShotEffectsPoolKey = "M16ShotEffectsPoolKey";
+    static public readonly string clickEffectsPoolKey = "ClickEffectsPoolKey";
 }

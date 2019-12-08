@@ -19,17 +19,20 @@ public class SelectionManager : MonoBehaviour
 
     [BoxGroup("Settings")]
     [SerializeField]
-    [Tooltip("Selection box collider distance")]
+    [Tooltip("Selection distance")]
     [HideIf("equalToCameraFarDistance")]
-    float selectionBoxColliderDistance = 200;
+    float selectionDistance = 50;
 
     [SerializeField]
+    [Required]
     Camera playersCamera;
 
     [SerializeField]
+    [Required]
     Frustum frustumMeshBuilder;
 
     [SerializeField]
+    [Required]
     MeshCollider meshCollider;
 
     //[Tooltip("Units available for selection")]
@@ -97,15 +100,29 @@ public class SelectionManager : MonoBehaviour
             }
             else
             {
-                BuildColliderMesh();
-                meshCollider.enabled = true;
+                try
+                {
+                    BuildColliderMesh();
+                    meshCollider.enabled = true;
+                }
+                catch (Exception exception)
+                {
+                    Debug.Log("Exception when building mesh collider: " + exception.Message);
+                    leftMousePhysicsUp = false;
+                    leftShiftPhysics = false;
+                    latestDetectedSelectionBoxObjects.Clear();
+                }
+                
             }
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        latestDetectedSelectionBoxObjects.Add(other.attachedRigidbody.gameObject);
+        if (other.attachedRigidbody != null)
+        {
+            latestDetectedSelectionBoxObjects.Add(other.attachedRigidbody.gameObject);
+        }
     }
 
     private void OnGUI()
@@ -286,7 +303,7 @@ public class SelectionManager : MonoBehaviour
         }
         else
         {
-            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionBoxColliderDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
+            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
                 Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
         }
 
@@ -315,7 +332,7 @@ public class SelectionManager : MonoBehaviour
         }
 
         RaycastHit raycastHit;
-        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, Mathf.Infinity))
+        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, selectionDistance))
         {
             if (raycastHit.transform.tag == "Selectable")
             {

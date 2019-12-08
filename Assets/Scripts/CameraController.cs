@@ -3,7 +3,9 @@ using Sirenix.OdinInspector;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform mainCameraTransform;
+    [SerializeField]
+    [Required]
+    Transform mainCameraTransform;
 
     [BoxGroup("Camera movement settings")]
     [SerializeField]
@@ -100,6 +102,13 @@ public class CameraController : MonoBehaviour
     private void RotationUpdate()
     {
         var easeFactor = 10f;
+        bool midMouseButtonPressDown = Input.GetMouseButtonDown(2);
+        if (midMouseButtonPressDown)
+        {
+            mouseX = Input.mousePosition.x;
+            mouseY = Input.mousePosition.y;
+            return;
+        }
         bool midMouseButtonPressed = Input.GetMouseButton(2);
         if (midMouseButtonPressed)
         {
