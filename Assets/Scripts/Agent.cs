@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using Sirenix.OdinInspector;
 using Pathfinding;
 
@@ -25,6 +26,12 @@ public class Agent : MonoBehaviour
     private Formation currentFormation = null;
 
     private Goal currentGoal = null;
+
+    // Moving goal additional help variables
+    #region
+    private Coroutine checkEndPathCoroutine = null;
+    private Vector3 previosCheckCoordinate = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
+    #endregion
 
     // Getters and setters
     #region
@@ -56,6 +63,14 @@ public class Agent : MonoBehaviour
     public void SetNewGoal(Goal newGoal)
     {
         currentGoal = newGoal;
+
+        if (currentGoal is MoveGoal)
+        {
+            aiPathHandler.destination = (currentGoal as MoveGoal).Destination;
+            aiPathHandler.isStopped = false;
+
+            checkEndPathCoroutine = StartCoroutine(CheckEndPathAsync());
+        }
     }
 
     public Goal GetCurrentGoal()
@@ -94,7 +109,7 @@ public class Agent : MonoBehaviour
         {
             if (currentGoal is MoveGoal)
             {
-                MoveToDestiantion((MoveGoal)currentGoal);
+                MoveToDestination((MoveGoal)currentGoal);
             }
             else if (currentGoal is AttackGoal)
             {
@@ -116,13 +131,40 @@ public class Agent : MonoBehaviour
         Debug.Log("Try to attack someone");
     }
 
-    private void MoveToDestiantion(MoveGoal moveGoal)
+    private void MoveToDestination(MoveGoal moveGoal)
     {
-        Debug.Log("MovingToestination");
+        aiPathHandler.destination = moveGoal.Destination;
+
+        if (aiPathHandler.reachedDestination)
+        {
+            aiPathHandler.isStopped = true;
+            currentGoal = null;
+            StopCoroutine(checkEndPathCoroutine);
+            Debug.Log("Reached move goal!");
+        }
     }
 
     private void SearchForEnemies()
     {
-        Debug.Log("Searching for enemies");
+        // Debug.Log("Searching for enemies");
+    }
+
+    IEnumerator CheckEndPathAsync()
+    {
+        previosCheckCoordinate = transform.position;
+        yield return new WaitForSeconds(LevelManager.Instance.AgentsSecondsTillCheckEndPath);
+
+        while ((previosCheckCoordinate - transform.position).magnitude > Mathf.Epsilon)
+        {
+            previosCheckCoordinate = transform.position;
+            yield return new WaitForSeconds(LevelManager.Instance.AgentsSecondsTillCheckEndPath);
+        }
+
+        if (currentGoal is MoveGoal)
+        {
+            aiPathHandler.isStopped = true;
+            currentGoal = null;
+            Debug.Log("Reached move goal!"); ;
+        }
     }
 }

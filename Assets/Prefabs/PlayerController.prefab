@@ -296,6 +296,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85f813cece597c34a95527b172a9f8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersCamera: {fileID: 2087484016457414431}
+  walkableLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  commandDistance: 100
+  clickWavesEffectGroundOffset: 0.05
 --- !u!54 &1100235904
 Rigidbody:
   m_ObjectHideFlags: 0

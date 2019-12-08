@@ -30,13 +30,11 @@ public class CommandsManager : MonoBehaviour
     [Tooltip("Distance from ground that waves will instantiated after click")]
     float clickWavesEffectGroundOffset = 0.05f;
 
-    void Update()
-    {
-        CheckCommands();
-    }
+    public Goal CurrentGoalToCommand { get; private set; }
 
-    void CheckCommands()
+    public void CheckCommands()
     {
+        CurrentGoalToCommand = null;
         if (Input.GetMouseButtonUp(1))
         {
             CheckMoveCommand();
@@ -49,9 +47,8 @@ public class CommandsManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance, walkableLayerMask))
         {
-            GameObject clickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.clickEffectsPoolKey).GetObject();
-            clickWavesEffectGameObject.transform.position = raycastHit.point + Vector3.up * clickWavesEffectGroundOffset;
-            clickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
+            ShowClickWavesEffects(raycastHit);
+            CurrentGoalToCommand = new MoveGoal(raycastHit.point);
         }
     }
 
@@ -61,5 +58,12 @@ public class CommandsManager : MonoBehaviour
         if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance, attackableLayerMask))
         {
         }
+    }
+
+    private void ShowClickWavesEffects(RaycastHit raycastHit)
+    {
+        GameObject clickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.clickEffectsPoolKey).GetObject();
+        clickWavesEffectGameObject.transform.position = raycastHit.point + Vector3.up * clickWavesEffectGroundOffset;
+        clickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
     }
 }
