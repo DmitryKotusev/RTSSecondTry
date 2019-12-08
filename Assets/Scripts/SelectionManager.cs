@@ -32,9 +32,9 @@ public class SelectionManager : MonoBehaviour
     [SerializeField]
     MeshCollider meshCollider;
 
-    [Tooltip("Units available for selection")]
-    [SerializeField]
-    List<Agent> availableAgents = new List<Agent>();
+    //[Tooltip("Units available for selection")]
+    //[SerializeField]
+    //List<Agent> availableAgents = new List<Agent>();
 
     RectDrawer rectDrawer = new RectDrawer();
     Vector3 startMousePosition;
