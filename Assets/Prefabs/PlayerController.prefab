@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 2087484017487523539}
   - component: {fileID: 2087484017487523541}
   - component: {fileID: 2087484017487523538}
+  - component: {fileID: 7651748224454485430}
   - component: {fileID: 554800195}
   m_Layer: 0
   m_Name: PlayerController
@@ -245,7 +246,27 @@ MonoBehaviour:
   playersCamera: {fileID: 2087484016457414431}
   frustumMeshBuilder: {fileID: 43552245}
   meshCollider: {fileID: 554800195}
-  availableAgents: []
+--- !u!114 &7651748224454485430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087484017487523536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a1de3c20fedce42a470d41caa9df90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCameraTransform: {fileID: 2087484016457414429}
+  planeSpeed: 20
+  verticalSpeed: 10
+  takeBordersIntoAccount: 0
+  panBorderThickness: 10
+  minVerticalRotation: 0
+  maxVerticalRotation: 65
+  minVerticalPosition: 2
+  maxVerticalPosition: 15
 --- !u!64 &554800195
 MeshCollider:
   m_ObjectHideFlags: 0
