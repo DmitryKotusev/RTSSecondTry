@@ -22,5 +22,22 @@ public class SoldierBasic : MonoBehaviour
     GameObject rightHand;
 
     [SerializeField]
-    GameObject helmet;
+    Transform helmetHolder;
+    public Transform HelmetHolder
+    {
+        get
+        {
+            return helmetHolder;
+        }
+    }
+
+    [SerializeField]
+    Inventory inventory;
+    public Inventory Inventory
+    {
+        get
+        {
+            return inventory;
+        }
+    }
 }

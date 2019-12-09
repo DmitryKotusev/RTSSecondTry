@@ -7,7 +7,7 @@ public class SelfDestroy : MonoBehaviour
     [Tooltip("Life time in seconds")]
     public float lifeTime = 2f;
 
-    private void Awake()
+    private void OnEnable()
     {
         StartCoroutine(ReturnToPool());
     }
