@@ -27,7 +27,7 @@ public class CommandsManager : MonoBehaviour
 
     [BoxGroup("Settings")]
     [SerializeField]
-    [Tooltip("Distance from ground that waves will instantiated after click")]
+    [Tooltip("Distance from ground that waves will be instantiated after click")]
     float clickWavesEffectGroundOffset = 0.05f;
 
     public Goal CurrentGoalToCommand { get; private set; }

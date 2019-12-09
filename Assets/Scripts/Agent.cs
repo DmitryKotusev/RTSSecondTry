@@ -35,6 +35,14 @@ public class Agent : MonoBehaviour
 
     // Getters and setters
     #region
+    public float AgentRadius
+    {
+        get
+        {
+            return aiPathHandler.radius;
+        }
+    }
+
     public void SetController(Controller controller)
     {
         this.controller = controller;
