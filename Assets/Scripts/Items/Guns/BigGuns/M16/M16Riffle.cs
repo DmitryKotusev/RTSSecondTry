@@ -3,7 +3,6 @@ using Sirenix.OdinInspector;
 
 public class M16Riffle : BigGun
 {
-
     [Button("Check fire")]
     public override void Fire()
     {

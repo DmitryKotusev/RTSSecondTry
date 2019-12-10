@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using RootMotion.FinalIK;
 
 public class SoldierBasic : MonoBehaviour
 {
@@ -15,11 +16,25 @@ public class SoldierBasic : MonoBehaviour
 
     [BoxGroup("Bones")]
     [SerializeField]
-    GameObject leftHand;
+    Transform leftHandPoser;
+    public Transform LeftHandPoser
+    {
+        get
+        {
+            return leftHandPoser;
+        }
+    }
 
     [BoxGroup("Bones")]
     [SerializeField]
-    GameObject rightHand;
+    Transform rightHandPoser;
+    public Transform RightHandPoser
+    {
+        get
+        {
+            return rightHandPoser;
+        }
+    }
 
     [SerializeField]
     Transform helmetHolder;

@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using RootMotion.FinalIK;
 
 public class AgentAimManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Speed of going to aim state (units per second)")]
+    float aimSpeed = 1f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField]
+    AimIK aimIK;
+
+    [SerializeField]
+    FullBodyBipedIK fullBodyBipedIK;
 }

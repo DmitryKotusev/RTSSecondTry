@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1511341941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1511341943}
+  m_Layer: 9
+  m_Name: LeftHandtarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1511341943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511341941}
+  m_LocalRotation: {x: 0.2790748, y: 0.7374055, z: 0.5013088, w: -0.35642654}
+  m_LocalPosition: {x: -0.04345805, y: -0.032502912, z: 0.16834663}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7800992608925212680}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2970130262764139579
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +170,7 @@ Transform:
   m_Children:
   - {fileID: 8170002609472131729}
   - {fileID: 2970130262764139578}
+  - {fileID: 1511341943}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -205,3 +236,4 @@ MonoBehaviour:
   rateOfFire: 650
   cooldown: 3
   roundEmitter: {fileID: 2970130262764139578}
+  leftHandTransform: {fileID: 1511341943}
