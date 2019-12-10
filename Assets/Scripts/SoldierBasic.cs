@@ -32,6 +32,16 @@ public class SoldierBasic : MonoBehaviour
     }
 
     [SerializeField]
+    Transform weaponHolder;
+    public Transform WeaponHolder
+    {
+        get
+        {
+            return weaponHolder;
+        }
+    }
+
+    [SerializeField]
     Inventory inventory;
     public Inventory Inventory
     {

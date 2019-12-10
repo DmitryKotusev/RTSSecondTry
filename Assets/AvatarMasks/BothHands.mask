@@ -6,6 +6,284 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UpperBody
-  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-  m_Elements: []
+  m_Name: BothHands
+  m_Mask: 00000000000000000000000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.l
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.l/m.eye.flex.c.l
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.l/m.eye.flex.c.l/m.eye.flex.c.l_end
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.r
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.r/m.eye.flex.c.r
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.flex.p.r/m.eye.flex.c.r/m.eye.flex.c.r_end
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.tracker
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.tracker/m.eye.line
+    m_Weight: 0
+  - m_Path: Armature/m.head.flex.p/m.head.flex.c/m.eye.tracker/m.eye.line/m.eye.line_end
+    m_Weight: 0
+  - m_Path: Armature/m.neck.flex.p
+    m_Weight: 0
+  - m_Path: Armature/m.neck.flex.p/m.neck.flex.c
+    m_Weight: 0
+  - m_Path: Armature/m.neck.flex.p/m.neck.flex.c/m.neck.flex.c_end
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/head.touch
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/head.touch/m.head.touch.tracker
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/head.touch/m.head.touch.tracker/m.head.touch.tracker_end
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/m.neck.follow.head
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/m.neck.follow.head/neck.touch
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/m.neck.follow.head/neck.touch/m.neck.touch.tracker
+    m_Weight: 0
+  - m_Path: Armature/m.neck.socket/m.neck.follow.head/neck.touch/m.neck.touch.tracker/m.neck.touch.tracker_end
+    m_Weight: 0
+  - m_Path: Armature/root
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.hips.fix.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.hips.fix.l/def.hips.fix.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.hips.fix.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.hips.fix.r/def.hips.fix.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.fix.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.fix.l/def.chest.fix.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.fix.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.fix.r/def.chest.fix.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.eye.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.eye.l/def.eye.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.eye.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.eye.r/def.eye.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.jaw
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.jaw/def.tongue.01
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.jaw/def.tongue.01/def.tongue.02
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.jaw/def.tongue.01/def.tongue.02/def.tongue.03
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.neck/def.head/def.jaw/def.tongue.01/def.tongue.02/def.tongue.03/def.tongue.03_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.f.thumb.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.f.thumb.03.l/def.f.thumb.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.f.thumb.03.l/def.f.thumb.02.l/def.f.thumb.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.f.thumb.03.l/def.f.thumb.02.l/def.f.thumb.01.l/def.f.thumb.01.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.01.l/def.f.index.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.01.l/def.f.index.03.l/def.f.index.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.01.l/def.f.index.03.l/def.f.index.02.l/def.f.index.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.01.l/def.f.index.03.l/def.f.index.02.l/def.f.index.01.l/def.f.index.01.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.02.l/def.f.middle.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.02.l/def.f.middle.03.l/def.f.middle.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.02.l/def.f.middle.03.l/def.f.middle.02.l/def.f.middle.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.02.l/def.f.middle.03.l/def.f.middle.02.l/def.f.middle.01.l/def.f.middle.01.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.03.l/def.f.ring.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.03.l/def.f.ring.03.l/def.f.ring.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.03.l/def.f.ring.03.l/def.f.ring.02.l/def.f.ring.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.03.l/def.f.ring.03.l/def.f.ring.02.l/def.f.ring.01.l/def.f.ring.01.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.04.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.04.l/def.f.pinky.03.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.04.l/def.f.pinky.03.l/def.f.pinky.02.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.04.l/def.f.pinky.03.l/def.f.pinky.02.l/def.f.pinky.01.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.l/def.arm.upper.l/def.arm.lower.l/def.forearm.upper.l/def.forearm.lower.l/def.hand.l/def.palm.04.l/def.f.pinky.03.l/def.f.pinky.02.l/def.f.pinky.01.l/def.f.pinky.01.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.f.thumb.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.f.thumb.03.r/def.f.thumb.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.f.thumb.03.r/def.f.thumb.02.r/def.f.thumb.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.f.thumb.03.r/def.f.thumb.02.r/def.f.thumb.01.r/def.f.thumb.01.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.01.r/def.f.index.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.01.r/def.f.index.03.r/def.f.index.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.01.r/def.f.index.03.r/def.f.index.02.r/def.f.index.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.01.r/def.f.index.03.r/def.f.index.02.r/def.f.index.01.r/def.f.index.01.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.02.r/def.f.middle.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.02.r/def.f.middle.03.r/def.f.middle.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.02.r/def.f.middle.03.r/def.f.middle.02.r/def.f.middle.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.02.r/def.f.middle.03.r/def.f.middle.02.r/def.f.middle.01.r/def.f.middle.01.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.03.r/def.f.ring.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.03.r/def.f.ring.03.r/def.f.ring.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.03.r/def.f.ring.03.r/def.f.ring.02.r/def.f.ring.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.03.r/def.f.ring.03.r/def.f.ring.02.r/def.f.ring.01.r/def.f.ring.01.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.04.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.04.r/def.f.pinky.03.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.04.r/def.f.pinky.03.r/def.f.pinky.02.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.04.r/def.f.pinky.03.r/def.f.pinky.02.r/def.f.pinky.01.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/def.shoulder.r/def.arm.upper.r/def.arm.lower.r/def.forearm.upper.r/def.forearm.lower.r/def.hand.r/def.palm.04.r/def.f.pinky.03.r/def.f.pinky.02.r/def.f.pinky.01.r/def.f.pinky.01.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/m.chest.socket
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.spine/def.chest.lower/def.chest.upper/m.chest.socket/m.chest.socket_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l/def.shin.upper.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l/def.shin.upper.l/def.shin.lower.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l/def.shin.upper.l/def.shin.lower.l/def.foot.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l/def.shin.upper.l/def.shin.lower.l/def.foot.l/def.toe.l
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.l/def.thigh.lower.l/def.shin.upper.l/def.shin.lower.l/def.foot.l/def.toe.l/def.toe.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r/def.shin.upper.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r/def.shin.upper.r/def.shin.lower.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r/def.shin.upper.r/def.shin.lower.r/def.foot.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r/def.shin.upper.r/def.shin.lower.r/def.foot.r/def.toe.r
+    m_Weight: 0
+  - m_Path: Armature/root/def.hips/def.thigh.upper.r/def.thigh.lower.r/def.shin.upper.r/def.shin.lower.r/def.foot.r/def.toe.r/def.toe.r_end
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head/eye.center.touch
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head/eye.center.touch/eye.touch.l
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head/eye.center.touch/eye.touch.l/eye.touch.l_end
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head/eye.center.touch/eye.touch.r
+    m_Weight: 0
+  - m_Path: Armature/root/m.eyes.follow.head/eye.center.touch/eye.touch.r/eye.touch.r_end
+    m_Weight: 0
+  - m_Path: FinalBelt
+    m_Weight: 0
+  - m_Path: FinalBigBag
+    m_Weight: 0
+  - m_Path: FinalBody
+    m_Weight: 0
+  - m_Path: FinalBoots
+    m_Weight: 0
+  - m_Path: FinalFlask
+    m_Weight: 0
+  - m_Path: FinalHelmet
+    m_Weight: 0
+  - m_Path: FinalJacket
+    m_Weight: 0
+  - m_Path: FinalPants
+    m_Weight: 0
+  - m_Path: FinalSmallBag
+    m_Weight: 0
