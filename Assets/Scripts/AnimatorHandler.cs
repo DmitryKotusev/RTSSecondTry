@@ -12,6 +12,10 @@ public class AnimatorHandler : MonoBehaviour
     [SerializeField]
     RichAI richAI;
 
+    public readonly int NoWeaponsStandLayerIndex = 0;
+    public readonly int BothHandsRiffleWeaponLayerIndex = 1;
+    public readonly int FullBodyRifleAimStandLayer = 2;
+
     void Start()
     {
         Assert.IsNotNull(animator);
@@ -34,5 +38,17 @@ public class AnimatorHandler : MonoBehaviour
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
         animator.SetFloat("MovingSpeed", localVelocity.z);
+    }
+
+    public void UpdateLayerWeight(int layerIndex, float weight)
+    {
+        float newWeight = Mathf.Clamp01(weight);
+
+        animator.SetLayerWeight(layerIndex, newWeight);
+    }
+
+    public float GetLayersWeight(int layerIndex)
+    {
+        return animator.GetLayerWeight(layerIndex);
     }
 }

@@ -1,18 +1,17 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using RootMotion.FinalIK;
 
 public class SoldierBasic : MonoBehaviour
 {
     [BoxGroup("Bones")]
     [SerializeField]
-    GameObject rootBone;
+    Transform rootBone;
 
     [BoxGroup("Bones")]
     [SerializeField]
-    GameObject headBone;
+    Transform headBone;
 
     [BoxGroup("Bones")]
     [SerializeField]
@@ -35,6 +34,10 @@ public class SoldierBasic : MonoBehaviour
             return rightHandPoser;
         }
     }
+
+    [BoxGroup("Colliders")]
+    [SerializeField]
+    List<ColliderCostPair> hitCollidersCosts;
 
     [SerializeField]
     Transform helmetHolder;
@@ -65,4 +68,11 @@ public class SoldierBasic : MonoBehaviour
             return inventory;
         }
     }
+}
+
+[Serializable]
+public struct ColliderCostPair
+{
+    public Collider collider;
+    public float cost;
 }

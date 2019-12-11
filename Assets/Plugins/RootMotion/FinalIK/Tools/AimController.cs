@@ -198,7 +198,7 @@ namespace RootMotion.FinalIK {
 		private Vector3 pivot {
 			get {
                 return ik.transform.position + ik.transform.rotation * pivotOffsetFromRoot;
-			}
+            }
 		}
 
 		// Make sure aiming target is not too close (might make the solver instable when the target is closer to the first bone than the last bone is).
@@ -216,6 +216,9 @@ namespace RootMotion.FinalIK {
 
 			if (max < 180f) {
 				Vector3 faceDirLocal = Quaternion.Inverse(ik.transform.rotation) * (ik.solver.IKPosition - pivot);
+                // My analogue
+                // Vector3 myFaceDirLocal = transform.InverseTransformDirection(ik.solver.IKPosition - pivot);
+                //////////////
 				float angle = Mathf.Atan2(faceDirLocal.x, faceDirLocal.z) * Mathf.Rad2Deg;
 
 				float rotation = 0f;

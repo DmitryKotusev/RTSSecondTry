@@ -17,23 +17,27 @@ public class AgentWeaponManager : MonoBehaviour
     Helmet activeHelmet;
 
     [SerializeField]
-    AimIK aimIK;
+    BipedIK bipedIK;
 
     [SerializeField]
-    FullBodyBipedIK fullBodyBipedIK;
+    AgentAimManager agentAimManager;
+
+    [SerializeField]
+    AnimatorHandler animatorHandler;
 
     private void Start()
     {
-        aimIK.enabled = false;
-        fullBodyBipedIK.enabled = false;
+        bipedIK.enabled = false;
         AdjustInventory();
     }
 
     private void LateUpdate()
     {
+        agentAimManager.UpdateAimManager();
+
         AdjustHandsOnWeapons();
 
-        fullBodyBipedIK.solver.Update();
+        bipedIK.UpdateBipedIK();
     }
 
     private void AdjustHandsOnWeapons()
@@ -44,16 +48,16 @@ public class AgentWeaponManager : MonoBehaviour
             {
                 Transform leftHandTransform = (activeGun as BigGun).LeftHandTransform;
 
-                fullBodyBipedIK.solver.leftHandEffector.position = leftHandTransform.position;
-                // fullBodyBipedIK.solver.leftHandEffector.rotation = leftHandTransform.rotation;
-                // fullBodyBipedIK.solver.leftHandEffector.positionWeight = 1;
-                // fullBodyBipedIK.solver.leftHandEffector.rotationWeight = 1;
+                bipedIK.solvers.leftHand.IKPosition = leftHandTransform.position;
+                bipedIK.solvers.leftHand.IKRotation = leftHandTransform.rotation;
+                bipedIK.solvers.leftHand.IKPositionWeight = 1;
+                bipedIK.solvers.leftHand.IKRotationWeight = 1;
             }
         }
         else
         {
-            fullBodyBipedIK.solver.leftHandEffector.positionWeight = 0;
-            fullBodyBipedIK.solver.leftHandEffector.rotationWeight = 0;
+            bipedIK.solvers.leftHand.IKPositionWeight = 0;
+            bipedIK.solvers.leftHand.IKRotationWeight = 0;
         }
     }
 
@@ -63,6 +67,11 @@ public class AgentWeaponManager : MonoBehaviour
         {
             soldierBasic.Inventory.AddItem(activeGun);
             ActivateGun();
+            animatorHandler.UpdateLayerWeight(animatorHandler.BothHandsRiffleWeaponLayerIndex, 1);
+        }
+        else
+        {
+            animatorHandler.UpdateLayerWeight(animatorHandler.BothHandsRiffleWeaponLayerIndex, 0);
         }
 
         if (activeHelmet != null)

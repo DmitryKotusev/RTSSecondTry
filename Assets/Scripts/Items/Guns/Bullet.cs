@@ -17,8 +17,10 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        CheckIfReachedTarget();
-        CalculateFrameMovement();
+        if (!CheckIfReachedTarget())
+        {
+            CalculateFrameMovement();
+        }
     }
 
     private void CalculateFrameMovement()
@@ -33,9 +35,10 @@ public class Bullet : MonoBehaviour
 
         if (Physics.Raycast(nextFramePathRay, out raycastHitinfo, (nextFramePosition - currentPosition).magnitude))
         {
-            if (raycastHitinfo.transform.tag == "Agent")
+            if (raycastHitinfo.transform.tag == "Selectable")
             {
                 // Hit Logic
+                Debug.Log(raycastHitinfo.collider.gameObject.name);
             }
 
             Debug.Log(raycastHitinfo.transform.tag);
@@ -51,12 +54,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    void CheckIfReachedTarget()
+    bool CheckIfReachedTarget()
     {
         if (hasReachedTarget)
         {
             // Return bullet to pool
             PoolsManager.GetObjectPool(Poolskeys.m16BulletsPoolKey).ReturnObject(gameObject);
         }
+
+        return hasReachedTarget;
     }
 }

@@ -15,6 +15,11 @@ public class Agent : MonoBehaviour
     [Tooltip("Projector used to highlight if unit is main in selection list")]
     GameObject mainSelectionProjector;
 
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Agent's look distance")]
+    float lookDistance = 60f;
+
     [SerializeField]
     [Tooltip("Controller that is able to give commands to this unit")]
     Controller controller;
