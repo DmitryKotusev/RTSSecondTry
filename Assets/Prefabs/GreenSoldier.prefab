@@ -1784,6 +1784,7 @@ GameObject:
   - component: {fileID: 1626384517128679534}
   - component: {fileID: 8653692902044785940}
   - component: {fileID: 393798734}
+  - component: {fileID: 8070754240008937866}
   - component: {fileID: 2362504971329503868}
   - component: {fileID: 6877880340922030960}
   - component: {fileID: 3492905098246778529}
@@ -1860,6 +1861,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8070754240008937866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2362504971329503869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6111f1755d65f4f923d74db40d1020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2362504971329503868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2184,7 @@ MonoBehaviour:
     - {fileID: 872534647386086057}
   solvers:
     leftFoot:
-      IKPosition: {x: 424.5319, y: 8.157132, z: 1414.3428}
+      IKPosition: {x: 437.81, y: 8.157132, z: 1333.14}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2214,7 +2227,7 @@ MonoBehaviour:
       bendModifierWeight: 1
       bendGoal: {fileID: 0}
     rightFoot:
-      IKPosition: {x: 424.7919, y: 8.157132, z: 1414.3428}
+      IKPosition: {x: 438.07, y: 8.157132, z: 1333.14}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2257,7 +2270,7 @@ MonoBehaviour:
       bendModifierWeight: 1
       bendGoal: {fileID: 0}
     leftHand:
-      IKPosition: {x: 423.94635, y: 9.43269, z: 1414.3484}
+      IKPosition: {x: 437.22446, y: 9.43269, z: 1333.1456}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2301,7 +2314,7 @@ MonoBehaviour:
       bendModifierWeight: 1
       bendGoal: {fileID: 0}
     rightHand:
-      IKPosition: {x: 425.37744, y: 9.43269, z: 1414.3484}
+      IKPosition: {x: 438.65555, y: 9.43269, z: 1333.1456}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2345,7 +2358,7 @@ MonoBehaviour:
       bendModifierWeight: 1
       bendGoal: {fileID: 0}
     spine:
-      IKPosition: {x: 424.6619, y: 9.402133, z: 1414.3928}
+      IKPosition: {x: 437.94, y: 9.402133, z: 1333.1901}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2356,7 +2369,7 @@ MonoBehaviour:
       bones:
       - transform: {fileID: 5707193215162973557}
         weight: 1
-        solverPosition: {x: 424.6619, y: 9.237133, z: 1414.3728}
+        solverPosition: {x: 437.94, y: 9.237133, z: 1333.17}
         solverRotation: {x: 0.060275167, y: 1.7510697e-24, z: -7.60741e-24, w: 0.9981818}
         defaultLocalPosition: {x: -4.5359502e-30, y: 0.17464241, z: 0.0000000018626451}
         defaultLocalRotation: {x: -0.05520524, y: -9.012811e-24, z: 2.941376e-23,
@@ -2366,7 +2379,7 @@ MonoBehaviour:
         axis: {x: -2.5593931e-24, y: 0.16621001, z: 0.000019429797}
       - transform: {fileID: 3980338268897846156}
         weight: 1
-        solverPosition: {x: 424.6619, y: 9.402133, z: 1414.3928}
+        solverPosition: {x: 437.94, y: 9.402133, z: 1333.1901}
         solverRotation: {x: -0.1259419, y: 1.4328347e-24, z: -7.9256445e-24, w: 0.99203765}
         defaultLocalPosition: {x: -1.0540211e-30, y: 0.16620784, z: 0.000000014901161}
         defaultLocalRotation: {x: -0.18550816, y: 1.413666e-30, z: 1.1162967e-30,
@@ -2375,7 +2388,7 @@ MonoBehaviour:
         sqrMag: 0
         axis: {x: -2.6711335e-24, y: 0.15476327, z: 0.06061435}
     lookAt:
-      IKPosition: {x: 424.6619, y: 9.402133, z: 1417.3928}
+      IKPosition: {x: 437.94, y: 9.402133, z: 1336.1901}
       IKPositionWeight: 0
       root: {fileID: 1626384517128679534}
       target: {fileID: 0}
@@ -2509,7 +2522,7 @@ MonoBehaviour:
       transform: {fileID: 2335449090234309074}
       target: {fileID: 0}
       positionOffset: {x: 0, y: 0, z: 0}
-      position: {x: 424.6619, y: 9.067133, z: 1414.3328}
+      position: {x: 437.94, y: 9.067133, z: 1333.13}
       positionWeight: 0
       rotationOffset: {x: 0, y: 0, z: 0}
       rotation: {x: 13.240484, y: 8.2565494e-22, z: -4.0110004e-21}

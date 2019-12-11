@@ -31,7 +31,11 @@ public class EyeSightManager : MonoBehaviour
             if (Physics.Raycast(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position - lookAroundPoint.position, out raycastHit,
                 Vector3.Distance(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position)))
             {
-                return true;
+                // Debug.DrawRay(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position - lookAroundPoint.position, Color.white, 1f);
+                if (raycastHit.collider.transform == unitsColliderCostPair.collider.transform)
+                {
+                    return true;
+                }
             }
 
             return false;
