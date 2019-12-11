@@ -21,6 +21,15 @@ public class Health : MonoBehaviour
 
     [SerializeField]
     float healthPoints = 100;
+
+    [SerializeField]
+    [Required]
+    DeathManager deathManager;
+
+    [SerializeField]
+    [Required]
+    Unit unit;
+
     public float HealthPoints
     {
         get
@@ -29,14 +38,24 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void ChangeHealthPoints(float changeAmount)
+    public void ChangeHealthPoints(float changeAmount, Collider hitedCollider = null)
     {
-        healthPoints = Mathf.Clamp(healthPoints + changeAmount, 0, maxhealthPoints);
+        float resultChangeAmount = changeAmount;
+        if (hitedCollider != null)
+        {
+            float multiplier = unit.GetHitColliderCost(hitedCollider);
+            resultChangeAmount *= multiplier;
+        }
+        healthPoints = Mathf.Clamp(healthPoints + resultChangeAmount, 0, maxhealthPoints);
+
+        if (healthPoints == 0)
+        {
+            Die();
+        }
     }
 
     public void Die()
     {
-        // Destroy agent
-        // Show death FX
+        deathManager.Die();
     }
 }

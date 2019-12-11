@@ -283,7 +283,7 @@ MonoBehaviour:
   minVerticalRotation: 0
   maxVerticalRotation: 65
   minVerticalPosition: 10
-  maxVerticalPosition: 20
+  maxVerticalPosition: 25
 --- !u!114 &7858940874721320903
 MonoBehaviour:
   m_ObjectHideFlags: 0

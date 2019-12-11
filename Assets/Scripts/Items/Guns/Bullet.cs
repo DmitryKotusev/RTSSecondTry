@@ -9,6 +9,10 @@ public class Bullet : MonoBehaviour
     protected int bulletSpeed;
 
     bool hasReachedTarget = false;
+    public float CurrentDamage
+    {
+        get; set;
+    } = 10f;
 
     private void OnEnable()
     {
@@ -37,11 +41,9 @@ public class Bullet : MonoBehaviour
         {
             if (raycastHitinfo.transform.tag == "Selectable")
             {
-                // Hit Logic
-                Debug.Log(raycastHitinfo.collider.gameObject.name);
+                Health healthSystem = raycastHitinfo.transform.GetComponent<Health>();
+                healthSystem?.ChangeHealthPoints(-CurrentDamage, raycastHitinfo.collider);
             }
-
-            Debug.Log(raycastHitinfo.transform.tag);
 
             // Play hit sound
 

@@ -24,6 +24,10 @@ public class M16Riffle : BigGun
         TrailRenderer trailRenderer = bulletGameObject.GetComponent<TrailRenderer>();
         trailRenderer.Clear();
 
+        // Set currentBulletDamage
+        Bullet bullet = bulletGameObject.GetComponent<Bullet>();
+        bullet.CurrentDamage = basicDamagePerShot;
+
         //Play sound
         //Show effects from the barrel
         GameObject effectGameObject = PoolsManager.GetObjectPool(Poolskeys.m16ShotEffectsPoolKey).GetObject();

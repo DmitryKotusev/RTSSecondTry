@@ -65,25 +65,3 @@ public class SoldierBasic : Unit
         }
     }
 }
-
-[Serializable]
-public class ColliderCostPair
-{
-    public Collider collider;
-    public float cost;
-
-    public float GetPriority()
-    {
-        if (collider == null)
-        {
-            return 0;
-        }
-
-        if (cost < 0)
-        {
-            return 0;
-        }
-
-        return cost * collider.bounds.size.magnitude;
-    }
-}

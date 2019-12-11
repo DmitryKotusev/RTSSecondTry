@@ -62,6 +62,10 @@ public class SelectionManager : MonoBehaviour
     #region
     public Formation GetCurrentFormation()
     {
+        if (currentFormation != null && currentFormation.IsEmpty())
+        {
+            currentFormation = null;
+        }
         return currentFormation;
     }
     #endregion

@@ -13,6 +13,11 @@ public abstract class Gun : Item
     [Tooltip("Gun cooldown time in seconds")]
     protected float cooldown;
 
+    [BoxGroup("Gun Info")]
+    [SerializeField]
+    [Tooltip("Gun's damage")]
+    protected float basicDamagePerShot = 10f;
+
     [SerializeField]
     protected Transform roundEmitter;
     public Transform RoundEmitter
