@@ -133,7 +133,6 @@ public class AgentAimManager : MonoBehaviour
     [Button("Check start aiming")]
     public void StartAiming(Action onStartAimingFinish = null)
     {
-        isAiming = true;
 
         if (aimingCoroutine != null)
         {
@@ -154,8 +153,30 @@ public class AgentAimManager : MonoBehaviour
         aimingCoroutine = StartCoroutine(StopAimingAsync(onStopAimingFinish));
     }
 
+    public bool IsTargetReachable(Transform target)
+    {
+        if (currentTargetToAim == null)
+        {
+            return false;
+        }
+
+        RaycastHit raycastHit;
+        if (Physics.Raycast(aimIK.solver.transform.position, aimIK.solver.transform.forward, out raycastHit,
+            Mathf.Infinity))
+        {
+            if (raycastHit.collider.transform == target)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     IEnumerator StartAimingAsync(Action onStartAimingFinish)
     {
+        isAiming = true;
+
         float currentAimWeight = animatorHandler.GetLayersWeight(animatorHandler.FullBodyRifleAimStandLayer);
 
         while (true)

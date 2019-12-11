@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &85521157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85521158}
+  m_Layer: 9
+  m_Name: ViewPort
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &85521158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85521157}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.256, z: 0.013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3080349542480979284}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &123908602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,6 +1788,7 @@ GameObject:
   - component: {fileID: 6877880340922030960}
   - component: {fileID: 3492905098246778529}
   - component: {fileID: 1418686247}
+  - component: {fileID: 4097449752164982150}
   - component: {fileID: 393798733}
   - component: {fileID: 1980322033}
   - component: {fileID: 1980322034}
@@ -1841,6 +1872,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a714da5019b56341966b36600b08593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitCollidersCosts:
+  - collider: {fileID: 646917552}
+    cost: 3
+  - collider: {fileID: 292676849}
+    cost: 3
+  - collider: {fileID: 867245892}
+    cost: 1.5
+  - collider: {fileID: 1914892748}
+    cost: 1.5
+  - collider: {fileID: 281040913}
+    cost: 1.5
+  - collider: {fileID: 334047364}
+    cost: 1
+  - collider: {fileID: 2108243132}
+    cost: 1
+  - collider: {fileID: 2086957553}
+    cost: 0.8
+  - collider: {fileID: 1127957624}
+    cost: 0.8
+  - collider: {fileID: 2052659341}
+    cost: 1
+  - collider: {fileID: 123908604}
+    cost: 1
+  - collider: {fileID: 591037447}
+    cost: 0.8
+  - collider: {fileID: 560317298}
+    cost: 0.8
   rootBone: {fileID: 8864407511580551763}
   headBone: {fileID: 3080349542480979284}
   leftHandPoser: {fileID: 2865240964219592187}
@@ -1866,6 +1924,7 @@ MonoBehaviour:
   bipedIK: {fileID: 2039267689}
   agentAimManager: {fileID: 3492905098246778529}
   animatorHandler: {fileID: 1418686247}
+  aimIK: {fileID: 632583780}
 --- !u!114 &3492905098246778529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1905,6 +1964,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8653692902044785940}
   richAI: {fileID: 1980322033}
+--- !u!114 &4097449752164982150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2362504971329503869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e3baafd6b21c44ca4b13742387df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lookAroundPoint: {fileID: 85521158}
+  agentsMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &393798733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1922,6 +1997,11 @@ MonoBehaviour:
   lookDistance: 60
   controller: {fileID: 0}
   aiPathHandler: {fileID: 1980322033}
+  weaponManager: {fileID: 6877880340922030960}
+  eyeSightManager: {fileID: 4097449752164982150}
+  soldierBasic: {fileID: 2362504971329503868}
+  checkForCloseEnemyWhenThereIsTargetPeriod: 2
+  checkForCloseEnemyWhenThereIsNoTargetPeriod: 0.5
 --- !u!114 &1980322033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,7 +2126,7 @@ MonoBehaviour:
       length: 0
       sqrMag: 0
       axis: {x: 0, y: 0, z: 0}
-    transform: {fileID: 2970130262581695201}
+    transform: {fileID: 0}
     axis: {x: 0, y: 0, z: 1}
     poleAxis: {x: 0, y: 1, z: 0}
     polePosition: {x: 421.6659, y: 10.239121, z: 1414.7838}
@@ -5433,6 +5513,7 @@ Transform:
   - {fileID: 741885715929921946}
   - {fileID: 5728565681004247662}
   - {fileID: 646917551}
+  - {fileID: 85521158}
   m_Father: {fileID: 800481957692342321}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6016,9 +6097,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4652164d883740747972352e8da10c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2970130262581695201 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2970130262764139578, guid: c2649ecc6d16cb84cb42234d5909530e,
-    type: 3}
-  m_PrefabInstance: {fileID: 358639323}
-  m_PrefabAsset: {fileID: 0}

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using Pathfinding;
+using System;
 
 public class Agent : MonoBehaviour
 {
@@ -28,6 +29,22 @@ public class Agent : MonoBehaviour
     [Tooltip("AI path handler")]
     RichAI aiPathHandler;
 
+    [SerializeField]
+    AgentWeaponManager weaponManager;
+
+    [SerializeField]
+    EyeSightManager eyeSightManager;
+
+    [SerializeField]
+    SoldierBasic soldierBasic;
+    public SoldierBasic SoldierBasic
+    {
+        get
+        {
+            return soldierBasic;
+        }
+    }
+
     private Formation currentFormation = null;
 
     private Goal currentGoal = null;
@@ -37,6 +54,20 @@ public class Agent : MonoBehaviour
     private Coroutine checkEndPathCoroutine = null;
     private Vector3 previosCheckCoordinate = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
     #endregion
+
+    /////////////Idle behavior//////////
+    [BoxGroup("Idle behaivor settings")]
+    [SerializeField]
+    private float checkForCloseEnemyWhenThereIsTargetPeriod = 2f;
+    [BoxGroup("Idle behaivor settings")]
+    [SerializeField]
+    private float checkForCloseEnemyWhenThereIsNoTargetPeriod = 0.5f;
+    private Coroutine checkForCloseEnemyWhenThereIsTarget = null;
+    private bool isCheckForEnemyWhenThereIsTargetTurnedOn = false;
+    private Coroutine checkForCloseEnemyWhenThereIsNoTarget = null;
+    private bool isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
+    private Transform currentEnemyUnitBodyPart = null;
+    ////////////////////////////////////
 
     // Getters and setters
     #region
@@ -75,6 +106,11 @@ public class Agent : MonoBehaviour
 
     public void SetNewGoal(Goal newGoal)
     {
+        if (currentGoal == null)
+        {
+            CleanUpIdleStateVariables();
+        }
+
         currentGoal = newGoal;
 
         if (currentGoal is MoveGoal)
@@ -83,6 +119,27 @@ public class Agent : MonoBehaviour
             aiPathHandler.isStopped = false;
 
             checkEndPathCoroutine = StartCoroutine(CheckEndPathAsync());
+        }
+    }
+
+    private void CleanUpIdleStateVariables()
+    {
+        if (checkForCloseEnemyWhenThereIsTarget != null)
+        {
+            StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
+        }
+        if (checkForCloseEnemyWhenThereIsNoTarget != null)
+        {
+            StopCoroutine(checkForCloseEnemyWhenThereIsNoTarget);
+        }
+        isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
+        isCheckForEnemyWhenThereIsTargetTurnedOn = false;
+
+        currentEnemyUnitBodyPart = null;
+        if (weaponManager.AgentAimManager.IsAiming)
+        {
+            weaponManager.AgentAimManager.StopAiming();
+            weaponManager.AgentAimManager.ClearTarget();
         }
     }
 
@@ -159,7 +216,93 @@ public class Agent : MonoBehaviour
 
     private void SearchForEnemies()
     {
-        // Debug.Log("Searching for enemies");
+        if (currentEnemyUnitBodyPart == null)
+        {
+            if (!isCheckForEnemyWhenThereIsNoTargetTurnedOn)
+            {
+                checkForCloseEnemyWhenThereIsNoTarget
+                    = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyWhenThereIsNoTargetPeriod));
+                isCheckForEnemyWhenThereIsNoTargetTurnedOn = true;
+            }
+
+            if (weaponManager.AgentAimManager.IsAiming)
+            {
+                weaponManager.AgentAimManager.StopAiming();
+                weaponManager.AgentAimManager.ClearTarget();
+            }
+
+            return;
+        }
+
+        if (!isCheckForEnemyWhenThereIsTargetTurnedOn)
+        {
+            checkForCloseEnemyWhenThereIsTarget
+                = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyWhenThereIsTargetPeriod));
+            isCheckForEnemyWhenThereIsTargetTurnedOn = true;
+        }
+
+        if (!weaponManager.AgentAimManager.IsAiming)
+        {
+            weaponManager.AgentAimManager.StartAiming();
+        }
+
+        weaponManager.AgentAimManager.SetTarget(currentEnemyUnitBodyPart);
+
+        if (weaponManager.AgentAimManager.IsTargetReachable(currentEnemyUnitBodyPart))
+        {
+            weaponManager.ActiveGun.Fire();
+        }
+    }
+
+    IEnumerator CheckForCloseEnemyAsync(float period)
+    {
+        while (true)
+        {
+            Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(lookDistance, controller.GetTeam());
+            if (closestEnemy != null)
+            {
+                var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
+                if (enemyColliderCostPair != null)
+                {
+                    if (enemyColliderCostPair.collider.transform != currentEnemyUnitBodyPart)
+                    {
+                        currentEnemyUnitBodyPart = enemyColliderCostPair.collider.transform;
+                        isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
+                        isCheckForEnemyWhenThereIsTargetTurnedOn = false;
+                        if (checkForCloseEnemyWhenThereIsTarget != null)
+                        {
+                            StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
+                        }
+                        if (checkForCloseEnemyWhenThereIsNoTarget != null)
+                        {
+                            StopCoroutine(checkForCloseEnemyWhenThereIsNoTarget);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (currentEnemyUnitBodyPart != null)
+            {
+                CheckMainTarget();
+            }
+
+            yield return new WaitForSeconds(period);
+        }
+    }
+
+    private void CheckMainTarget()
+    {
+        Unit currentUnit = currentEnemyUnitBodyPart.GetComponent<Collider>().attachedRigidbody.GetComponent<Unit>();
+        if (eyeSightManager.GetUnitsVisibleBodyPart(currentUnit) == null)
+        {
+            currentEnemyUnitBodyPart = null;
+            isCheckForEnemyWhenThereIsTargetTurnedOn = false;
+            if (checkForCloseEnemyWhenThereIsTarget != null)
+            {
+                StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
+            }
+        }
     }
 
     IEnumerator CheckEndPathAsync()
@@ -179,5 +322,11 @@ public class Agent : MonoBehaviour
             currentGoal = null;
             Debug.Log("Reached move goal!"); ;
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, lookDistance);
     }
 }

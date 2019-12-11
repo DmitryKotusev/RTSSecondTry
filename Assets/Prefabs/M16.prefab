@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimension: 4
-  rateOfFire: 650
+  rateOfFire: 300
   cooldown: 3
   roundEmitter: {fileID: 2970130262764139578}
   leftHandTransform: {fileID: 1511341943}

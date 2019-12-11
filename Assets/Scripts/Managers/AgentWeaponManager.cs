@@ -12,6 +12,17 @@ public class AgentWeaponManager : MonoBehaviour
 
     [SerializeField]
     Gun activeGun;
+    public Gun ActiveGun
+    {
+        get
+        {
+            return activeGun;
+        }
+        set
+        {
+            activeGun = value;
+        }
+    }
 
     [SerializeField]
     Helmet activeHelmet;
@@ -21,9 +32,19 @@ public class AgentWeaponManager : MonoBehaviour
 
     [SerializeField]
     AgentAimManager agentAimManager;
+    public AgentAimManager AgentAimManager
+    {
+        get
+        {
+            return agentAimManager;
+        }
+    }
 
     [SerializeField]
     AnimatorHandler animatorHandler;
+
+    [SerializeField]
+    AimIK aimIK;
 
     private void Start()
     {
@@ -87,6 +108,7 @@ public class AgentWeaponManager : MonoBehaviour
         activeGun.transform.SetParent(soldierBasic.WeaponHolder, true);
         activeGun.transform.localPosition = Vector3.zero;
         activeGun.transform.localRotation = Quaternion.Euler(0, 0, 0);
+        aimIK.solver.transform = activeGun.RoundEmitter;
     }
 
     private void ActivateHelmet()

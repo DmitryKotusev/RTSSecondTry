@@ -15,6 +15,13 @@ public abstract class Gun : Item
 
     [SerializeField]
     protected Transform roundEmitter;
+    public Transform RoundEmitter
+    {
+        get
+        {
+            return roundEmitter;
+        }
+    }
 
     protected float timeTillNextShot = 0f;
 
