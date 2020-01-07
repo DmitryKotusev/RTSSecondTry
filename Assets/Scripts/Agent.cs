@@ -62,6 +62,8 @@ public class Agent : MonoBehaviour
     [BoxGroup("Idle behaivor settings")]
     [SerializeField]
     private float checkForCloseEnemyWhenThereIsNoTargetPeriod = 0.5f;
+
+
     private Coroutine checkForCloseEnemyWhenThereIsTarget = null;
     private bool isCheckForEnemyWhenThereIsTargetTurnedOn = false;
     private Coroutine checkForCloseEnemyWhenThereIsNoTarget = null;
@@ -181,9 +183,9 @@ public class Agent : MonoBehaviour
             {
                 MoveToDestination((MoveGoal)currentGoal);
             }
-            else if (currentGoal is AttackGoal)
+            else if (currentGoal is AttackByCommandGoal)
             {
-                AttackAgent((AttackGoal)currentGoal);
+                AttackAgent((AttackByCommandGoal)currentGoal);
             }
             else
             {
@@ -196,7 +198,7 @@ public class Agent : MonoBehaviour
         }
     }
 
-    private void AttackAgent(AttackGoal attackGoal)
+    private void AttackAgent(AttackByCommandGoal attackGoal)
     {
         Debug.Log("Try to attack someone");
     }

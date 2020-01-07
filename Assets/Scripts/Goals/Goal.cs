@@ -25,6 +25,17 @@ public class MoveGoal : Goal
     }
 }
 
+/// <summary>
+/// Supposed to be set only by players
+/// </summary>
+public class AttackByCommandGoal : Goal
+{
+    public Agent agentToAttack
+    {
+        get; set;
+    }
+}
+
 public class AttackGoal : Goal
 {
     public Agent agentToAttack
