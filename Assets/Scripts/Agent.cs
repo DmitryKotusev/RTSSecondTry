@@ -49,30 +49,32 @@ public class Agent : MonoBehaviour
 
     private Goal currentGoal = null;
 
-    // Moving goal additional help variables
-    #region
-    private Coroutine checkEndPathCoroutine = null;
-    private Vector3 previosCheckCoordinate = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
-    #endregion
-
     /////////////Idle behavior//////////
+    [BoxGroup("Attack settings")]
+    [SerializeField]
+    private float checkForCloseEnemyInAttackPeriod = 2f;
     [BoxGroup("Idle behaivor settings")]
     [SerializeField]
-    private float checkForCloseEnemyWhenThereIsTargetPeriod = 2f;
-    [BoxGroup("Idle behaivor settings")]
-    [SerializeField]
-    private float checkForCloseEnemyWhenThereIsNoTargetPeriod = 0.5f;
-
-
-    private Coroutine checkForCloseEnemyWhenThereIsTarget = null;
-    private bool isCheckForEnemyWhenThereIsTargetTurnedOn = false;
-    private Coroutine checkForCloseEnemyWhenThereIsNoTarget = null;
-    private bool isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
-    private Transform currentEnemyUnitBodyPart = null;
+    private float checkForCloseEnemyInIdlePeriod = 0.5f;
     ////////////////////////////////////
 
     // Getters and setters
     #region
+    public RichAI GetAIPathHandler()
+    {
+        return aiPathHandler;
+    }
+
+    public EyeSightManager GetEyeSightManager()
+    {
+        return eyeSightManager;
+    }
+
+    public float GetLookDistance()
+    {
+        return lookDistance;
+    }
+
     public float AgentRadius
     {
         get
@@ -108,41 +110,9 @@ public class Agent : MonoBehaviour
 
     public void SetNewGoal(Goal newGoal)
     {
-        if (currentGoal == null)
-        {
-            CleanUpIdleStateVariables();
-        }
-
         currentGoal = newGoal;
 
-        if (currentGoal is MoveGoal)
-        {
-            aiPathHandler.destination = (currentGoal as MoveGoal).Destination;
-            aiPathHandler.isStopped = false;
-
-            checkEndPathCoroutine = StartCoroutine(CheckEndPathAsync());
-        }
-    }
-
-    private void CleanUpIdleStateVariables()
-    {
-        if (checkForCloseEnemyWhenThereIsTarget != null)
-        {
-            StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
-        }
-        if (checkForCloseEnemyWhenThereIsNoTarget != null)
-        {
-            StopCoroutine(checkForCloseEnemyWhenThereIsNoTarget);
-        }
-        isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
-        isCheckForEnemyWhenThereIsTargetTurnedOn = false;
-
-        currentEnemyUnitBodyPart = null;
-        if (weaponManager.AgentAimManager.IsAiming)
-        {
-            weaponManager.AgentAimManager.StopAiming();
-            weaponManager.AgentAimManager.ClearTarget();
-        }
+        // TODO appropriate state
     }
 
     public Goal GetCurrentGoal()
@@ -203,27 +173,14 @@ public class Agent : MonoBehaviour
         Debug.Log("Try to attack someone");
     }
 
-    private void MoveToDestination(MoveGoal moveGoal)
-    {
-        aiPathHandler.destination = moveGoal.Destination;
-
-        if (aiPathHandler.reachedDestination)
-        {
-            aiPathHandler.isStopped = true;
-            currentGoal = null;
-            StopCoroutine(checkEndPathCoroutine);
-            Debug.Log("Reached move goal!");
-        }
-    }
-
-    private void SearchForEnemies()
+    /*private void SearchForEnemies()
     {
         if (currentEnemyUnitBodyPart == null)
         {
             if (!isCheckForEnemyWhenThereIsNoTargetTurnedOn)
             {
                 checkForCloseEnemyWhenThereIsNoTarget
-                    = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyWhenThereIsNoTargetPeriod));
+                    = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyInIdlePeriod));
                 isCheckForEnemyWhenThereIsNoTargetTurnedOn = true;
             }
 
@@ -239,7 +196,7 @@ public class Agent : MonoBehaviour
         if (!isCheckForEnemyWhenThereIsTargetTurnedOn)
         {
             checkForCloseEnemyWhenThereIsTarget
-                = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyWhenThereIsTargetPeriod));
+                = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyInAttackPeriod));
             isCheckForEnemyWhenThereIsTargetTurnedOn = true;
         }
 
@@ -254,7 +211,7 @@ public class Agent : MonoBehaviour
         {
             weaponManager.ActiveGun.Fire();
         }
-    }
+    }*/
 
     IEnumerator CheckForCloseEnemyAsync(float period)
     {
@@ -304,25 +261,6 @@ public class Agent : MonoBehaviour
             {
                 StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
             }
-        }
-    }
-
-    IEnumerator CheckEndPathAsync()
-    {
-        previosCheckCoordinate = transform.position;
-        yield return new WaitForSeconds(LevelManager.Instance.AgentsSecondsTillCheckEndPath);
-
-        while ((previosCheckCoordinate - transform.position).magnitude > Mathf.Epsilon)
-        {
-            previosCheckCoordinate = transform.position;
-            yield return new WaitForSeconds(LevelManager.Instance.AgentsSecondsTillCheckEndPath);
-        }
-
-        if (currentGoal is MoveGoal)
-        {
-            aiPathHandler.isStopped = true;
-            currentGoal = null;
-            Debug.Log("Reached move goal!"); ;
         }
     }
 

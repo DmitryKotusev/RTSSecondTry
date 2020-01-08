@@ -5245,11 +5245,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: M16
       objectReference: {fileID: 0}
-    - target: {fileID: 6492476157525070363, guid: c2649ecc6d16cb84cb42234d5909530e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7800992608925212680, guid: c2649ecc6d16cb84cb42234d5909530e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5303,20 +5298,6 @@ PrefabInstance:
     - target: {fileID: 7800992608925212680, guid: c2649ecc6d16cb84cb42234d5909530e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1511341941, guid: c2649ecc6d16cb84cb42234d5909530e, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2970130262764139579, guid: c2649ecc6d16cb84cb42234d5909530e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6352685372999341978, guid: c2649ecc6d16cb84cb42234d5909530e,
-        type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

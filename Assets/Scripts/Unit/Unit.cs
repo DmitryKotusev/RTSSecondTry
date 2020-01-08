@@ -50,6 +50,6 @@ public class ColliderCostPair
             return 0;
         }
 
-        return cost * collider.bounds.size.magnitude;
+        return cost * collider.bounds.size.magnitude * collider.bounds.size.magnitude;
     }
 }
