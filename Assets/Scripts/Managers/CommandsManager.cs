@@ -48,7 +48,7 @@ public class CommandsManager : MonoBehaviour
         if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance, walkableLayerMask))
         {
             ShowClickWavesEffects(raycastHit);
-            CurrentGoalToCommand = new MoveGoal(raycastHit.point);
+            CurrentGoalToCommand = new MoveByCommandGoal(raycastHit.point);
         }
     }
 

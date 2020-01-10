@@ -36,7 +36,7 @@ public class PlayerController : Controller
             return;
         }
 
-        if (commandsManager.CurrentGoalToCommand is MoveGoal)
+        if (commandsManager.CurrentGoalToCommand is MoveByCommandGoal)
         {
             GiveMovementCommandToFormation();
         }
@@ -52,11 +52,11 @@ public class PlayerController : Controller
         List<Agent> agents = currentFormation.GetFormationAgentsWithoutLeader();
 
         List<Vector3> agentsDestinations = GetAgentsDestinations(
-            (commandsManager.CurrentGoalToCommand as MoveGoal).Destination, agents.Count, formationLeader.AgentRadius);
+            (commandsManager.CurrentGoalToCommand as MoveByCommandGoal).Destination, agents.Count, formationLeader.AgentRadius);
 
         for (int i = 0; i < agents.Count; i++)
         {
-            agents[i].SetNewGoal(new MoveGoal(agentsDestinations[i]));
+            agents[i].SetNewGoal(new MoveByCommandGoal(agentsDestinations[i]));
         }
 
         formationLeader.SetNewGoal(commandsManager.CurrentGoalToCommand);

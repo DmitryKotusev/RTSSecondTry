@@ -49,6 +49,8 @@ public class Agent : MonoBehaviour
 
     private Goal currentGoal = null;
 
+    private State currentState = null;
+
     /////////////Idle behavior//////////
     [BoxGroup("Attack settings")]
     [SerializeField]
@@ -65,9 +67,19 @@ public class Agent : MonoBehaviour
         return aiPathHandler;
     }
 
+    public Team GetTeam()
+    {
+        return controller.GetTeam();
+    }
+
     public EyeSightManager GetEyeSightManager()
     {
         return eyeSightManager;
+    }
+
+    public AgentWeaponManager GetWeaponManager()
+    {
+        return weaponManager;
     }
 
     public float GetLookDistance()
@@ -113,6 +125,13 @@ public class Agent : MonoBehaviour
         currentGoal = newGoal;
 
         // TODO appropriate state
+        currentState.Stop();
+
+        if (newGoal is MoveByCommandGoal)
+        {
+            currentState = new MoveState(this, (newGoal as MoveByCommandGoal).Destination);
+            currentState.Start();
+        }
     }
 
     public Goal GetCurrentGoal()
@@ -142,125 +161,16 @@ public class Agent : MonoBehaviour
 
     private void Update()
     {
+        CheckCurrentState();
         CurrentBehaviour();
     }
 
-    private void CurrentBehaviour()
+    private void CheckCurrentState()
     {
-        if (currentGoal != null)
+        if (currentState == null)
         {
-            if (currentGoal is MoveGoal)
-            {
-                MoveToDestination((MoveGoal)currentGoal);
-            }
-            else if (currentGoal is AttackByCommandGoal)
-            {
-                AttackAgent((AttackByCommandGoal)currentGoal);
-            }
-            else
-            {
-                currentGoal = null;
-            }
-        }
-        else
-        {
-            SearchForEnemies();
-        }
-    }
-
-    private void AttackAgent(AttackByCommandGoal attackGoal)
-    {
-        Debug.Log("Try to attack someone");
-    }
-
-    /*private void SearchForEnemies()
-    {
-        if (currentEnemyUnitBodyPart == null)
-        {
-            if (!isCheckForEnemyWhenThereIsNoTargetTurnedOn)
-            {
-                checkForCloseEnemyWhenThereIsNoTarget
-                    = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyInIdlePeriod));
-                isCheckForEnemyWhenThereIsNoTargetTurnedOn = true;
-            }
-
-            if (weaponManager.AgentAimManager.IsAiming)
-            {
-                weaponManager.AgentAimManager.StopAiming();
-                weaponManager.AgentAimManager.ClearTarget();
-            }
-
-            return;
-        }
-
-        if (!isCheckForEnemyWhenThereIsTargetTurnedOn)
-        {
-            checkForCloseEnemyWhenThereIsTarget
-                = StartCoroutine(CheckForCloseEnemyAsync(checkForCloseEnemyInAttackPeriod));
-            isCheckForEnemyWhenThereIsTargetTurnedOn = true;
-        }
-
-        if (!weaponManager.AgentAimManager.IsAiming)
-        {
-            weaponManager.AgentAimManager.StartAiming();
-        }
-
-        weaponManager.AgentAimManager.SetTarget(currentEnemyUnitBodyPart);
-
-        if (weaponManager.AgentAimManager.IsTargetReachable(currentEnemyUnitBodyPart))
-        {
-            weaponManager.ActiveGun.Fire();
-        }
-    }*/
-
-    IEnumerator CheckForCloseEnemyAsync(float period)
-    {
-        while (true)
-        {
-            Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(lookDistance, controller.GetTeam());
-            if (closestEnemy != null)
-            {
-                var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
-                if (enemyColliderCostPair != null)
-                {
-                    if (enemyColliderCostPair.collider.transform != currentEnemyUnitBodyPart)
-                    {
-                        currentEnemyUnitBodyPart = enemyColliderCostPair.collider.transform;
-                        isCheckForEnemyWhenThereIsNoTargetTurnedOn = false;
-                        isCheckForEnemyWhenThereIsTargetTurnedOn = false;
-                        if (checkForCloseEnemyWhenThereIsTarget != null)
-                        {
-                            StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
-                        }
-                        if (checkForCloseEnemyWhenThereIsNoTarget != null)
-                        {
-                            StopCoroutine(checkForCloseEnemyWhenThereIsNoTarget);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            if (currentEnemyUnitBodyPart != null)
-            {
-                CheckMainTarget();
-            }
-
-            yield return new WaitForSeconds(period);
-        }
-    }
-
-    private void CheckMainTarget()
-    {
-        Unit currentUnit = currentEnemyUnitBodyPart.GetComponent<Collider>().attachedRigidbody.GetComponent<Unit>();
-        if (eyeSightManager.GetUnitsVisibleBodyPart(currentUnit) == null)
-        {
-            currentEnemyUnitBodyPart = null;
-            isCheckForEnemyWhenThereIsTargetTurnedOn = false;
-            if (checkForCloseEnemyWhenThereIsTarget != null)
-            {
-                StopCoroutine(checkForCloseEnemyWhenThereIsTarget);
-            }
+            currentState = new IdleState(this, checkForCloseEnemyInIdlePeriod);
+            currentState.Start();
         }
     }
 
@@ -268,5 +178,48 @@ public class Agent : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, lookDistance);
+    }
+
+    private void CurrentBehaviour()
+    {
+        currentState.Update();
+
+        if (!currentState.IsStopped)
+        {
+            return;
+        }
+
+        TransferToNextState();
+    }
+
+    private void TransferToNextState()
+    {
+        if (currentState.GetNextStateType() == typeof(IdleState))
+        {
+            currentState = new IdleState(this, checkForCloseEnemyInIdlePeriod);
+            currentState.Start();
+        }
+        else if (currentState.GetNextStateType() == typeof(MoveState))
+        {
+            if (currentGoal is MoveGoal)
+            {
+                currentState = new MoveState(this, (currentGoal as MoveGoal).Destination);
+                currentState.Start();
+            }
+            else if (currentGoal is MoveByCommandGoal)
+            {
+                currentState = new MoveState(this, (currentGoal as MoveByCommandGoal).Destination);
+                currentState.Start();
+            }
+        }
+        else if (currentState.GetNextStateType() == typeof(AttackState))
+        {
+            currentState = new AttackState(this, (currentState as IdleState)?.GetVisibleEnemyBodyPart());
+            currentState.Start();
+        }
+        else
+        {
+            Debug.Log("No next state, going to idle");
+        }
     }
 }

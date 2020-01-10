@@ -25,6 +25,23 @@ public class MoveGoal : Goal
     }
 }
 
+public class MoveByCommandGoal : Goal
+{
+    public Vector3 Destination
+    {
+        get; set;
+    }
+
+    public MoveByCommandGoal() : base()
+    {
+    }
+
+    public MoveByCommandGoal(Vector3 destination)
+    {
+        Destination = destination;
+    }
+}
+
 /// <summary>
 /// Supposed to be set only by players
 /// </summary>
