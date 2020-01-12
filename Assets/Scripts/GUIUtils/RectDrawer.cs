@@ -2,6 +2,13 @@
 
 public class RectDrawer
 {
+    SelectionManager selectionManager;
+
+    public RectDrawer(SelectionManager selectionManager)
+    {
+        this.selectionManager = selectionManager;
+    }
+
     static Texture2D whiteTexture;
     public static Texture2D WhiteTexture
     {
@@ -23,15 +30,18 @@ public class RectDrawer
 
     public void MouseClickControl()
     {
-        // If we press the left mouse button, save mouse location and begin selection
-        if (Input.GetMouseButtonDown(0))
+        if (selectionManager.IsSelectionCycleFinished)
         {
-            isSelecting = true;
-            startMousePosition = Input.mousePosition;
+            // If we press the left mouse button, save mouse location and begin selection
+            if (Input.GetMouseButtonDown(0))
+            {
+                isSelecting = true;
+                startMousePosition = Input.mousePosition;
+            }
+            // If we let go of the left mouse button, end selection
+            if (Input.GetMouseButtonUp(0))
+                isSelecting = false;
         }
-        // If we let go of the left mouse button, end selection
-        if (Input.GetMouseButtonUp(0))
-            isSelecting = false;
     }
 
     public void DrawRect(float selectionBoxAccuracy, Camera camera)

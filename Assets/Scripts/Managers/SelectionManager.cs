@@ -39,7 +39,7 @@ public class SelectionManager : MonoBehaviour
     //[SerializeField]
     //List<Agent> availableAgents = new List<Agent>();
 
-    RectDrawer rectDrawer = new RectDrawer();
+    RectDrawer rectDrawer;
     Vector3 startMousePosition;
     Vector3 finishMousePosition;
     Vector3 normalizedStartMousePosition;
@@ -48,11 +48,16 @@ public class SelectionManager : MonoBehaviour
     Formation currentFormation = null;
     List<Formation> availableFormations = new List<Formation>();
 
+    private void Start()
+    {
+        rectDrawer = new RectDrawer(this);
+    }
 
     // Selection box variables
     #region
     private bool leftMousePhysicsUp = false;
     private bool leftShiftPhysics = false;
+    private bool isSelecting = false;
 
     private HashSet<GameObject> latestDetectedSelectionBoxObjects = new HashSet<GameObject>();
     // private bool wasOnTriggerAbleToBeCalled = false;
@@ -69,6 +74,22 @@ public class SelectionManager : MonoBehaviour
         return currentFormation;
     }
     #endregion
+
+    public bool IsSelectionCycleFinished
+    {
+        get
+        {
+            return !leftMousePhysicsUp;
+        }
+    }
+
+    public bool IsSelecting
+    {
+        get
+        {
+            return isSelecting || !IsSelectionCycleFinished;
+        }
+    }
 
     void Update()
     {
@@ -148,17 +169,22 @@ public class SelectionManager : MonoBehaviour
 
     private void RegisterMousePositions()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (IsSelectionCycleFinished)
         {
-            startMousePosition = Input.mousePosition;
-            normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            finishMousePosition = Input.mousePosition;
-            normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
-            leftMousePhysicsUp = true;
-            RegisterKeyBoardTriggers();
+            if (Input.GetMouseButtonDown(0))
+            {
+                isSelecting = true;
+                startMousePosition = Input.mousePosition;
+                normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                isSelecting = false;
+                finishMousePosition = Input.mousePosition;
+                normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+                leftMousePhysicsUp = true;
+                RegisterKeyBoardTriggers();
+            }
         }
     }
 

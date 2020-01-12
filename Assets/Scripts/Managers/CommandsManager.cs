@@ -32,6 +32,30 @@ public class CommandsManager : MonoBehaviour
 
     public Goal CurrentGoalToCommand { get; private set; }
 
+    public LayerMask WalkableLayerMask
+    {
+        get
+        {
+            return walkableLayerMask;
+        }
+    }
+
+    public LayerMask AttackableLayerMask
+    {
+        get
+        {
+            return attackableLayerMask;
+        }
+    }
+
+    public float CommandDistance
+    {
+        get
+        {
+            return commandDistance;
+        }
+    }
+
     public void CheckCommands()
     {
         CurrentGoalToCommand = null;

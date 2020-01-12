@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 2087484017487523538}
   - component: {fileID: 7651748224454485430}
   - component: {fileID: 7858940874721320903}
+  - component: {fileID: 3719391347463301135}
   - component: {fileID: 1100235904}
   m_Layer: 0
   m_Name: PlayerController
@@ -299,12 +300,31 @@ MonoBehaviour:
   playersCamera: {fileID: 2087484016457414431}
   walkableLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2304
   attackableLayerMask:
     serializedVersion: 2
     m_Bits: 512
   commandDistance: 100
   clickWavesEffectGroundOffset: 0.05
+--- !u!114 &3719391347463301135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087484017487523536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a39ee96460ff648b7e92874bd69820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseCursor: {fileID: 2800000, guid: 095560799f7eb944a87352bc6ab287d2, type: 3}
+  attackCursor: {fileID: 2800000, guid: 0501dfafcd138bb4d99ce378cd7a4d82, type: 3}
+  moveCursor: {fileID: 2800000, guid: 0d863d353a485d5459596f4c8ff34afd, type: 3}
+  selectionManager: {fileID: 2087484017487523538}
+  commandsManager: {fileID: 7858940874721320903}
+  playerController: {fileID: 2087484017487523541}
+  playersCamera: {fileID: 2087484016457414431}
 --- !u!54 &1100235904
 Rigidbody:
   m_ObjectHideFlags: 0
