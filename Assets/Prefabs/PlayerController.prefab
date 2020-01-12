@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dd99caf7967ce4d878b54111b74676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionBoxAccuracy: 0.1
+  selectionBoxAccuracy: 0.02
   equalToCameraFarDistance: 0
   selectionDistance: 50
   playersCamera: {fileID: 2087484016457414431}
