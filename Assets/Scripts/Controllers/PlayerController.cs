@@ -40,6 +40,11 @@ public class PlayerController : Controller
         {
             GiveMovementCommandToFormation();
         }
+
+        if (commandsManager.CurrentGoalToCommand is AttackByCommandGoal)
+        {
+            GiveAttackCommandToFormation();
+        }
     }
 
     private void GiveMovementCommandToFormation()
@@ -170,5 +175,28 @@ public class PlayerController : Controller
         }
 
         return resultList;
+    }
+
+    private void GiveAttackCommandToFormation()
+    {
+        // TODO: remake
+        Formation currentFormation = selectionManager.GetCurrentFormation();
+
+        Agent formationLeader = currentFormation.GetFormationLeader();
+
+        List<Agent> agents = currentFormation.GetFormationAgentsWithoutLeader();
+
+        List<Vector3> agentsDestinations = GetAgentsDestinations(
+            (commandsManager.CurrentGoalToCommand as AttackByCommandGoal).Destination, agents.Count, formationLeader.AgentRadius);
+
+        for (int i = 0; i < agents.Count; i++)
+        {
+            agents[i].SetNewGoal(new AttackByCommandGoal(
+                (commandsManager.CurrentGoalToCommand as AttackByCommandGoal).AgentToAttack,
+                agentsDestinations[i]
+                ));
+        }
+
+        formationLeader.SetNewGoal(commandsManager.CurrentGoalToCommand);
     }
 }

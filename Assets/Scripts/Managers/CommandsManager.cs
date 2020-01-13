@@ -30,6 +30,12 @@ public class CommandsManager : MonoBehaviour
     [Tooltip("Distance from ground that waves will be instantiated after click")]
     float clickWavesEffectGroundOffset = 0.05f;
 
+    [BoxGroup("Service variables")]
+    [SerializeField]
+    [Required]
+    [Tooltip("Player controller")]
+    PlayerController playerController;
+
     public Goal CurrentGoalToCommand { get; private set; }
 
     public LayerMask WalkableLayerMask
@@ -69,18 +75,40 @@ public class CommandsManager : MonoBehaviour
     private void CheckMoveCommand()
     {
         RaycastHit raycastHit;
-        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance, walkableLayerMask))
+        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance))
         {
-            ShowClickWavesEffects(raycastHit);
-            CurrentGoalToCommand = new MoveByCommandGoal(raycastHit.point);
+            if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & walkableLayerMask.value) != 0)
+            {
+                ShowClickWavesEffects(raycastHit);
+                CurrentGoalToCommand = new MoveByCommandGoal(raycastHit.point);
+            }
         }
     }
 
     private void CheckAttackCommand()
     {
         RaycastHit raycastHit;
-        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance, attackableLayerMask))
+        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance))
         {
+            if (raycastHit.rigidbody == null)
+            {
+                return;
+            }
+            if (raycastHit.rigidbody.tag != "Selectable")
+            {
+                return;
+            }
+
+            Agent agent = raycastHit.rigidbody.GetComponent<Agent>();
+            if (agent == null)
+            {
+                return;
+            }
+
+            if (agent.GetTeam() != playerController.GetTeam())
+            {
+                CurrentGoalToCommand = new AttackByCommandGoal(agent, agent.transform.position);
+            }
         }
     }
 

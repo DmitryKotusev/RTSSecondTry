@@ -38,7 +38,7 @@ public class MouseCursorHandler : MonoBehaviour
     [BoxGroup("Service variables")]
     [SerializeField]
     [Required]
-    [Tooltip("Player controller camera")]
+    [Tooltip("Player controller")]
     PlayerController playerController;
 
     [BoxGroup("Service variables")]

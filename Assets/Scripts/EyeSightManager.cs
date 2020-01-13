@@ -12,7 +12,7 @@ public class EyeSightManager : MonoBehaviour
     [Tooltip("Agents mask used to create raycast sphere")]
     LayerMask agentsMask;
     /// <summary>
-    /// Returns the visible part with the highest prioraty of there is one
+    /// Returns the visible part with the highest prioraty if there is one
     /// </summary>
     /// <param name="unit"></param>
     /// <returns></returns>

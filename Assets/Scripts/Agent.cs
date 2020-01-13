@@ -58,6 +58,9 @@ public class Agent : MonoBehaviour
     [BoxGroup("Idle behaivor settings")]
     [SerializeField]
     private float checkForCloseEnemyInIdlePeriod = 0.5f;
+    [BoxGroup("Idle behaivor settings")]
+    [SerializeField]
+    private float checkForCloseEnemyInMovePeriod = 0.5f;
     ////////////////////////////////////
 
     // Getters and setters
@@ -129,7 +132,14 @@ public class Agent : MonoBehaviour
 
         if (newGoal is MoveByCommandGoal)
         {
-            currentState = new MoveState(this, (newGoal as MoveByCommandGoal).Destination);
+            currentState = new MoveState(this, (newGoal as MoveByCommandGoal).Destination, checkForCloseEnemyInMovePeriod);
+            currentState.Start();
+        }
+
+        if (newGoal is AttackByCommandGoal)
+        {
+            currentState = new MoveToAttackState(this,
+                (newGoal as AttackByCommandGoal).Destination, (newGoal as AttackByCommandGoal).AgentToAttack, checkForCloseEnemyInMovePeriod);
             currentState.Start();
         }
     }
@@ -203,12 +213,12 @@ public class Agent : MonoBehaviour
         {
             if (currentGoal is MoveGoal)
             {
-                currentState = new MoveState(this, (currentGoal as MoveGoal).Destination);
+                currentState = new MoveState(this, (currentGoal as MoveGoal).Destination, checkForCloseEnemyInMovePeriod);
                 currentState.Start();
             }
             else if (currentGoal is MoveByCommandGoal)
             {
-                currentState = new MoveState(this, (currentGoal as MoveByCommandGoal).Destination);
+                currentState = new MoveState(this, (currentGoal as MoveByCommandGoal).Destination, checkForCloseEnemyInMovePeriod);
                 currentState.Start();
             }
         }
@@ -216,6 +226,30 @@ public class Agent : MonoBehaviour
         {
             currentState = new AttackState(this, (currentState as IdleState)?.GetVisibleEnemyBodyPart());
             currentState.Start();
+        }
+        else if (currentState.GetNextStateType() == typeof(AttackCertainAgentState))
+        {
+            if (currentGoal is AttackByCommandGoal)
+            {
+                if (currentState as IdleState != null)
+                {
+                    currentState = new AttackCertainAgentState(this,
+                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as IdleState)?.GetVisibleEnemyBodyPart());
+                    currentState.Start();
+                }
+                else if (currentState as MoveToAttackState != null)
+                {
+                    currentState = new AttackCertainAgentState(this,
+                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as MoveToAttackState)?.GetVisibleEnemyBodyPart());
+                    currentState.Start();
+                }
+                else if (currentState as MoveState != null)
+                {
+                    currentState = new AttackCertainAgentState(this,
+                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as MoveState)?.GetVisibleEnemyBodyPart());
+                    currentState.Start();
+                }
+            }
         }
         else
         {

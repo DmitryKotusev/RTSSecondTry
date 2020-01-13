@@ -47,16 +47,36 @@ public class MoveByCommandGoal : Goal
 /// </summary>
 public class AttackByCommandGoal : Goal
 {
-    public Agent agentToAttack
+    public Agent AgentToAttack
     {
         get; set;
+    }
+
+    public Vector3 Destination
+    {
+        get; set;
+    }
+
+    public AttackByCommandGoal(Agent agentToAttack, Vector3 destination)
+    {
+        AgentToAttack = agentToAttack;
+        Destination = destination;
     }
 }
 
 public class AttackGoal : Goal
 {
-    public Agent agentToAttack
+    public Agent AgentToAttack
     {
         get; set;
+    }
+
+    public AttackGoal() : base()
+    {
+    }
+
+    public AttackGoal(Agent agentToAttack)
+    {
+        AgentToAttack = agentToAttack;
     }
 }
