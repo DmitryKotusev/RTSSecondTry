@@ -52,6 +52,26 @@ public class EyeSightManager : MonoBehaviour
         return maxPriorityColliderCostPair;
     }
 
+    public bool IsEnemyAtLookDistance(Unit unit, float lookDistance)
+    {
+        Collider[] agentsColliders = Physics.OverlapSphere(transform.position, lookDistance, agentsMask);
+
+        foreach (Collider agentCollider in agentsColliders)
+        {
+            Agent agentInfo = agentCollider.attachedRigidbody.GetComponent<Agent>();
+
+            if (agentInfo != null)
+            {
+                if (agentInfo.SoldierBasic == unit)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public List<Unit> GetEnemyUnitsInFieldOfView(float lookDistance, Team friendlyTeam)
     {
         Collider[] agentsColliders = Physics.OverlapSphere(transform.position, lookDistance, agentsMask);

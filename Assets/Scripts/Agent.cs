@@ -65,6 +65,30 @@ public class Agent : MonoBehaviour
 
     // Getters and setters
     #region
+    public float CheckForCloseEnemyInAttackPeriod
+    {
+        get
+        {
+            return checkForCloseEnemyInAttackPeriod;
+        }
+    }
+
+    public float CheckForCloseEnemyInIdlePeriod
+    {
+        get
+        {
+            return checkForCloseEnemyInIdlePeriod;
+        }
+    }
+
+    public float CheckForCloseEnemyInMovePeriod
+    {
+        get
+        {
+            return checkForCloseEnemyInMovePeriod;
+        }
+    }
+
     public RichAI GetAIPathHandler()
     {
         return aiPathHandler;
@@ -130,23 +154,47 @@ public class Agent : MonoBehaviour
         // TODO appropriate state
         currentState.Stop();
 
-        if (newGoal is MoveByCommandGoal)
+        if (newGoal is MoveGoal)
         {
-            currentState = new MoveState(this, (newGoal as MoveByCommandGoal).Destination, checkForCloseEnemyInMovePeriod);
+            currentState = new MoveState(
+                this,
+                (newGoal as MoveGoal).Destination,
+                checkForCloseEnemyInMovePeriod
+                );
             currentState.Start();
         }
 
-        if (newGoal is AttackByCommandGoal)
+        if (newGoal is AttackGoal)
         {
-            currentState = new MoveToAttackState(this,
-                (newGoal as AttackByCommandGoal).Destination, (newGoal as AttackByCommandGoal).AgentToAttack, checkForCloseEnemyInMovePeriod);
+            currentState = new MoveState(
+                this,
+                (newGoal as AttackGoal).Destination,
+                checkForCloseEnemyInAttackPeriod
+                );
             currentState.Start();
+        }
+    }
+
+    public State CurrentState
+    {
+        get
+        {
+            return currentState;
+        }
+        set
+        {
+            currentState = value;
         }
     }
 
     public Goal GetCurrentGoal()
     {
         return currentGoal;
+    }
+
+    public void ClearCurrentGoal()
+    {
+        currentGoal = null;
     }
     #endregion
 
@@ -211,48 +259,25 @@ public class Agent : MonoBehaviour
         }
         else if (currentState.GetNextStateType() == typeof(MoveState))
         {
-            if (currentGoal is MoveGoal)
-            {
-                currentState = new MoveState(this, (currentGoal as MoveGoal).Destination, checkForCloseEnemyInMovePeriod);
-                currentState.Start();
-            }
-            else if (currentGoal is MoveByCommandGoal)
-            {
-                currentState = new MoveState(this, (currentGoal as MoveByCommandGoal).Destination, checkForCloseEnemyInMovePeriod);
-                currentState.Start();
-            }
+            /// For now nothing
+            /// If going to this state without goal, need to pass destination,
+            /// because without it agent will not go anywhere
+            currentState = new MoveState(this, checkForCloseEnemyInMovePeriod);
+            currentState.Start();
         }
         else if (currentState.GetNextStateType() == typeof(AttackState))
         {
-            currentState = new AttackState(this, (currentState as IdleState)?.GetVisibleEnemyBodyPart());
-            currentState.Start();
-        }
-        else if (currentState.GetNextStateType() == typeof(AttackCertainAgentState))
-        {
-            if (currentGoal is AttackByCommandGoal)
+            Type type = currentState.GetType();
+
+            if (type.GetMethod("GetVisibleEnemyBodyPart") != null)
             {
-                if (currentState as IdleState != null)
-                {
-                    currentState = new AttackCertainAgentState(this,
-                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as IdleState)?.GetVisibleEnemyBodyPart());
-                    currentState.Start();
-                }
-                else if (currentState as MoveToAttackState != null)
-                {
-                    currentState = new AttackCertainAgentState(this,
-                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as MoveToAttackState)?.GetVisibleEnemyBodyPart());
-                    currentState.Start();
-                }
-                else if (currentState as MoveState != null)
-                {
-                    currentState = new AttackCertainAgentState(this,
-                    (currentGoal as AttackByCommandGoal).AgentToAttack, (currentState as MoveState)?.GetVisibleEnemyBodyPart());
-                    currentState.Start();
-                }
+                currentState = new AttackState(this, (Transform)type.GetMethod("GetVisibleEnemyBodyPart").Invoke(currentState, new object[] { }));
+                currentState.Start();
             }
         }
         else
         {
+            currentState = null;
             Debug.Log("No next state, going to idle");
         }
     }

@@ -36,12 +36,12 @@ public class PlayerController : Controller
             return;
         }
 
-        if (commandsManager.CurrentGoalToCommand is MoveByCommandGoal)
+        if (commandsManager.CurrentGoalToCommand is MoveGoal)
         {
             GiveMovementCommandToFormation();
         }
 
-        if (commandsManager.CurrentGoalToCommand is AttackByCommandGoal)
+        if (commandsManager.CurrentGoalToCommand is AttackGoal)
         {
             GiveAttackCommandToFormation();
         }
@@ -57,11 +57,11 @@ public class PlayerController : Controller
         List<Agent> agents = currentFormation.GetFormationAgentsWithoutLeader();
 
         List<Vector3> agentsDestinations = GetAgentsDestinations(
-            (commandsManager.CurrentGoalToCommand as MoveByCommandGoal).Destination, agents.Count, formationLeader.AgentRadius);
+            (commandsManager.CurrentGoalToCommand as MoveGoal).Destination, agents.Count, formationLeader.AgentRadius);
 
         for (int i = 0; i < agents.Count; i++)
         {
-            agents[i].SetNewGoal(new MoveByCommandGoal(agentsDestinations[i]));
+            agents[i].SetNewGoal(new MoveGoal(agentsDestinations[i]));
         }
 
         formationLeader.SetNewGoal(commandsManager.CurrentGoalToCommand);
@@ -187,12 +187,12 @@ public class PlayerController : Controller
         List<Agent> agents = currentFormation.GetFormationAgentsWithoutLeader();
 
         List<Vector3> agentsDestinations = GetAgentsDestinations(
-            (commandsManager.CurrentGoalToCommand as AttackByCommandGoal).Destination, agents.Count, formationLeader.AgentRadius);
+            (commandsManager.CurrentGoalToCommand as AttackGoal).Destination, agents.Count, formationLeader.AgentRadius);
 
         for (int i = 0; i < agents.Count; i++)
         {
-            agents[i].SetNewGoal(new AttackByCommandGoal(
-                (commandsManager.CurrentGoalToCommand as AttackByCommandGoal).AgentToAttack,
+            agents[i].SetNewGoal(new AttackGoal(
+                (commandsManager.CurrentGoalToCommand as AttackGoal).AgentToAttack,
                 agentsDestinations[i]
                 ));
         }

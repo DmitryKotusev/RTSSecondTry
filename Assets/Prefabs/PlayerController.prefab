@@ -306,6 +306,7 @@ MonoBehaviour:
     m_Bits: 512
   commandDistance: 100
   clickWavesEffectGroundOffset: 0.05
+  playerController: {fileID: 2087484017487523541}
 --- !u!114 &3719391347463301135
 MonoBehaviour:
   m_ObjectHideFlags: 0

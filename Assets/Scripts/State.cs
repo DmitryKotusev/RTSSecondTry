@@ -25,6 +25,12 @@ abstract public class State
         isStopped = true;
     }
 
+    public virtual void Stop(Type nextStateType)
+    {
+        Stop();
+        this.nextStateType = nextStateType;
+    }
+
     public bool IsStopped
     {
         get
@@ -56,9 +62,20 @@ public class MoveState : State
     protected float timeSinceLastEndPathCheck = 0f;
     #endregion
 
-    public MoveState(Agent agent, Vector3 destination, float checkForCloseEnemyPeriod, Transform moveTransform = null) : base(agent)
+    public MoveState(Agent agent,
+        Vector3 destination,
+        float checkForCloseEnemyPeriod,
+        Transform moveTransform = null) : base(agent)
     {
         this.destination = destination;
+        this.moveTransform = moveTransform;
+        this.checkForCloseEnemyPeriod = checkForCloseEnemyPeriod;
+    }
+
+    public MoveState(Agent agent,
+        float checkForCloseEnemyPeriod,
+        Transform moveTransform = null) : base(agent)
+    {
         this.moveTransform = moveTransform;
         this.checkForCloseEnemyPeriod = checkForCloseEnemyPeriod;
     }
@@ -79,7 +96,7 @@ public class MoveState : State
     public override void Stop()
     {
         base.Stop();
-        nextStateType = typeof(IdleState);
+        // nextStateType = typeof(IdleState);
         agent.GetAIPathHandler().isStopped = true;
     }
 
@@ -89,6 +106,23 @@ public class MoveState : State
         {
             return;
         }
+        
+        if (agent.GetCurrentGoal() is MoveGoal)
+        {
+            MoveGoalMovement();
+        }
+        else if (agent.GetCurrentGoal() is AttackGoal)
+        {
+            AttackGoalMovement();
+        }
+        else
+        {
+            NoGoalMovement();
+        }
+    }
+
+    protected void NoGoalMovement()
+    {
         RichAI aiPathHandler = agent.GetAIPathHandler();
 
         if (moveTransform != null)
@@ -105,8 +139,138 @@ public class MoveState : State
         if (aiPathHandler.reachedDestination || isEndPath)
         {
             Stop();
-            Debug.Log("Reached move goal!");
+            Debug.Log("Reached destination!");
+            return;
         }
+
+        bool isEnemyFound = SearchForEnemies();
+
+        if (isEnemyFound)
+        {
+            Stop(typeof(AttackState));
+            Debug.Log("Enemy in line of sight!");
+            return;
+        }
+    }
+
+    protected void MoveGoalMovement()
+    {
+        RichAI aiPathHandler = agent.GetAIPathHandler();
+
+        MoveGoal moveGoal = agent.GetCurrentGoal() as MoveGoal;
+
+        aiPathHandler.destination = moveGoal.Destination;
+
+        bool isEndPath = CheckEndPath();
+
+        if (aiPathHandler.reachedDestination || isEndPath)
+        {
+            Stop();
+            agent.ClearCurrentGoal();
+            Debug.Log("Reached move goal!");
+            return;
+        }
+
+        bool isEnemyFound = SearchForEnemies();
+
+        if (isEnemyFound)
+        {
+            Stop(typeof(AttackState));
+            Debug.Log("Enemy in line of sight!");
+            return;
+        }
+    }
+
+    protected void AttackGoalMovement()
+    {
+        RichAI aiPathHandler = agent.GetAIPathHandler();
+
+        AttackGoal attackGoal = agent.GetCurrentGoal() as AttackGoal;
+
+        if (attackGoal.AgentToAttack == null)
+        {
+            Stop(typeof(IdleState));
+            agent.ClearCurrentGoal();
+            Debug.Log("Attack goal completed, no agent to attack!");
+            return;
+        }
+
+        aiPathHandler.destination = attackGoal.Destination;
+
+        bool isEndPath = CheckEndPath();
+
+        if (aiPathHandler.reachedDestination || isEndPath)
+        {
+            Stop(typeof(AttackState));
+            Debug.Log("Reached attack goal!");
+            return;
+        }
+
+        bool isEnemyReachable = IsTargetEnemyReachable();
+
+        if (isEnemyReachable)
+        {
+            Stop(typeof(AttackState));
+            Debug.Log("TARGET enemy in line of sight!");
+            return;
+        }
+    }
+
+    private bool IsTargetEnemyReachable()
+    {
+        // Timer check
+        timeSinceEnemySearch += Time.deltaTime;
+        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        {
+            return false;
+        }
+        timeSinceEnemySearch = 0;
+        //////////////
+
+        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
+        Unit enemyUnit = (agent.GetCurrentGoal() as AttackGoal).AgentToAttack.SoldierBasic;
+
+        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetLookDistance()))
+        {
+            return false;
+        }
+
+        var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(enemyUnit);
+        if (enemyColliderCostPair != null)
+        {
+            visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool SearchForEnemies()
+    {
+        // Timer check
+        timeSinceEnemySearch += Time.deltaTime;
+        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        {
+            return false;
+        }
+        timeSinceEnemySearch = 0;
+        //////////////
+
+        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
+        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetLookDistance(), agent.GetController().GetTeam());
+        if (closestEnemy != null)
+        {
+            var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
+            if (enemyColliderCostPair != null)
+            {
+                visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected bool CheckEndPath()
@@ -156,16 +320,58 @@ public class IdleState : State
             return;
         }
 
-        SearchForEnemies();
+        if (CheckGoals())
+        {
+            Stop();
+            return;
+        }
+
+        bool isEnemyFound = SearchForEnemies();
+
+        if (isEnemyFound)
+        {
+            Stop(typeof(AttackState));
+            Debug.Log("Enemy in line of sight!");
+            return;
+        }
     }
 
-    private void SearchForEnemies()
+    private bool CheckGoals()
+    {
+        if (agent.GetCurrentGoal() is MoveGoal)
+        {
+            agent.CurrentState = new MoveState(
+                agent,
+                (agent.GetCurrentGoal() as MoveGoal).Destination,
+                agent.CheckForCloseEnemyInMovePeriod
+                );
+            agent.CurrentState.Start();
+
+            return true;
+        }
+
+        if (agent.GetCurrentGoal() is AttackGoal)
+        {
+            agent.CurrentState = new MoveState(
+                agent,
+                (agent.GetCurrentGoal() as AttackGoal).Destination,
+                agent.CheckForCloseEnemyInAttackPeriod
+                );
+            agent.CurrentState.Start();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool SearchForEnemies()
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
         if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
         {
-            return;
+            return false;
         }
         timeSinceEnemySearch = 0;
         //////////////
@@ -179,15 +385,17 @@ public class IdleState : State
             {
                 visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
 
-                Stop();
+                return true;
             }
         }
+
+        return false;
     }
 
     public override void Stop()
     {
         base.Stop();
-        nextStateType = typeof(AttackState);
+        // nextStateType = typeof(AttackState);
     }
 }
 
@@ -212,6 +420,39 @@ public class AttackState : State
             return;
         }
 
+        if (agent.GetCurrentGoal() is AttackGoal)
+        {
+            AttackGoalAttack();
+        }
+        else
+        {
+            NoGoalAttack();
+        }
+    }
+
+    private void AttackGoalAttack()
+    {
+        AttackGoal attackGoal = agent.GetCurrentGoal() as AttackGoal;
+
+        if (attackGoal.AgentToAttack == null)
+        {
+            agent.ClearCurrentGoal();
+            Debug.Log("Attack goal completed, no agent to attack!");
+            return;
+        }
+
+        if (!CheckGoalTargetVisibility())
+        {
+            agent.ClearCurrentGoal();
+            Debug.Log("Attack goal completed, now in regular attack mode!");
+            return;
+        }
+
+        TryAttackEnemy();
+    }
+
+    private void NoGoalAttack()
+    {
         if (!CheckCurrentTargetVisibility())
         {
             Stop();
@@ -219,6 +460,47 @@ public class AttackState : State
         }
 
         TryAttackEnemy();
+    }
+
+    private bool CheckGoalTargetVisibility()
+    {
+        // Timer check
+        timeSinceEnemySearch += Time.deltaTime;
+        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        {
+            return true;
+        }
+        timeSinceEnemySearch = 0;
+        //////////////
+
+        return FindTargetEnemyOpenBodyPart();
+    }
+
+    private bool FindTargetEnemyOpenBodyPart()
+    {
+        AttackGoal attackGoal = agent.GetCurrentGoal() as AttackGoal;
+
+        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
+
+        Unit enemyUnit = attackGoal.AgentToAttack.SoldierBasic;
+
+        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetLookDistance()))
+        {
+            return false;
+        }
+
+        var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(enemyUnit);
+
+        if (enemyColliderCostPair != null)
+        {
+            if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
+            {
+                visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     protected virtual bool CheckCurrentTargetVisibility()
@@ -285,176 +567,6 @@ public class AttackState : State
         AgentWeaponManager weaponManager = agent.GetWeaponManager();
         weaponManager.AgentAimManager.StopAiming();
         weaponManager.AgentAimManager.ClearTarget();
-        nextStateType = typeof(IdleState);
-    }
-}
-
-public class MoveToAttackState : MoveState
-{
-    Agent agentToAttack;
-
-    public MoveToAttackState(Agent agent, Vector3 destination, Agent agentToAttack, float checkForCloseEnemyPeriod, Transform moveTransform = null)
-        : base(agent, destination, checkForCloseEnemyPeriod, moveTransform)
-    {
-        this.agentToAttack = agentToAttack;
-    }
-
-    public override void Start()
-    {
-        base.Start();
-
-        if (IsTargetEnemyReachable())
-        {
-            Stop();
-        }
-    }
-
-    public override void Stop()
-    {
-        base.Stop();
-
-        nextStateType = typeof(AttackCertainAgentState);
-    }
-
-    public override void Update()
-    {
-        if (isStopped)
-        {
-            return;
-        }
-
-        if (agentToAttack == null)
-        {
-            Stop();
-            return;
-        }
-
-        RichAI aiPathHandler = agent.GetAIPathHandler();
-
-        if (moveTransform != null)
-        {
-            aiPathHandler.destination = moveTransform.position;
-        }
-        else
-        {
-            aiPathHandler.destination = destination;
-        }
-
-        bool isEndPath = CheckEndPath();
-
-        if (aiPathHandler.reachedDestination || isEndPath)
-        {
-            Stop();
-            Debug.Log("Reached move goal!");
-            return;
-        }
-
-        bool isEnemyReachable = IsTargetEnemyReachable();
-
-        if (isEnemyReachable)
-        {
-            Stop();
-            Debug.Log("Enemy reached!");
-            return;
-        }
-    }
-
-    private bool IsTargetEnemyReachable()
-    {
-        // Timer check
-        timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
-        {
-            return false;
-        }
-        timeSinceEnemySearch = 0;
-        //////////////
-
-        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-        Unit enemyUnit = agent.SoldierBasic;
-        var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(enemyUnit);
-        if (enemyColliderCostPair != null)
-        {
-            visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    
-
-}
-
-public class AttackCertainAgentState : AttackState
-{
-    Agent agentToAttack;
-
-    public AttackCertainAgentState(Agent agent, Agent agentToAttack, Transform visibleEnemyBodyPart = null) : base(agent, visibleEnemyBodyPart)
-    {
-        this.agentToAttack = agentToAttack;
-    }
-
-    public override void Update()
-    {
-        if (isStopped)
-        {
-            return;
-        }
-
-        if (agentToAttack == null)
-        {
-            Stop();
-            return;
-        }
-
-        if (!CheckCurrentTargetVisibility())
-        {
-            Stop();
-            return;
-        }
-
-        TryAttackEnemy();
-    }
-
-    public override void Stop()
-    {
-        base.Stop();
-        nextStateType = typeof(IdleState);
-    }
-
-    protected override bool CheckCurrentTargetVisibility()
-    {
-        // Timer check
-        timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
-        {
-            return true;
-        }
-        timeSinceEnemySearch = 0;
-        //////////////
-
-        return FindTargetEnemyOpenBodyPart();
-    }
-
-    private bool FindTargetEnemyOpenBodyPart()
-    {
-        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-
-        Unit enemyUnit = agentToAttack.SoldierBasic;
-
-        var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(enemyUnit);
-
-        if (enemyColliderCostPair != null)
-        {
-            if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
-            {
-                visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-                return true;
-            }
-        }
-
-        return false;
+        // nextStateType = typeof(IdleState);
     }
 }

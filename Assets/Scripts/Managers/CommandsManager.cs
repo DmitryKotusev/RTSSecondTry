@@ -80,7 +80,7 @@ public class CommandsManager : MonoBehaviour
             if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & walkableLayerMask.value) != 0)
             {
                 ShowClickWavesEffects(raycastHit);
-                CurrentGoalToCommand = new MoveByCommandGoal(raycastHit.point);
+                CurrentGoalToCommand = new MoveGoal(raycastHit.point);
             }
         }
     }
@@ -107,7 +107,7 @@ public class CommandsManager : MonoBehaviour
 
             if (agent.GetTeam() != playerController.GetTeam())
             {
-                CurrentGoalToCommand = new AttackByCommandGoal(agent, agent.transform.position);
+                CurrentGoalToCommand = new AttackGoal(agent, agent.transform.position);
             }
         }
     }
