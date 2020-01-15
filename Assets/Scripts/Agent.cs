@@ -151,11 +151,9 @@ public class Agent : MonoBehaviour
     {
         currentGoal = newGoal;
 
-        // TODO appropriate state
-        currentState.Stop();
-
         if (newGoal is MoveGoal)
         {
+            currentState.Stop();
             currentState = new MoveState(
                 this,
                 (newGoal as MoveGoal).Destination,
@@ -166,13 +164,39 @@ public class Agent : MonoBehaviour
 
         if (newGoal is AttackGoal)
         {
-            currentState = new MoveState(
+            ColliderCostPair targetColliderCostPair = CheckAttackGoalTargetAvailability(newGoal as AttackGoal);
+
+            if (targetColliderCostPair != null)
+            {
+                if (!(currentState is AttackState))
+                {
+                    currentState.Stop();
+                    currentState = new AttackState(this, checkForCloseEnemyInAttackPeriod, targetColliderCostPair.collider.transform);
+                    currentState.Start();
+                }
+            }
+            else
+            {
+                currentState.Stop();
+                currentState = new MoveState(
                 this,
                 (newGoal as AttackGoal).Destination,
                 checkForCloseEnemyInAttackPeriod
                 );
-            currentState.Start();
+                currentState.Start();
+            }
         }
+    }
+
+    public ColliderCostPair CheckAttackGoalTargetAvailability(AttackGoal attackGoal)
+    {
+        if (!eyeSightManager.IsEnemyAtLookDistance(attackGoal.AgentToAttack.SoldierBasic, lookDistance))
+        {
+            return null;
+        }
+
+        var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(attackGoal.AgentToAttack.SoldierBasic);
+        return enemyColliderCostPair;
     }
 
     public State CurrentState
@@ -271,7 +295,9 @@ public class Agent : MonoBehaviour
 
             if (type.GetMethod("GetVisibleEnemyBodyPart") != null)
             {
-                currentState = new AttackState(this, (Transform)type.GetMethod("GetVisibleEnemyBodyPart").Invoke(currentState, new object[] { }));
+                currentState = new AttackState(this,
+                    checkForCloseEnemyInAttackPeriod,
+                    (Transform)type.GetMethod("GetVisibleEnemyBodyPart").Invoke(currentState, new object[] { }));
                 currentState.Start();
             }
         }

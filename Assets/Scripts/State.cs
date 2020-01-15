@@ -54,6 +54,8 @@ public class MoveState : State
 
     // Moving state additional help variables
     #region
+    protected bool isEnemySurroundedFromTheBeginning = false;
+    
     protected float checkForCloseEnemyPeriod = 1f;
     protected float timeSinceEnemySearch = 0f;
     protected Transform visibleEnemyBodyPart = null;
@@ -88,9 +90,19 @@ public class MoveState : State
     public override void Start()
     {
         base.Start();
+
+        CheckEnemiesPresenceInLineOfSight();
+
         previosCheckCoordinate = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
         timeSinceLastEndPathCheck = 0f;
         agent.GetAIPathHandler().isStopped = false;
+    }
+
+    private void CheckEnemiesPresenceInLineOfSight()
+    {
+        bool isEnemyFound = FindClosestEnemyOpenBodyPart();
+
+        isEnemySurroundedFromTheBeginning = isEnemyFound;
     }
 
     public override void Stop()
@@ -143,6 +155,11 @@ public class MoveState : State
             return;
         }
 
+        if (isEnemySurroundedFromTheBeginning)
+        {
+            return;
+        }
+
         bool isEnemyFound = SearchForEnemies();
 
         if (isEnemyFound)
@@ -168,6 +185,11 @@ public class MoveState : State
             Stop();
             agent.ClearCurrentGoal();
             Debug.Log("Reached move goal!");
+            return;
+        }
+
+        if (isEnemySurroundedFromTheBeginning)
+        {
             return;
         }
 
@@ -257,6 +279,11 @@ public class MoveState : State
         timeSinceEnemySearch = 0;
         //////////////
 
+        return FindClosestEnemyOpenBodyPart();
+    }
+
+    private bool FindClosestEnemyOpenBodyPart()
+    {
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
         Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetLookDistance(), agent.GetController().GetTeam());
         if (closestEnemy != null)
@@ -369,7 +396,7 @@ public class IdleState : State
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceEnemySearch < checkForCloseEnemyPeriod)
         {
             return false;
         }
@@ -408,9 +435,10 @@ public class AttackState : State
     protected Transform visibleEnemyBodyPart = null;
     #endregion
 
-    public AttackState(Agent agent, Transform visibleEnemyBodyPart = null) : base(agent)
+    public AttackState(Agent agent, float checkForCloseEnemyPeriod, Transform visibleEnemyBodyPart = null) : base(agent)
     {
         this.visibleEnemyBodyPart = visibleEnemyBodyPart;
+        this.checkForCloseEnemyPeriod = checkForCloseEnemyPeriod;
     }
 
     public override void Update()
@@ -466,7 +494,7 @@ public class AttackState : State
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceEnemySearch < checkForCloseEnemyPeriod)
         {
             return true;
         }
@@ -496,8 +524,8 @@ public class AttackState : State
             if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
             {
                 visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-                return true;
             }
+            return true;
         }
 
         return false;
@@ -507,7 +535,7 @@ public class AttackState : State
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceEnemySearch < checkForCloseEnemyPeriod)
         {
             return true;
         }
@@ -530,8 +558,8 @@ public class AttackState : State
                 if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
                 {
                     visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-                    return true;
                 }
+                return true;
             }
         }
 

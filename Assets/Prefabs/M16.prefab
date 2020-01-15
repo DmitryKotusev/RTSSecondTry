@@ -235,6 +235,6 @@ MonoBehaviour:
   dimension: 4
   rateOfFire: 300
   cooldown: 3
-  basicDamagePerShot: 0
+  basicDamagePerShot: 3
   roundEmitter: {fileID: 2970130262764139578}
   leftHandTransform: {fileID: 1511341943}

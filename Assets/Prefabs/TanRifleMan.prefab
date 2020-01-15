@@ -1051,7 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f1d51c9a4b37e4bbb6da0bddf18495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aimSpeed: 1
+  aimSpeed: 5
   aimWeightBound: 0.6
   maxRootAngle: 35
   turnToTarget: 1
@@ -1116,6 +1116,7 @@ MonoBehaviour:
   soldierBasic: {fileID: 655096039883468999}
   checkForCloseEnemyInAttackPeriod: 2
   checkForCloseEnemyInIdlePeriod: 0.5
+  checkForCloseEnemyInMovePeriod: 0.5
 --- !u!114 &655096039883469005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,9 +1172,9 @@ MonoBehaviour:
   orientation: 0
   enableRotation: 1
   targetCompatibility: {fileID: 0}
-  acceleration: 8
+  acceleration: 9
   rotationSpeed: 720
-  slowdownTime: 0.1
+  slowdownTime: 0.05
   endReachedDistance: 0.5
   wallForce: 3
   wallDist: 1
