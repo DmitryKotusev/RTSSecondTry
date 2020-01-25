@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7043881965852434521}
   - component: {fileID: 5334537897662549406}
   m_Layer: 0
-  m_Name: ClickWaves
+  m_Name: ClickWavesEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7043881965852434520}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 427.8918, y: 8.66, z: 1415.5629}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

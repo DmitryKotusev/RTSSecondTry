@@ -12,7 +12,8 @@ public class PoolsManager : SerializedMonoBehaviour
         { Poolskeys.m16ShotEffectsPoolKey, null },
         { Poolskeys.clickEffectsPoolKey, null },
         { Poolskeys.greenGuysDeathParticlesPoolKey, null },
-        { Poolskeys.tanGuysDeathParticlesPoolKey, null }
+        { Poolskeys.tanGuysDeathParticlesPoolKey, null },
+        { Poolskeys.attackClickEffectsPoolKey, null }
     };
 
     static PoolsManager instance = null;
@@ -49,6 +50,7 @@ static public class Poolskeys
     static public readonly string m16BulletsPoolKey = "M16BulletsPoolKey";
     static public readonly string m16ShotEffectsPoolKey = "M16ShotEffectsPoolKey";
     static public readonly string clickEffectsPoolKey = "ClickEffectsPoolKey";
+    static public readonly string attackClickEffectsPoolKey = "AttackClickEffectsPoolKey";
     static public readonly string greenGuysDeathParticlesPoolKey = "GreenGuysDeathParticlesPoolKey";
     static public readonly string tanGuysDeathParticlesPoolKey = "TanGuysDeathParticlesPoolKey";
 }

@@ -107,6 +107,7 @@ public class CommandsManager : MonoBehaviour
 
             if (agent.GetTeam() != playerController.GetTeam())
             {
+                ShowAttackClickWavesEffects(agent.transform.position);
                 CurrentGoalToCommand = new AttackGoal(agent, agent.transform.position);
             }
         }
@@ -117,5 +118,12 @@ public class CommandsManager : MonoBehaviour
         GameObject clickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.clickEffectsPoolKey).GetObject();
         clickWavesEffectGameObject.transform.position = raycastHit.point + Vector3.up * clickWavesEffectGroundOffset;
         clickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
+    }
+
+    private void ShowAttackClickWavesEffects(Vector3 position)
+    {
+        GameObject attackClickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.attackClickEffectsPoolKey).GetObject();
+        attackClickWavesEffectGameObject.transform.position = position + Vector3.up * clickWavesEffectGroundOffset;
+        attackClickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
     }
 }

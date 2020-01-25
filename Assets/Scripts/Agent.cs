@@ -153,7 +153,7 @@ public class Agent : MonoBehaviour
 
         if (newGoal is MoveGoal)
         {
-            currentState.Stop();
+            currentState?.Stop();
             currentState = new MoveState(
                 this,
                 (newGoal as MoveGoal).Destination,
@@ -170,14 +170,14 @@ public class Agent : MonoBehaviour
             {
                 if (!(currentState is AttackState))
                 {
-                    currentState.Stop();
+                    currentState?.Stop();
                     currentState = new AttackState(this, checkForCloseEnemyInAttackPeriod, targetColliderCostPair.collider.transform);
                     currentState.Start();
                 }
             }
             else
             {
-                currentState.Stop();
+                currentState?.Stop();
                 currentState = new MoveState(
                 this,
                 (newGoal as AttackGoal).Destination,
