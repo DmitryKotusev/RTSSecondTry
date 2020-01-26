@@ -47,6 +47,12 @@ public class MouseCursorHandler : MonoBehaviour
     [Tooltip("Players camera")]
     Camera playersCamera;
 
+    [BoxGroup("Animators")]
+    [SerializeField]
+    [Required]
+    [Tooltip("Move cursor animator")]
+    CursorAnimator moveCursorAnimator = new CursorAnimator();
+
     private Texture2D currentCursor = null;
 
     private void Update()
@@ -65,12 +71,14 @@ public class MouseCursorHandler : MonoBehaviour
 
             if (CheckMoveCursor())
             {
+                moveCursorAnimator.Update(Time.deltaTime, 0.5f, 0.5f);
                 return;
             }
         }
 
         if (currentCursor != baseCursor)
         {
+            currentCursor = baseCursor;
             Cursor.SetCursor(baseCursor, Vector2.zero, CursorMode.Auto);
         }
     }
@@ -99,6 +107,7 @@ public class MouseCursorHandler : MonoBehaviour
             {
                 if (currentCursor != attackCursor)
                 {
+                    currentCursor = attackCursor;
                     Cursor.SetCursor(attackCursor, Vector2.zero, CursorMode.Auto);
                 }
 
@@ -111,21 +120,27 @@ public class MouseCursorHandler : MonoBehaviour
 
     private bool CheckMoveCursor()
     {
-        RaycastHit raycastHit;
-        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandsManager.CommandDistance))
-        {
-            if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & commandsManager.WalkableLayerMask.value) != 0)
-            {
-                // moveCursor.anchoredPosition = Input.mousePosition;
-                if (currentCursor != moveCursor)
-                {
-                    Cursor.SetCursor(moveCursor, new Vector2(moveCursor.width / 2, moveCursor.height / 2), CursorMode.Auto);
-                }
+        //RaycastHit raycastHit;
+        //if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandsManager.CommandDistance))
+        //{
+        //    if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & commandsManager.WalkableLayerMask.value) != 0)
+        //    {
+        //        currentCursor = moveCursor;
+        //        //if (currentCursor != moveCursor)
+        //        //{
+        //        //    currentCursor = moveCursor;
+        //        //    Cursor.SetCursor(moveCursor, new Vector2(moveCursor.width / 2, moveCursor.height / 2), CursorMode.Auto);
+        //        //}
 
-                return true;
-            }
+        //        return true;
+        //    }
+        //}
+
+        if (currentCursor != moveCursor)
+        {
+            currentCursor = moveCursor;
         }
 
-        return false;
+        return true;
     }
 }
