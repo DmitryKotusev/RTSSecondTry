@@ -28,7 +28,7 @@ public class AgentWeaponManager : MonoBehaviour
     Helmet activeHelmet;
 
     [SerializeField]
-    BipedIK bipedIK;
+    FullBodyBipedIK fullBodyBipedIK;
 
     [SerializeField]
     AgentAimManager agentAimManager;
@@ -48,7 +48,7 @@ public class AgentWeaponManager : MonoBehaviour
 
     private void Start()
     {
-        bipedIK.enabled = false;
+        fullBodyBipedIK.enabled = false;
         AdjustInventory();
     }
 
@@ -58,7 +58,7 @@ public class AgentWeaponManager : MonoBehaviour
 
         AdjustHandsOnWeapons();
 
-        bipedIK.UpdateBipedIK();
+        fullBodyBipedIK.solver.Update();
     }
 
     private void AdjustHandsOnWeapons()
@@ -69,16 +69,18 @@ public class AgentWeaponManager : MonoBehaviour
             {
                 Transform leftHandTransform = (activeGun as BigGun).LeftHandTransform;
 
-                bipedIK.solvers.leftHand.IKPosition = leftHandTransform.position;
-                bipedIK.solvers.leftHand.IKRotation = leftHandTransform.rotation;
-                bipedIK.solvers.leftHand.IKPositionWeight = 1;
-                bipedIK.solvers.leftHand.IKRotationWeight = 1;
+                fullBodyBipedIK.solver.leftHandEffector.position = leftHandTransform.position;
+                fullBodyBipedIK.solver.leftHandEffector.rotation = leftHandTransform.rotation;
+                fullBodyBipedIK.solver.leftHandEffector.positionWeight = 1;
+                fullBodyBipedIK.solver.leftHandEffector.rotationWeight = 1;
+                soldierBasic.LeftHandPoser.poseRoot = leftHandTransform;
             }
         }
         else
         {
-            bipedIK.solvers.leftHand.IKPositionWeight = 0;
-            bipedIK.solvers.leftHand.IKRotationWeight = 0;
+            fullBodyBipedIK.solver.leftHandEffector.positionWeight = 0;
+            fullBodyBipedIK.solver.leftHandEffector.rotationWeight = 0;
+            soldierBasic.LeftHandPoser.poseRoot = null;
         }
     }
 

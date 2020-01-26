@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using RootMotion.FinalIK;
 
 public class SoldierBasic : Unit
 {
@@ -15,8 +16,8 @@ public class SoldierBasic : Unit
 
     [BoxGroup("Bones")]
     [SerializeField]
-    Transform leftHandPoser;
-    public Transform LeftHandPoser
+    HandPoser leftHandPoser;
+    public HandPoser LeftHandPoser
     {
         get
         {
@@ -26,12 +27,12 @@ public class SoldierBasic : Unit
 
     [BoxGroup("Bones")]
     [SerializeField]
-    Transform rightHandPoser;
-    public Transform RightHandPoser
+    Transform rightHand;
+    public Transform RightHand
     {
         get
         {
-            return rightHandPoser;
+            return rightHand;
         }
     }
 
