@@ -306,6 +306,7 @@ MonoBehaviour:
     m_Bits: 512
   commandDistance: 100
   clickWavesEffectGroundOffset: 0.05
+  moveAngle: 40
   playerController: {fileID: 2087484017487523541}
 --- !u!114 &3719391347463301135
 MonoBehaviour:
@@ -326,6 +327,24 @@ MonoBehaviour:
   commandsManager: {fileID: 7858940874721320903}
   playerController: {fileID: 2087484017487523541}
   playersCamera: {fileID: 2087484016457414431}
+  moveCursorAnimator:
+    cursorFrames:
+    - cursorTexture: {fileID: 2800000, guid: ed71ef4a452265c46bc8f786379b9288, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: 672160e631cafc54083ff90bc10bbce9, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: d9f3de62c8c8c8e4e8d66d31c80ff89a, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: 93edf8f9971d0d54bb988e5c07341c16, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: 97541902f22e8234a9fe6bd5784b5401, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: 93edf8f9971d0d54bb988e5c07341c16, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: d9f3de62c8c8c8e4e8d66d31c80ff89a, type: 3}
+      frameDuration: 0.15
+    - cursorTexture: {fileID: 2800000, guid: 672160e631cafc54083ff90bc10bbce9, type: 3}
+      frameDuration: 0.15
 --- !u!54 &1100235904
 Rigidbody:
   m_ObjectHideFlags: 0

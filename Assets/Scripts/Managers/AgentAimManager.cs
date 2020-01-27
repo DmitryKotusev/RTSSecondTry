@@ -277,7 +277,7 @@ public class AgentAimManager : MonoBehaviour
         aimIK.solver.IKPosition = aimFrom + direction;
     }
 
-    // Character root will be rotate around the Y axis to keep root forward within this angle from the aiming direction.
+    // Character root will be rotated around the Y axis to keep root forward within this angle from the aiming direction.
     private void RootRotation()
     {
         float max = Mathf.Lerp(180f, maxRootAngle * turnToTargetMyltilpier, aimIK.solver.IKPositionWeight);

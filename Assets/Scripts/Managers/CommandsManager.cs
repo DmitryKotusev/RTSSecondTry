@@ -23,12 +23,17 @@ public class CommandsManager : MonoBehaviour
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Max distance user can click on to command agent to do smth")]
-    float commandDistance = 50;
+    float commandDistance = 100;
 
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Distance from ground that waves will be instantiated after click")]
     float clickWavesEffectGroundOffset = 0.05f;
+
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Angle (in degrees) between up vector and raycat hit normal to be acceptable to send command to walk to")]
+    float moveAngle = 15f;
 
     [BoxGroup("Service variables")]
     [SerializeField]
@@ -77,7 +82,8 @@ public class CommandsManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandDistance))
         {
-            if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & walkableLayerMask.value) != 0)
+            if (Vector3.Angle(raycastHit.normal, Vector3.up) < moveAngle
+                && ((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & walkableLayerMask.value) != 0)
             {
                 ShowClickWavesEffects(raycastHit);
                 CurrentGoalToCommand = new MoveGoal(raycastHit.point);
