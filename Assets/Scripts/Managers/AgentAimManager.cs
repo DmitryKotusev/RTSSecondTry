@@ -99,9 +99,11 @@ public class AgentAimManager : MonoBehaviour
 
     // Final IK example variables
     private bool turningToTarget;
-    private float turnToTargetMyltilpier = 1f;
-    private float turnToTargetMyltilpierVelocity;
     private Vector3 currentAimDirection;
+
+    private float desiredRotation;
+    private float currentRotation;
+    private float turnToTargetVelocity;
 
     private void Start()
     {
@@ -280,47 +282,44 @@ public class AgentAimManager : MonoBehaviour
     // Character root will be rotated around the Y axis to keep root forward within this angle from the aiming direction.
     private void RootRotation()
     {
-        float max = Mathf.Lerp(180f, maxRootAngle * turnToTargetMyltilpier, aimIK.solver.IKPositionWeight);
-
-        if (max < 180f)
+        if (!turningToTarget)
         {
             Vector3 faceDirLocal = transform.InverseTransformDirection(aimIK.solver.IKPosition - Pivot);
             float angle = Mathf.Atan2(faceDirLocal.x, faceDirLocal.z) * Mathf.Rad2Deg;
 
-            float rotation = 0f;
-
-            if (angle > max)
+            if (angle > maxRootAngle)
             {
-                rotation = angle - max;
-                if (!turningToTarget && turnToTarget) StartCoroutine(TurnToTarget());
+                desiredRotation = angle;
+                currentRotation = 0f;
+                turningToTarget = true;
+                // if (!turningToTarget && turnToTarget) StartCoroutine(TurnToTarget());
             }
-            if (angle < -max)
+            if (angle < -maxRootAngle)
             {
-                rotation = angle + max;
-                if (!turningToTarget && turnToTarget) StartCoroutine(TurnToTarget());
+                desiredRotation = angle;
+                currentRotation = 0f;
+                turningToTarget = true;
+                // if ( && turnToTarget) StartCoroutine(TurnToTarget());
             }
 
-            transform.rotation = Quaternion.AngleAxis(rotation, transform.up) * transform.rotation;
+            return;
         }
+
+        TurnToTarget();
     }
 
     // Aligns the root forward to target direction after "Max Root Angle" has been exceeded.
-    private IEnumerator TurnToTarget()
+    private void TurnToTarget()
     {
-        turningToTarget = true;
-
-        while (turnToTargetMyltilpier > 0f)
+        if (Mathf.Abs(desiredRotation - currentRotation) > 0.01f)
         {
-            turnToTargetMyltilpier = Mathf.SmoothDamp(turnToTargetMyltilpier, 0f, ref turnToTargetMyltilpierVelocity, turnToTargetTime);
-            if (turnToTargetMyltilpier < 0.01f)
-            {
-                turnToTargetMyltilpier = 0f;
-            }
+            float oldRotation = currentRotation;
+            currentRotation = Mathf.SmoothDamp(currentRotation, desiredRotation, ref turnToTargetVelocity, turnToTargetTime);
+            transform.rotation = Quaternion.AngleAxis(currentRotation - oldRotation, transform.up) * transform.rotation;
 
-            yield return null;
+            return;
         }
 
-        turnToTargetMyltilpier = 1f;
         turningToTarget = false;
     }
 }

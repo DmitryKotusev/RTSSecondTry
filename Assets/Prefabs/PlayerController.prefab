@@ -260,7 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionBoxAccuracy: 0.02
   equalToCameraFarDistance: 0
-  selectionDistance: 50
+  selectionDistance: 100
   playersCamera: {fileID: 2087484016457414431}
   frustumMeshBuilder: {fileID: 43552245}
   meshCollider: {fileID: 1269837867}
