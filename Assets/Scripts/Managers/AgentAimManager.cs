@@ -74,10 +74,16 @@ public class AgentAimManager : MonoBehaviour
     private float slerpSpeed = 3f;
 
     [SerializeField]
+    [Required]
     AimIK aimIK;
 
     [SerializeField]
+    [Required]
     AnimatorHandler animatorHandler;
+
+    [SerializeField]
+    [Required]
+    AgentWeaponManager weaponManager;
 
     [SerializeField]
     [ReadOnly]
@@ -92,12 +98,15 @@ public class AgentAimManager : MonoBehaviour
     }
 
     [SerializeField]
-    [Tooltip("Current target to aim")]
+    [Tooltip("Current target to aim, usually agent's part of the body")]
     private Transform currentTargetToAim = null;
+
+    [SerializeField]
+    [Tooltip("Current agent to aim")]
+    private Agent agentToAim = null;
 
     private Coroutine aimingCoroutine = null;
 
-    // Final IK example variables
     private bool turningToTarget;
     private Vector3 currentAimDirection;
 
@@ -122,14 +131,29 @@ public class AgentAimManager : MonoBehaviour
         currentTargetToAim = newTarget;
     }
 
+    public void SetAgentToAim(Agent agentToAim)
+    {
+        this.agentToAim = agentToAim;
+    }
+
     public Transform GetTarget()
     {
         return currentTargetToAim;
     }
 
+    public Agent GetAgentToAim()
+    {
+        return agentToAim;
+    }
+
     public void ClearTarget()
     {
         currentTargetToAim = null;
+    }
+
+    public void ClearAgentToAim()
+    {
+        agentToAim = null;
     }
 
     [Button("Check start aiming")]
@@ -247,6 +271,17 @@ public class AgentAimManager : MonoBehaviour
     {
         Vector3 requiredPosition = currentTargetToAim.position;
 
+        if (agentToAim != null)
+        {
+            float weaponProjectileSpeed = weaponManager.ActiveGun.ProjectileSpeed;
+
+            Vector3 agentsVelocity = agentToAim.GetVelocity();
+
+            float travelTime = GetTravelTime(weaponProjectileSpeed, agentsVelocity, agentToAim.transform.position);
+
+            requiredPosition += agentsVelocity * travelTime;
+        }
+
         if (smoothTurnTowardsTarget)
         {
             Vector3 targetDirection = requiredPosition - Pivot;
@@ -321,5 +356,35 @@ public class AgentAimManager : MonoBehaviour
         }
 
         turningToTarget = false;
+    }
+
+    /// <summary>
+    /// Quite complex method, finds travel time as a solution of quadratic equation
+    /// </summary>
+    /// <param name="weaponProjectileSpeed"></param>
+    /// <param name="agentsVelocity"></param>
+    /// <returns></returns>
+    private float GetTravelTime(float weaponProjectileSpeed, Vector3 agentsVelocity, Vector3 aimTargetPosition)
+    {
+        float a = Mathf.Pow(agentsVelocity.x, 2)
+            + Mathf.Pow(agentsVelocity.y, 2)
+            + Mathf.Pow(agentsVelocity.z, 2)
+            - Mathf.Pow(weaponProjectileSpeed, 2);
+
+        float b = 2 * agentsVelocity.x * (aimTargetPosition.x - transform.position.x)
+            + 2 * agentsVelocity.y * (aimTargetPosition.y - transform.position.y)
+            + 2 * agentsVelocity.z * (aimTargetPosition.z - transform.position.z);
+
+        float c = Mathf.Pow(aimTargetPosition.x - transform.position.x, 2)
+            + Mathf.Pow(aimTargetPosition.y - transform.position.y, 2)
+            + Mathf.Pow(aimTargetPosition.z - transform.position.z, 2);
+
+        float d = Mathf.Pow(b, 2) - 4 * a * c;
+
+        float t1 = (-b + Mathf.Sqrt(d)) / 2 / a;
+
+        float t2 = (-b - Mathf.Sqrt(d)) / 2 / a;
+
+        return t1 > 0 ? t1 : t2;
     }
 }

@@ -10,6 +10,11 @@ public class Unit : MonoBehaviour
     [SerializeField]
     List<ColliderCostPair> hitCollidersCosts;
 
+    [BoxGroup("Components references")]
+    [SerializeField]
+    [Required]
+    Agent agent;
+
     public List<ColliderCostPair> GetHitCollidersCosts()
     {
         return new List<ColliderCostPair>(hitCollidersCosts);
@@ -28,6 +33,14 @@ public class Unit : MonoBehaviour
         }
 
         return 1;
+    }
+
+    public Agent Agent
+    {
+        get
+        {
+            return agent;
+        }
     }
 }
 

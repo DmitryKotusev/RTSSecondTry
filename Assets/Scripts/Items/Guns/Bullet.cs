@@ -3,10 +3,10 @@ using Sirenix.OdinInspector;
 
 public class Bullet : MonoBehaviour
 {
-    [BoxGroup("Bullet Info")]
-    [Tooltip("Speed in toy meters per second")]
-    [SerializeField]
-    protected int bulletSpeed;
+    public float BulletSpeed
+    {
+        get; set;
+    } = 300f;
 
     bool hasReachedTarget = false;
     public float CurrentDamage
@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
     {
         Vector3 currentPosition = transform.position;
 
-        Vector3 nextFramePosition = currentPosition + bulletSpeed * Time.deltaTime * transform.forward;
+        Vector3 nextFramePosition = currentPosition + BulletSpeed * Time.deltaTime * transform.forward;
 
         Ray nextFramePathRay = new Ray(currentPosition, nextFramePosition - currentPosition);
 

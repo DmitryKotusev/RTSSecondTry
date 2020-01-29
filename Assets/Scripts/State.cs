@@ -433,12 +433,14 @@ public class AttackState : State
     protected float checkForCloseEnemyPeriod = 1f;
     protected float timeSinceEnemySearch = 0f;
     protected Transform visibleEnemyBodyPart = null;
+    protected Agent agentToAim = null;
     #endregion
 
-    public AttackState(Agent agent, float checkForCloseEnemyPeriod, Transform visibleEnemyBodyPart = null) : base(agent)
+    public AttackState(Agent agent, float checkForCloseEnemyPeriod, Transform visibleEnemyBodyPart = null, Agent agentToAim = null) : base(agent)
     {
         this.visibleEnemyBodyPart = visibleEnemyBodyPart;
         this.checkForCloseEnemyPeriod = checkForCloseEnemyPeriod;
+        this.agentToAim = agentToAim;
     }
 
     public override void Update()
@@ -521,10 +523,9 @@ public class AttackState : State
 
         if (enemyColliderCostPair != null)
         {
-            if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
-            {
-                visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-            }
+            visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+            agentToAim = enemyUnit.Agent;
+
             return true;
         }
 
@@ -555,10 +556,9 @@ public class AttackState : State
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
             if (enemyColliderCostPair != null)
             {
-                if (enemyColliderCostPair.collider.transform != visibleEnemyBodyPart)
-                {
-                    visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
-                }
+                visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+                agentToAim = closestEnemy.Agent;
+
                 return true;
             }
         }
@@ -581,6 +581,7 @@ public class AttackState : State
         }
 
         weaponManager.AgentAimManager.SetTarget(visibleEnemyBodyPart);
+        weaponManager.AgentAimManager.SetAgentToAim(agentToAim);
 
         if (weaponManager.AgentAimManager.IsTargetReachable(visibleEnemyBodyPart))
         {
@@ -595,6 +596,7 @@ public class AttackState : State
         AgentWeaponManager weaponManager = agent.GetWeaponManager();
         weaponManager.AgentAimManager.StopAiming();
         weaponManager.AgentAimManager.ClearTarget();
+        weaponManager.AgentAimManager.ClearAgentToAim();
         // nextStateType = typeof(IdleState);
     }
 }

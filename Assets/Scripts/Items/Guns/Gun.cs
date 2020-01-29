@@ -18,6 +18,18 @@ public abstract class Gun : Item
     [Tooltip("Gun's damage")]
     protected float basicDamagePerShot = 10f;
 
+    [BoxGroup("Gun Info")]
+    [SerializeField]
+    [Tooltip("Projectile speed in toys meters per second")]
+    protected float projectileSpeed = 300f;
+    public float ProjectileSpeed
+    {
+        get
+        {
+            return projectileSpeed;
+        }
+    }
+
     [SerializeField]
     protected Transform roundEmitter;
     public Transform RoundEmitter

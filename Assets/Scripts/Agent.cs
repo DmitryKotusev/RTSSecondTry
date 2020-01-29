@@ -65,6 +65,11 @@ public class Agent : MonoBehaviour
 
     // Getters and setters
     #region
+    public Vector3 GetVelocity()
+    {
+        return aiPathHandler.velocity;
+    }
+
     public float CheckForCloseEnemyInAttackPeriod
     {
         get

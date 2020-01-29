@@ -28,6 +28,9 @@ public class M16Riffle : BigGun
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
         bullet.CurrentDamage = basicDamagePerShot;
 
+        // Set bullet speed
+        bullet.BulletSpeed = projectileSpeed;
+
         //Play sound
         //Show effects from the barrel
         GameObject effectGameObject = PoolsManager.GetObjectPool(Poolskeys.m16ShotEffectsPoolKey).GetObject();

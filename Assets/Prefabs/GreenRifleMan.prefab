@@ -4605,6 +4605,7 @@ MonoBehaviour:
     cost: 0.8
   - collider: {fileID: 337131157782334633}
     cost: 0.8
+  agent: {fileID: 8614354840003571644}
   rootBone: {fileID: 3189015268591716252}
   headBone: {fileID: 9077711217626794139}
   leftHandPoser: {fileID: 1941643074}
@@ -4654,8 +4655,10 @@ MonoBehaviour:
   slerpSpeed: 8
   aimIK: {fileID: 8614354840003571633}
   animatorHandler: {fileID: 8614354840003571642}
+  weaponManager: {fileID: 8614354840003571640}
   isAiming: 0
   currentTargetToAim: {fileID: 0}
+  agentToAim: {fileID: 0}
 --- !u!114 &8614354840003571642
 MonoBehaviour:
   m_ObjectHideFlags: 0
