@@ -298,13 +298,25 @@ public class Agent : MonoBehaviour
         {
             Type type = currentState.GetType();
 
+            Transform visibleEnemyBodyPart = null;
+            Agent agentToAim = null;
+
             if (type.GetMethod("GetVisibleEnemyBodyPart") != null)
             {
-                currentState = new AttackState(this,
-                    checkForCloseEnemyInAttackPeriod,
-                    (Transform)type.GetMethod("GetVisibleEnemyBodyPart").Invoke(currentState, new object[] { }));
-                currentState.Start();
+                visibleEnemyBodyPart = (Transform)type.GetMethod("GetVisibleEnemyBodyPart").Invoke(currentState, new object[] { });
             }
+
+            if (type.GetMethod("GetAgentToAim") != null)
+            {
+                agentToAim = (Agent)type.GetMethod("GetAgentToAim").Invoke(currentState, new object[] { });
+            }
+
+            currentState = new AttackState(this,
+                    checkForCloseEnemyInAttackPeriod,
+                    visibleEnemyBodyPart,
+                    agentToAim);
+
+            currentState.Start();
         }
         else
         {

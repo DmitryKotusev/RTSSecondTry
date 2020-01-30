@@ -59,6 +59,7 @@ public class MoveState : State
     protected float checkForCloseEnemyPeriod = 1f;
     protected float timeSinceEnemySearch = 0f;
     protected Transform visibleEnemyBodyPart = null;
+    protected Agent agentToAim = null;
 
     protected Vector3 previosCheckCoordinate = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
     protected float timeSinceLastEndPathCheck = 0f;
@@ -85,6 +86,11 @@ public class MoveState : State
     public Transform GetVisibleEnemyBodyPart()
     {
         return visibleEnemyBodyPart;
+    }
+
+    public Agent GetAgentToAim()
+    {
+        return agentToAim;
     }
 
     public override void Start()
@@ -261,6 +267,7 @@ public class MoveState : State
         if (enemyColliderCostPair != null)
         {
             visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+            agentToAim = enemyUnit.Agent;
 
             return true;
         }
@@ -292,6 +299,7 @@ public class MoveState : State
             if (enemyColliderCostPair != null)
             {
                 visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+                agentToAim = closestEnemy.Agent;
 
                 return true;
             }
@@ -328,6 +336,7 @@ public class IdleState : State
     private float checkForCloseEnemyPeriod = 1f;
     private float timeSinceEnemySearch = 0f;
     private Transform visibleEnemyBodyPart = null;
+    protected Agent agentToAim = null;
     #endregion
 
     public IdleState(Agent agent, float checkForCloseEnemyPeriod) : base(agent)
@@ -338,6 +347,11 @@ public class IdleState : State
     public Transform GetVisibleEnemyBodyPart()
     {
         return visibleEnemyBodyPart;
+    }
+
+    public Agent GetAgentToAim()
+    {
+        return agentToAim;
     }
 
     public override void Update()
@@ -411,6 +425,7 @@ public class IdleState : State
             if (enemyColliderCostPair != null)
             {
                 visibleEnemyBodyPart = enemyColliderCostPair.collider.transform;
+                agentToAim = closestEnemy.Agent;
 
                 return true;
             }

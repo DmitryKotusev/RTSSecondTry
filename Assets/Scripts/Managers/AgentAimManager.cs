@@ -73,6 +73,22 @@ public class AgentAimManager : MonoBehaviour
     /// </summary>
     private float slerpSpeed = 3f;
 
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Slerp edge angle in degrees.")]
+    /// <summary>
+    /// Speed of slerping towards the target.
+    /// </summary>
+    private float edgeAngle = 5f;
+
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Required and current direction vectors angle that is considered to be acceptable to shoot target.")]
+    /// <summary>
+    /// Speed of slerping towards the target.
+    /// </summary>
+    private float shootAngle = 1f;
+
     [SerializeField]
     [Required]
     AimIK aimIK;
@@ -109,6 +125,7 @@ public class AgentAimManager : MonoBehaviour
 
     private bool turningToTarget;
     private Vector3 currentAimDirection;
+    private Vector3 targetDirection;
 
     private float desiredRotation;
     private float currentRotation;
@@ -186,14 +203,19 @@ public class AgentAimManager : MonoBehaviour
             return false;
         }
 
-        RaycastHit raycastHit;
-        if (Physics.Raycast(aimIK.solver.transform.position, aimIK.solver.transform.forward, out raycastHit,
-            Mathf.Infinity))
+        //RaycastHit raycastHit;
+        //if (Physics.Raycast(aimIK.solver.transform.position, aimIK.solver.transform.forward, out raycastHit,
+        //    Mathf.Infinity))
+        //{
+        //    if (raycastHit.collider.transform == target)
+        //    {
+        //        return true;
+        //    }
+        //}
+
+        if (Vector3.Angle(currentAimDirection, targetDirection) < shootAngle)
         {
-            if (raycastHit.collider.transform == target)
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -282,10 +304,18 @@ public class AgentAimManager : MonoBehaviour
             requiredPosition += agentsVelocity * travelTime;
         }
 
+        targetDirection = requiredPosition - Pivot;
+
         if (smoothTurnTowardsTarget)
         {
-            Vector3 targetDirection = requiredPosition - Pivot;
-            currentAimDirection = Vector3.Slerp(currentAimDirection, targetDirection, Time.deltaTime * slerpSpeed);
+            if (Vector3.Angle(currentAimDirection, targetDirection) > edgeAngle)
+            {
+                currentAimDirection = Vector3.Slerp(currentAimDirection, targetDirection, Time.deltaTime * slerpSpeed);
+            }
+            else
+            {
+                currentAimDirection = requiredPosition - Pivot;
+            }
         }
         else
         {
