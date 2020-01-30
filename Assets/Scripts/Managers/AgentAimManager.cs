@@ -213,6 +213,11 @@ public class AgentAimManager : MonoBehaviour
         //    }
         //}
 
+        if (Mathf.Abs(aimIK.solver.IKPositionWeight - 1f) > Mathf.Epsilon)
+        {
+            return false;
+        }
+
         if (Vector3.Angle(currentAimDirection, targetDirection) < shootAngle)
         {
             return true;
