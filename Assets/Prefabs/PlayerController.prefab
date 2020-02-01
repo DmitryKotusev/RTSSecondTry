@@ -241,11 +241,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e15d7479c0cf45b4380b41ac7e961429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team: {fileID: 11400000, guid: 4ebf381d6f8df2540a33a759196ecb9e, type: 2}
   controllerId: 0
   playersCamera: {fileID: 2087484016457414431}
   selectionManager: {fileID: 2087484017487523538}
   commandsManager: {fileID: 7858940874721320903}
+  controllerSettings: {fileID: 11400000, guid: c4a35baaaf272464b8f5625f18427140, type: 2}
 --- !u!114 &2087484017487523538
 MonoBehaviour:
   m_ObjectHideFlags: 0

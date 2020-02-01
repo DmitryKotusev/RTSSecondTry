@@ -4549,7 +4549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6111f1755d65f4f923d74db40d1020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxhealthPoints: 100
+  healthData: {fileID: 11400000, guid: c011a79d9f3d502438bcc9737216c613, type: 2}
   healthPoints: 100
   deathManager: {fileID: 8614354840003571270}
   unit: {fileID: 8614354840003571641}
@@ -4653,6 +4653,8 @@ MonoBehaviour:
   pivotOffsetFromRoot: {x: 0, y: 1, z: 0}
   minDistance: 1.5
   slerpSpeed: 8
+  edgeAngle: 5
+  shootAngle: 1
   aimIK: {fileID: 8614354840003571633}
   animatorHandler: {fileID: 8614354840003571642}
   weaponManager: {fileID: 8614354840003571640}
@@ -4703,15 +4705,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionProjector: {fileID: 337131157722207068}
   mainSelectionProjector: {fileID: 337131156115912871}
-  lookDistance: 60
+  agentSettings: {fileID: 11400000, guid: 3f5ea7759be7f5e42b2924f92d1b21ef, type: 2}
   controller: {fileID: 0}
   aiPathHandler: {fileID: 8614354840003571646}
   weaponManager: {fileID: 8614354840003571640}
   eyeSightManager: {fileID: 8614354840003571645}
   soldierBasic: {fileID: 8614354840003571641}
-  checkForCloseEnemyInAttackPeriod: 2
-  checkForCloseEnemyInIdlePeriod: 0.5
-  checkForCloseEnemyInMovePeriod: 0.5
+  agentAISettings: {fileID: 11400000, guid: 80d07434d27478145bf47110b597e2f8, type: 2}
 --- !u!114 &8614354840003571647
 MonoBehaviour:
   m_ObjectHideFlags: 0

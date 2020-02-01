@@ -248,7 +248,7 @@ public class MoveState : State
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceEnemySearch < agent.AgentsSecondsTillCheckEndPath)
         {
             return false;
         }
@@ -279,7 +279,7 @@ public class MoveState : State
     {
         // Timer check
         timeSinceEnemySearch += Time.deltaTime;
-        if (timeSinceEnemySearch < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceEnemySearch < agent.AgentsSecondsTillCheckEndPath)
         {
             return false;
         }
@@ -312,7 +312,7 @@ public class MoveState : State
     {
         // Timer check
         timeSinceLastEndPathCheck += Time.deltaTime;
-        if (timeSinceLastEndPathCheck < LevelManager.Instance.AgentsSecondsTillCheckEndPath)
+        if (timeSinceLastEndPathCheck < agent.AgentsSecondsTillCheckEndPath)
         {
             return false;
         }

@@ -18,8 +18,9 @@ public class Agent : MonoBehaviour
 
     [BoxGroup("Settings")]
     [SerializeField]
-    [Tooltip("Agent's look distance")]
-    float lookDistance = 60f;
+    [Tooltip("Agent's settings")]
+    [Required]
+    AgentSettings agentSettings;
 
     [SerializeField]
     [Tooltip("Controller that is able to give commands to this unit")]
@@ -52,15 +53,10 @@ public class Agent : MonoBehaviour
     private State currentState = null;
 
     /////////////Idle behavior//////////
-    [BoxGroup("Attack settings")]
+    [BoxGroup("Common AI settings")]
     [SerializeField]
-    private float checkForCloseEnemyInAttackPeriod = 2f;
-    [BoxGroup("Idle behaivor settings")]
-    [SerializeField]
-    private float checkForCloseEnemyInIdlePeriod = 0.5f;
-    [BoxGroup("Idle behaivor settings")]
-    [SerializeField]
-    private float checkForCloseEnemyInMovePeriod = 0.5f;
+    [Required]
+    AgentAISettings agentAISettings;
     ////////////////////////////////////
 
     // Getters and setters
@@ -74,7 +70,7 @@ public class Agent : MonoBehaviour
     {
         get
         {
-            return checkForCloseEnemyInAttackPeriod;
+            return agentAISettings.CheckForCloseEnemyInAttackPeriod;
         }
     }
 
@@ -82,7 +78,7 @@ public class Agent : MonoBehaviour
     {
         get
         {
-            return checkForCloseEnemyInIdlePeriod;
+            return agentAISettings.CheckForCloseEnemyInIdlePeriod;
         }
     }
 
@@ -90,7 +86,15 @@ public class Agent : MonoBehaviour
     {
         get
         {
-            return checkForCloseEnemyInMovePeriod;
+            return agentAISettings.CheckForCloseEnemyInMovePeriod;
+        }
+    }
+
+    public float AgentsSecondsTillCheckEndPath
+    {
+        get
+        {
+            return agentAISettings.AgentsSecondsTillCheckEndPath;
         }
     }
 
@@ -116,7 +120,7 @@ public class Agent : MonoBehaviour
 
     public float GetLookDistance()
     {
-        return lookDistance;
+        return agentSettings.LookDistance;
     }
 
     public float AgentRadius
@@ -162,7 +166,7 @@ public class Agent : MonoBehaviour
             currentState = new MoveState(
                 this,
                 (newGoal as MoveGoal).Destination,
-                checkForCloseEnemyInMovePeriod
+                agentAISettings.CheckForCloseEnemyInMovePeriod
                 );
             currentState.Start();
         }
@@ -176,7 +180,7 @@ public class Agent : MonoBehaviour
                 if (!(currentState is AttackState))
                 {
                     currentState?.Stop();
-                    currentState = new AttackState(this, checkForCloseEnemyInAttackPeriod, targetColliderCostPair.collider.transform);
+                    currentState = new AttackState(this, agentAISettings.CheckForCloseEnemyInAttackPeriod, targetColliderCostPair.collider.transform);
                     currentState.Start();
                 }
             }
@@ -186,7 +190,7 @@ public class Agent : MonoBehaviour
                 currentState = new MoveState(
                 this,
                 (newGoal as AttackGoal).Destination,
-                checkForCloseEnemyInAttackPeriod
+                agentAISettings.CheckForCloseEnemyInAttackPeriod
                 );
                 currentState.Start();
             }
@@ -195,7 +199,7 @@ public class Agent : MonoBehaviour
 
     public ColliderCostPair CheckAttackGoalTargetAvailability(AttackGoal attackGoal)
     {
-        if (!eyeSightManager.IsEnemyAtLookDistance(attackGoal.AgentToAttack.SoldierBasic, lookDistance))
+        if (!eyeSightManager.IsEnemyAtLookDistance(attackGoal.AgentToAttack.SoldierBasic, agentSettings.LookDistance))
         {
             return null;
         }
@@ -256,7 +260,7 @@ public class Agent : MonoBehaviour
     {
         if (currentState == null)
         {
-            currentState = new IdleState(this, checkForCloseEnemyInIdlePeriod);
+            currentState = new IdleState(this, agentAISettings.CheckForCloseEnemyInIdlePeriod);
             currentState.Start();
         }
     }
@@ -264,7 +268,7 @@ public class Agent : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, lookDistance);
+        Gizmos.DrawWireSphere(transform.position, agentSettings.LookDistance);
     }
 
     private void CurrentBehaviour()
@@ -283,7 +287,7 @@ public class Agent : MonoBehaviour
     {
         if (currentState.GetNextStateType() == typeof(IdleState))
         {
-            currentState = new IdleState(this, checkForCloseEnemyInIdlePeriod);
+            currentState = new IdleState(this, agentAISettings.CheckForCloseEnemyInIdlePeriod);
             currentState.Start();
         }
         else if (currentState.GetNextStateType() == typeof(MoveState))
@@ -291,7 +295,7 @@ public class Agent : MonoBehaviour
             /// For now nothing
             /// If going to this state without goal, need to pass destination,
             /// because without it agent will not go anywhere
-            currentState = new MoveState(this, checkForCloseEnemyInMovePeriod);
+            currentState = new MoveState(this, agentAISettings.CheckForCloseEnemyInMovePeriod);
             currentState.Start();
         }
         else if (currentState.GetNextStateType() == typeof(AttackState))
@@ -312,7 +316,7 @@ public class Agent : MonoBehaviour
             }
 
             currentState = new AttackState(this,
-                    checkForCloseEnemyInAttackPeriod,
+                    agentAISettings.CheckForCloseEnemyInAttackPeriod,
                     visibleEnemyBodyPart,
                     agentToAim);
 

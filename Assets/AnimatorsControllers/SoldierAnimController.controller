@@ -90,6 +90,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: IdleNextStateVariable
     m_EventTreshold: 0
+  - m_ConditionMode: 4
+    m_ConditionEvent: MovingSpeed
+    m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5065221550474590843}
   m_Solo: 0
@@ -607,6 +610,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: IdleNextStateVariable
     m_EventTreshold: 2
+  - m_ConditionMode: 4
+    m_ConditionEvent: MovingSpeed
+    m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2474892416985530507}
   m_Solo: 0
@@ -660,6 +666,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: IdleNextStateVariable
     m_EventTreshold: 1
+  - m_ConditionMode: 4
+    m_ConditionEvent: MovingSpeed
+    m_EventTreshold: 0.01
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5335936232569129792}
   m_Solo: 0

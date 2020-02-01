@@ -9,13 +9,12 @@ using Sirenix.OdinInspector;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    [Min(1)]
-    float maxhealthPoints = 100;
+    HealthData healthData;
     public float MaxhealthPoints
     {
         get
         {
-            return maxhealthPoints;
+            return healthData.MaxHealth;
         }
     }
 
@@ -38,6 +37,11 @@ public class Health : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        healthPoints = healthData.MaxHealth;
+    }
+
     public void ChangeHealthPoints(float changeAmount, Collider hitedCollider = null)
     {
         float resultChangeAmount = changeAmount;
@@ -46,7 +50,7 @@ public class Health : MonoBehaviour
             float multiplier = unit.GetHitColliderCost(hitedCollider);
             resultChangeAmount *= multiplier;
         }
-        healthPoints = Mathf.Clamp(healthPoints + resultChangeAmount, 0, maxhealthPoints);
+        healthPoints = Mathf.Clamp(healthPoints + resultChangeAmount, 0, MaxhealthPoints);
 
         if (healthPoints == 0)
         {

@@ -18,6 +18,11 @@ public class PlayerController : Controller
     [Required]
     CommandsManager commandsManager;
 
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Required]
+    ControllerSettings controllerSettings;
+
     private void Update()
     {
         SendCurrentCommandsToCurrentFormation();
@@ -78,7 +83,7 @@ public class PlayerController : Controller
             return resultList;
         }
 
-        float baseUnitOffset = agentsRadius * LevelManager.Instance.RadiusMultiplier;
+        float baseUnitOffset = agentsRadius * controllerSettings.RadiusMultiplier;
 
         for (int i = 1; ; i++)
         {
