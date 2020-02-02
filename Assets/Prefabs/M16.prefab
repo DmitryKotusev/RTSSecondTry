@@ -977,8 +977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dimension: 4
-  rateOfFire: 300
-  cooldown: 3
-  basicDamagePerShot: 3
+  gunInfo: {fileID: 11400000, guid: c652f9c5bf5330f49bfe813d0297e763, type: 2}
   roundEmitter: {fileID: 2970130262764139578}
   leftHandTransform: {fileID: 1511341943}

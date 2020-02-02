@@ -10,7 +10,7 @@ public class M16Riffle : BigGun
         {
             ShootBullet();
 
-            timeTillNextShot = 1 / rateOfFire * 60f;
+            timeTillNextShot = 1 / gunInfo.RateOfFire * 60f;
         }
     }
 
@@ -26,10 +26,10 @@ public class M16Riffle : BigGun
 
         // Set currentBulletDamage
         Bullet bullet = bulletGameObject.GetComponent<Bullet>();
-        bullet.CurrentDamage = basicDamagePerShot;
+        bullet.CurrentDamage = gunInfo.BasicDamagePerShot;
 
         // Set bullet speed
-        bullet.BulletSpeed = projectileSpeed;
+        bullet.BulletSpeed = gunInfo.ProjectileSpeed;
 
         //Play sound
         //Show effects from the barrel
