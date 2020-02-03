@@ -10,7 +10,7 @@ public class GreenDeathManager : DeathManager
         greenParticlesObject.transform.position = transform.position + transform.InverseTransformVector(localOffset);
 
         Agent agent = GetComponent<Agent>();
-        agent?.GetCurrentFormation().RemoveAgentFromFormation(agent);
+        agent?.GetCurrentFormation()?.RemoveAgentFromFormation(agent);
 
         Destroy(gameObject);
     }

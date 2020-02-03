@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using Pathfinding;
 using System;
 
+[SelectionBase]
 public class Agent : MonoBehaviour
 {
     [BoxGroup("Projectors")]
