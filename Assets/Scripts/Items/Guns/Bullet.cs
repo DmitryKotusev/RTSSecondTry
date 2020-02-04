@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
         if (hasReachedTarget)
         {
             // Return bullet to pool
-            PoolsManager.GetObjectPool(Poolskeys.m16BulletsPoolKey).ReturnObject(gameObject);
+            PoolsManager.GetObjectPool(PoolsKeys.m16BulletsPoolKey).ReturnObject(gameObject);
         }
 
         return hasReachedTarget;

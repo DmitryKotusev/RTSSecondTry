@@ -16,7 +16,7 @@ public class M16Riffle : BigGun
 
     private void ShootBullet()
     {
-        GameObject bulletGameObject = PoolsManager.GetObjectPool(Poolskeys.m16BulletsPoolKey).GetObject();
+        GameObject bulletGameObject = PoolsManager.GetObjectPool(PoolsKeys.m16BulletsPoolKey).GetObject();
         bulletGameObject.transform.position = roundEmitter.position;
         bulletGameObject.transform.rotation = roundEmitter.rotation;
 
@@ -33,7 +33,7 @@ public class M16Riffle : BigGun
 
         //Play sound
         //Show effects from the barrel
-        GameObject effectGameObject = PoolsManager.GetObjectPool(Poolskeys.m16ShotEffectsPoolKey).GetObject();
+        GameObject effectGameObject = PoolsManager.GetObjectPool(PoolsKeys.m16ShotEffectsPoolKey).GetObject();
         effectGameObject.transform.position = roundEmitter.position;
         effectGameObject.transform.rotation = roundEmitter.rotation;
         ShotEffect shotEffect = effectGameObject.GetComponent<ShotEffect>();

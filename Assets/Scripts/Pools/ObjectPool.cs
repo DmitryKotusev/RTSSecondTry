@@ -56,6 +56,7 @@ public class ObjectPool : MonoBehaviour
     /// <param name="obj">The object to return to its origin pool.</param>
     public void ReturnObject(GameObject obj)
     {
+        obj.transform.parent = transform;
         var pooledObject = obj.GetComponent<PooledObject>();
         Assert.IsNotNull(pooledObject);
         Assert.IsTrue(pooledObject.pool == this);
@@ -95,12 +96,4 @@ public class ObjectPool : MonoBehaviour
         obj.transform.SetParent(transform);
         return obj;
     }
-}
-
-/// <summary>
-/// Utility class to identify the pool of a pooled object.
-/// </summary>
-public class PooledObject : MonoBehaviour
-{
-    public ObjectPool pool;
 }

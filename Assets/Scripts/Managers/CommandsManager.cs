@@ -121,14 +121,14 @@ public class CommandsManager : MonoBehaviour
 
     private void ShowClickWavesEffects(RaycastHit raycastHit)
     {
-        GameObject clickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.clickEffectsPoolKey).GetObject();
+        GameObject clickWavesEffectGameObject = PoolsManager.GetObjectPool(PoolsKeys.clickEffectsPoolKey).GetObject();
         clickWavesEffectGameObject.transform.position = raycastHit.point + Vector3.up * clickWavesEffectGroundOffset;
         clickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
     }
 
     private void ShowAttackClickWavesEffects(Vector3 position)
     {
-        GameObject attackClickWavesEffectGameObject = PoolsManager.GetObjectPool(Poolskeys.attackClickEffectsPoolKey).GetObject();
+        GameObject attackClickWavesEffectGameObject = PoolsManager.GetObjectPool(PoolsKeys.attackClickEffectsPoolKey).GetObject();
         attackClickWavesEffectGameObject.transform.position = position + Vector3.up * clickWavesEffectGroundOffset;
         attackClickWavesEffectGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up);
     }
