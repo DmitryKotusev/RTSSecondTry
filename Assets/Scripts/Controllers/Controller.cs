@@ -15,56 +15,9 @@ abstract public class Controller : MonoBehaviour
     [SerializeField]
     Team team;
 
-    [SerializeField]
-    [ReadOnly]
-    short controllerId;
-
     public void Awake()
     {
-        controllerId = GetFreeId();
-        RegisterNewId(controllerId);
     }
-
-    // Static methods
-    #region
-    /// <summary>
-    /// Returns free id.
-    /// Returns 0 if no free ids are available.
-    /// If it returns 0 something might actually
-    /// went wrong.
-    /// </summary>
-    /// <returns></returns>
-    static short GetFreeId()
-    {
-        for (short i = 1; i <= short.MaxValue; i++)
-        {
-            if (!controllerIdsPool.Contains(i))
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    static bool IsIdFree(short id)
-    {
-        return !controllerIdsPool.Contains(id);
-    }
-
-    static void RegisterNewId(short id)
-    {
-        if (!IsIdFree(id))
-        {
-            throw new System.Exception($"Id {id} already belongs to other controller");
-        }
-        controllerIdsPool.Add(id);
-    }
-
-    static bool UnregisterId(short id)
-    {
-        return controllerIdsPool.Remove(id);
-    }
-    #endregion
 
     // Getters and setters
     #region
@@ -77,28 +30,5 @@ abstract public class Controller : MonoBehaviour
     {
         return team;
     }
-
-    public void SetControllerId(short controllerId)
-    {
-        if (this.controllerId == controllerId)
-        {
-            return;
-        }
-
-        RegisterNewId(controllerId);
-        UnregisterId(this.controllerId);
-
-        this.controllerId = controllerId;
-    }
-
-    public short GetControllerId()
-    {
-        return controllerId;
-    }
     #endregion
-
-    void OnDestroy()
-    {
-        UnregisterId(controllerId);
-    }
 }

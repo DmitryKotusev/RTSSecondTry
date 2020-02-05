@@ -28,16 +28,25 @@ public class Agent : MonoBehaviour
     Controller controller;
 
     [SerializeField]
+    [Tooltip("Default team in which agent will try to find controller")]
+    [Required]
+    Team team;
+
+    [SerializeField]
     [Tooltip("AI path handler")]
+    [Required]
     RichAI aiPathHandler;
 
     [SerializeField]
+    [Required]
     AgentWeaponManager weaponManager;
 
     [SerializeField]
+    [Required]
     EyeSightManager eyeSightManager;
 
     [SerializeField]
+    [Required]
     SoldierBasic soldierBasic;
     public SoldierBasic SoldierBasic
     {
@@ -106,7 +115,11 @@ public class Agent : MonoBehaviour
 
     public Team GetTeam()
     {
-        return controller.GetTeam();
+        if (controller != null)
+        {
+            return controller.GetTeam();
+        }
+        return team;
     }
 
     public EyeSightManager GetEyeSightManager()
@@ -250,6 +263,14 @@ public class Agent : MonoBehaviour
         mainSelectionProjector.SetActive(false);
     }
     #endregion
+
+    private void Awake()
+    {
+        if (controller != null)
+        {
+            return;
+        }
+    }
 
     private void Update()
     {
