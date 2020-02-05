@@ -4464,7 +4464,7 @@ GameObject:
   - component: {fileID: 8614354840003571635}
   - component: {fileID: 8614354840003571268}
   - component: {fileID: 8614354840003571271}
-  - component: {fileID: 8614354840003571270}
+  - component: {fileID: 1198419913174408999}
   - component: {fileID: 8614354840003571641}
   - component: {fileID: 8614354840003571640}
   - component: {fileID: 8614354840003571643}
@@ -4553,9 +4553,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthData: {fileID: 11400000, guid: c011a79d9f3d502438bcc9737216c613, type: 2}
   healthPoints: 100
-  deathManager: {fileID: 8614354840003571270}
+  deathManager: {fileID: 1198419913174408999}
   unit: {fileID: 8614354840003571641}
---- !u!114 &8614354840003571270
+--- !u!114 &1198419913174408999
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4564,11 +4564,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8614354840003571634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd7fc2a37845f7d41ae844c039dff82a, type: 3}
+  m_Script: {fileID: 11500000, guid: bc9c0debddfab3643ade1db028a05eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   localOffset: {x: 0, y: 1, z: 0}
   pooledObject: {fileID: 1351863018}
+  agent: {fileID: 8614354840003571644}
+  deathParticlesKey: GreenGuysDeathParticlesPoolKey
 --- !u!114 &8614354840003571641
 MonoBehaviour:
   m_ObjectHideFlags: 0
