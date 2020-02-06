@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: RifleManAgentSettings
   m_EditorClassIdentifier: 
   lookDistance: 60
+  spreadValue: 2

@@ -10,43 +10,43 @@ public class SelectionManager : MonoBehaviour
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Selection box accuracy")]
-    float selectionBoxAccuracy = 0.05f;
+    private float selectionBoxAccuracy = 0.05f;
 
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Does  frustrum collider distance equal to camera far clip distance")]
-    bool equalToCameraFarDistance = false;
+    private bool equalToCameraFarDistance = false;
 
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Selection distance")]
     [HideIf("equalToCameraFarDistance")]
-    float selectionDistance = 50;
+    private float selectionDistance = 50;
 
     [SerializeField]
     [Required]
-    Camera playersCamera;
+    private Camera playersCamera;
 
     [SerializeField]
     [Required]
-    Frustum frustumMeshBuilder;
+    private Frustum frustumMeshBuilder;
 
     [SerializeField]
     [Required]
-    MeshCollider meshCollider;
+    private MeshCollider meshCollider;
 
     //[Tooltip("Units available for selection")]
     //[SerializeField]
     //List<Agent> availableAgents = new List<Agent>();
 
-    RectDrawer rectDrawer;
-    Vector3 startMousePosition;
-    Vector3 finishMousePosition;
-    Vector3 normalizedStartMousePosition;
-    Vector3 normalizedFinishMousePosition;
+    private RectDrawer rectDrawer;
+    private Vector3 startMousePosition;
+    private Vector3 finishMousePosition;
+    private Vector3 normalizedStartMousePosition;
+    private Vector3 normalizedFinishMousePosition;
 
-    Formation currentFormation = null;
-    List<Formation> availableFormations = new List<Formation>();
+    private Formation currentFormation = null;
+    private List<Formation> availableFormations = new List<Formation>();
 
     private void Start()
     {

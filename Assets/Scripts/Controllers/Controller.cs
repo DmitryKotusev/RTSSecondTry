@@ -13,10 +13,19 @@ abstract public class Controller : MonoBehaviour
     static HashSet<short> controllerIdsPool = new HashSet<short>();
 
     [SerializeField]
+    [Required]
     Team team;
 
     public void Awake()
     {
+        LevelManager.Instance.ControllersHub.RegisterController(this);
+        Debug.Log("Controller " + name + " registered");
+    }
+
+    public void OnDestroy()
+    {
+        LevelManager.Instance.ControllersHub.UnregisterController(this);
+        Debug.Log("Controller " + name + " unregistered");
     }
 
     // Getters and setters

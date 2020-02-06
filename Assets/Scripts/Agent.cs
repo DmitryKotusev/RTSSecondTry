@@ -270,6 +270,8 @@ public class Agent : MonoBehaviour
         {
             return;
         }
+
+        LevelManager.Instance.ControllersHub.FindControllerForAgent(this);
     }
 
     private void Update()

@@ -1,13 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
+﻿using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField]
+    private ControllersHub controllersHub = new ControllersHub();
+
     static public LevelManager Instance { get; private set; }
 
-    private void Start()
+    public ControllersHub ControllersHub
+    {
+        get
+        {
+            return controllersHub;
+        }
+    }
+
+    private void Awake()
     {
         if (Instance == null)
         {

@@ -8,11 +8,22 @@ public class AgentSettings : ScriptableObject
     [SerializeField]
     float lookDistance;
 
+    [SerializeField]
+    int spreadValue;
+
     public float LookDistance
     {
         get
         {
             return lookDistance;
+        }
+    }
+
+    public int SpreadValue
+    {
+        get
+        {
+            return spreadValue;
         }
     }
 }
