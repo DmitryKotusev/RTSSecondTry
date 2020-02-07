@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Linq;
 
-public class SelectionManager : MonoBehaviour
+public class SelectionManager : MonoBehaviour, IAgentsHandler
 {
     [BoxGroup("Settings")]
     [SerializeField]
@@ -72,6 +72,38 @@ public class SelectionManager : MonoBehaviour
             currentFormation = null;
         }
         return currentFormation;
+    }
+    #endregion
+
+    // IAgentsHandler implementation
+    #region
+    public List<Agent> GetAllAvailableAgents()
+    {
+        List<Agent> resultList = new List<Agent>();
+
+        foreach (Formation formation in availableFormations)
+        {
+            resultList.AddRange(formation.GetAllFormationAgents());
+        }
+
+        return resultList;
+    }
+
+    public void RegisterAgent(Agent agent)
+    {
+        if (agent.GetCurrentFormation() == null)
+        {
+            Formation agentsNewFormation = new Formation(agent);
+            availableFormations.Add(agentsNewFormation);
+            Debug.Log("Available formations count:" + availableFormations.Count);
+        }
+    }
+
+    public void UnregisterAgent(Agent agent)
+    {
+        Formation oldAgentsFormation = agent.GetCurrentFormation();
+        oldAgentsFormation?.RemoveAgentFromFormation(agent);
+        TryRemoveFormation(oldAgentsFormation);
     }
     #endregion
 
@@ -253,9 +285,9 @@ public class SelectionManager : MonoBehaviour
 
         foreach (var selectionBoxObject in latestDetectedSelectionBoxObjects)
         {
-            if (selectionBoxObject.tag == "Selectable")
+            Agent agent = selectionBoxObject.GetComponent<Agent>();
+            if (agent != null)
             {
-                Agent agent = selectionBoxObject.GetComponent<Agent>();
                 if (GetComponent<Controller>() == agent.GetController())
                 {
                     agentsList.Add(agent);
@@ -284,11 +316,7 @@ public class SelectionManager : MonoBehaviour
                 {
                     Formation oldAgentsFormation = agent.GetCurrentFormation();
                     oldAgentsFormation?.RemoveAgentFromFormation(agent);
-                    if (oldAgentsFormation != null && oldAgentsFormation.IsEmpty())
-                    {
-                        availableFormations.Remove(oldAgentsFormation);
-                    }
-
+                    TryRemoveFormation(oldAgentsFormation);
                     maxAgentsFormation.AddAgentToFormation(agent);
                 }
             }
@@ -302,10 +330,7 @@ public class SelectionManager : MonoBehaviour
         {
             Formation oldAgentsFormation = agent.GetCurrentFormation();
             oldAgentsFormation?.RemoveAgentFromFormation(agent);
-            if (oldAgentsFormation != null && oldAgentsFormation.IsEmpty())
-            {
-                availableFormations.Remove(oldAgentsFormation);
-            }
+            TryRemoveFormation(oldAgentsFormation);
             newCurrentFormation.AddAgentToFormation(agent);
         }
         currentFormation = newCurrentFormation;
@@ -364,9 +389,9 @@ public class SelectionManager : MonoBehaviour
         RaycastHit raycastHit;
         if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, selectionDistance))
         {
-            if (raycastHit.transform.tag == "Selectable")
+            Agent agent = raycastHit.transform.GetComponent<Agent>();
+            if (agent != null)
             {
-                Agent agent = raycastHit.transform.GetComponent<Agent>();
                 if (GetComponent<Controller>() != agent.GetController())
                 {
                     ClearCurrentSelection();
@@ -446,16 +471,21 @@ public class SelectionManager : MonoBehaviour
         else
         {
             agentsOldFormation.RemoveAgentFromFormation(newAgent);
-            if (agentsOldFormation.IsEmpty())
-            {
-                availableFormations.Remove(agentsOldFormation);
-            }
+            TryRemoveFormation(agentsOldFormation);
             currentFormation.AddAgentToFormation(newAgent);
             newAgent.MarkAsSelected();
         }
     }
 
-    void ClearCurrentSelection()
+    private void TryRemoveFormation(Formation formation)
+    {
+        if (formation != null && formation.IsEmpty())
+        {
+            availableFormations.Remove(formation);
+        }
+    }
+
+    private void ClearCurrentSelection()
     {
         if (currentFormation != null)
         {

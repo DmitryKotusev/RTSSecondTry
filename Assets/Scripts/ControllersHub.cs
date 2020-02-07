@@ -4,8 +4,8 @@ using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
 
-[Serializable]
-public class ControllersHub
+[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/Controllers/ControllersHub", menuName = "CustomScriptables/ControllersHub")]
+public class ControllersHub : ScriptableObject
 {
     [SerializeField]
     [Required]
@@ -52,6 +52,22 @@ public class ControllersHub
         Controller appropriateController = FindAppropriateController(agent, agentsTeam);
 
         agent.SetController(appropriateController);
+
+        RegisterNewAgent(agent);
+    }
+
+    private void RegisterNewAgent(Agent agent)
+    {
+        Controller agentsController = agent.GetController();
+
+        IAgentsHandler agentsHandler = agentsController.GetAgentsHandler();
+
+        // TODO: Rework logic for AI
+
+        if (agentsHandler != null)
+        {
+            agentsHandler.RegisterAgent(agent);
+        }
     }
 
     private Controller FindAppropriateController(Agent agent, Team agentsTeam)
@@ -65,7 +81,7 @@ public class ControllersHub
             return aiController;
         }
 
-        // TODO: Rework logic
+        // TODO: Rework logic for AI
         return controllerLists[agentsTeam][0];
     }
 

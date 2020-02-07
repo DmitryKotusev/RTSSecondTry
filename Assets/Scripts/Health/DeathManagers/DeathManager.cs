@@ -25,8 +25,6 @@ public class DeathManager : MonoBehaviour
             particlesObject.transform.position = transform.position + transform.InverseTransformVector(localOffset);
         }
 
-        agent?.GetCurrentFormation()?.RemoveAgentFromFormation(agent);
-
         if (pooledObject.pool != null)
         {
             pooledObject.pool.ReturnObject(gameObject);

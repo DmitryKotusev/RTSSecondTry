@@ -10,44 +10,49 @@ public class Agent : MonoBehaviour
     [BoxGroup("Projectors")]
     [SerializeField]
     [Tooltip("Projector used to highlight if unit is in selection list")]
-    GameObject selectionProjector;
+    private GameObject selectionProjector;
 
     [BoxGroup("Projectors")]
     [SerializeField]
     [Tooltip("Projector used to highlight if unit is main in selection list")]
-    GameObject mainSelectionProjector;
+    private GameObject mainSelectionProjector;
 
     [BoxGroup("Settings")]
     [SerializeField]
     [Tooltip("Agent's settings")]
     [Required]
-    AgentSettings agentSettings;
+    private AgentSettings agentSettings;
 
     [SerializeField]
     [Tooltip("Controller that is able to give commands to this unit")]
-    Controller controller;
+    private Controller controller;
 
     [SerializeField]
     [Tooltip("Default team in which agent will try to find controller")]
     [Required]
-    Team team;
+    private Team team;
+
+    [SerializeField]
+    [Tooltip("Controllers' hub that is the place where an agent can find a controller")]
+    [Required]
+    private ControllersHub controllersHub;
 
     [SerializeField]
     [Tooltip("AI path handler")]
     [Required]
-    RichAI aiPathHandler;
+    private RichAI aiPathHandler;
 
     [SerializeField]
     [Required]
-    AgentWeaponManager weaponManager;
+    private AgentWeaponManager weaponManager;
 
     [SerializeField]
     [Required]
-    EyeSightManager eyeSightManager;
+    private EyeSightManager eyeSightManager;
 
     [SerializeField]
     [Required]
-    SoldierBasic soldierBasic;
+    private SoldierBasic soldierBasic;
     public SoldierBasic SoldierBasic
     {
         get
@@ -264,20 +269,37 @@ public class Agent : MonoBehaviour
     }
     #endregion
 
-    private void Awake()
+    public void FindRandomControllerForAgent()
     {
         if (controller != null)
         {
             return;
         }
 
-        LevelManager.Instance.ControllersHub.FindControllerForAgent(this);
+        controllersHub.FindControllerForAgent(this);
     }
 
+    private void OnEnable()
+    {
+        FindRandomControllerForAgent();
+    }
+
+    private void OnDisable()
+    {
+        ClearControllerInfo();
+    }
+    
     private void Update()
     {
         CheckCurrentState();
         CurrentBehaviour();
+    }
+
+    private void ClearControllerInfo()
+    {
+        IAgentsHandler agentsHandler = controller?.GetAgentsHandler();
+        agentsHandler?.UnregisterAgent(this);
+        controller = null;
     }
 
     private void CheckCurrentState()

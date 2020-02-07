@@ -4713,6 +4713,7 @@ MonoBehaviour:
   agentSettings: {fileID: 11400000, guid: 3f5ea7759be7f5e42b2924f92d1b21ef, type: 2}
   controller: {fileID: 0}
   team: {fileID: 11400000, guid: 4ebf381d6f8df2540a33a759196ecb9e, type: 2}
+  controllersHub: {fileID: 11400000, guid: 1c2f63f7d4f06e0499bf258ed9c56ee6, type: 2}
   aiPathHandler: {fileID: 8614354840003571646}
   weaponManager: {fileID: 8614354840003571640}
   eyeSightManager: {fileID: 8614354840003571645}

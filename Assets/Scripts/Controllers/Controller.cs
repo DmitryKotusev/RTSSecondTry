@@ -10,21 +10,24 @@ using Sirenix.OdinInspector;
 /// </summary>
 abstract public class Controller : MonoBehaviour
 {
-    static HashSet<short> controllerIdsPool = new HashSet<short>();
-
     [SerializeField]
     [Required]
     Team team;
 
+    [SerializeField]
+    [Tooltip("Controllers' hub where controller should register when game starts")]
+    [Required]
+    private ControllersHub controllersHub;
+
     public void Awake()
     {
-        LevelManager.Instance.ControllersHub.RegisterController(this);
+        controllersHub.RegisterController(this);
         Debug.Log("Controller " + name + " registered");
     }
 
     public void OnDestroy()
     {
-        LevelManager.Instance.ControllersHub.UnregisterController(this);
+        controllersHub.UnregisterController(this);
         Debug.Log("Controller " + name + " unregistered");
     }
 
@@ -40,4 +43,9 @@ abstract public class Controller : MonoBehaviour
         return team;
     }
     #endregion
+
+    virtual public IAgentsHandler GetAgentsHandler()
+    {
+        return null;
+    }
 }

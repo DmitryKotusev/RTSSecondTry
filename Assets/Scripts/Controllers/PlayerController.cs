@@ -23,12 +23,17 @@ public class PlayerController : Controller
     [Required]
     ControllerSettings controllerSettings;
 
+    override public IAgentsHandler GetAgentsHandler()
+    {
+        return selectionManager;
+    }
+
     private void Update()
     {
         SendCurrentCommandsToCurrentFormation();
     }
 
-    void SendCurrentCommandsToCurrentFormation()
+    private void SendCurrentCommandsToCurrentFormation()
     {
         if (selectionManager.GetCurrentFormation() == null)
         {
