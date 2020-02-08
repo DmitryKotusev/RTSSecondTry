@@ -104,14 +104,14 @@ public class Frustum : MonoBehaviour
         if (!splitVertices)
         {
 
-            meshVertices.Add(A1);
-            meshVertices.Add(A2);
-            meshVertices.Add(A3);
-            meshVertices.Add(A4);
-            meshVertices.Add(B1);
-            meshVertices.Add(B2);
-            meshVertices.Add(B3);
-            meshVertices.Add(B4);
+            meshVertices.Add(A1); // 0
+            meshVertices.Add(A2); // 1
+            meshVertices.Add(A3); // 2
+            meshVertices.Add(A4); // 3
+            meshVertices.Add(B1); // 4
+            meshVertices.Add(B2); // 5
+            meshVertices.Add(B3); // 6
+            meshVertices.Add(B4); // 7
 
 
 

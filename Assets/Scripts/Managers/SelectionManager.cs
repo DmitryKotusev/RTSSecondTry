@@ -27,14 +27,6 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
     [Required]
     private Camera playersCamera;
 
-    [SerializeField]
-    [Required]
-    private Frustum frustumMeshBuilder;
-
-    [SerializeField]
-    [Required]
-    private MeshCollider meshCollider;
-
     //[Tooltip("Units available for selection")]
     //[SerializeField]
     //List<Agent> availableAgents = new List<Agent>();
@@ -55,11 +47,9 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     // Selection box variables
     #region
-    private bool leftMousePhysicsUp = false;
-    private bool leftShiftPhysics = false;
     private bool isSelecting = false;
 
-    private HashSet<GameObject> latestDetectedSelectionBoxObjects = new HashSet<GameObject>();
+    private HashSet<Agent> latestDetectedSelectionBoxObjects = new HashSet<Agent>();
     // private bool wasOnTriggerAbleToBeCalled = false;
     #endregion
 
@@ -111,7 +101,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
     {
         get
         {
-            return !leftMousePhysicsUp;
+            return !isSelecting;
         }
     }
 
@@ -128,101 +118,37 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         rectDrawer.MouseClickControl();
         RegisterMousePositions();
         CheckSelectionWithSingleClick();
-    }
-
-    private void FixedUpdate()
-    {
         CheckSelectionWithRect();
     }
 
     private void CheckSelectionWithRect()
     {
-        if (leftMousePhysicsUp)
+        if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
         {
-            if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
-            {
-                leftMousePhysicsUp = false;
-                leftShiftPhysics = false;
-                return;
-            }
-
-            if (meshCollider.enabled)
-            {
-                SelectionWithRect();
-                leftMousePhysicsUp = false;
-                leftShiftPhysics = false;
-                meshCollider.enabled = false;
-                // Clear collider hashset
-                latestDetectedSelectionBoxObjects.Clear();
-            }
-            else
-            {
-                try
-                {
-                    BuildColliderMesh();
-                    meshCollider.enabled = true;
-                }
-                catch (Exception exception)
-                {
-                    Debug.Log("Exception when building mesh collider: " + exception.Message);
-                    leftMousePhysicsUp = false;
-                    leftShiftPhysics = false;
-                    latestDetectedSelectionBoxObjects.Clear();
-                }
-                
-            }
+            return;
         }
+
+        if (!Input.GetMouseButtonUp(0))
+        {
+            return;
+        }
+
+        Rect selectRect = GetSelectionRectangle();
+
+        List<Vector3> nearClipCorners = GetNearClipCorners(selectRect);
+
+        List<Vector3> farClipCorners = GetFarClipCorners(selectRect);
+
+        Plane[] selectionRectFrustumPlanes = CalculateSelectionRectFrustumPlanes(nearClipCorners, farClipCorners);
+
+        DetectSelectionBoxObjects(selectionRectFrustumPlanes);
+
+        AdjustFormationWithBoxSelection();
     }
 
-    private void OnTriggerStay(Collider other)
+    private void AdjustFormationWithBoxSelection()
     {
-        if (other.attachedRigidbody != null)
-        {
-            latestDetectedSelectionBoxObjects.Add(other.attachedRigidbody.gameObject);
-        }
-    }
-
-    private void OnGUI()
-    {
-        rectDrawer.DrawRect(selectionBoxAccuracy, playersCamera);
-    }
-
-    private void RegisterKeyBoardTriggers()
-    {
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            leftShiftPhysics = true;
-        }
-        else
-        {
-            leftShiftPhysics = false;
-        }
-    }
-
-    private void RegisterMousePositions()
-    {
-        if (IsSelectionCycleFinished)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                isSelecting = true;
-                startMousePosition = Input.mousePosition;
-                normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                isSelecting = false;
-                finishMousePosition = Input.mousePosition;
-                normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
-                leftMousePhysicsUp = true;
-                RegisterKeyBoardTriggers();
-            }
-        }
-    }
-
-    private void SelectionWithRect()
-    {
-        if (!leftShiftPhysics)
+        if (!Input.GetKey(KeyCode.LeftShift))
         {
             ClearCurrentSelection();
             FormNewFormationFromBoxSelection();
@@ -238,18 +164,144 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
                 FormNewFormationFromBoxSelection();
             }
         }
-        Debug.Log("Available formations count:" + availableFormations.Count);
+    }
+
+    private void DetectSelectionBoxObjects(Plane[] selectionRectFrustumPlanes)
+    {
+        latestDetectedSelectionBoxObjects.Clear();
+
+        List<Agent> availableAgents = GetAllAvailableAgents();
+
+        foreach(Agent agent in availableAgents)
+        {
+            Unit unit = agent.SoldierBasic;
+
+            List<ColliderCostPair> colliderCostPairs = unit.GetHitCollidersCosts();
+
+            foreach(ColliderCostPair colliderCostPair in colliderCostPairs)
+            {
+                Bounds colliderBounds = colliderCostPair.collider.bounds;
+
+                if (GeometryUtility.TestPlanesAABB(selectionRectFrustumPlanes, colliderBounds))
+                {
+                    latestDetectedSelectionBoxObjects.Add(agent);
+                    break;
+                }
+            }
+        }
+    }
+
+    private Plane[] CalculateSelectionRectFrustumPlanes(List<Vector3> nearClipCorners, List<Vector3> farClipCorners)
+    {
+        Vector3 A0 = nearClipCorners[0];
+
+        Vector3 A1 = nearClipCorners[1];
+
+        Vector3 A2 = nearClipCorners[2];
+
+        Vector3 A3 = nearClipCorners[3];
+
+        Vector3 A4 = farClipCorners[0];
+
+        Vector3 A5 = farClipCorners[1];
+
+        Vector3 A6 = farClipCorners[2];
+
+        Vector3 A7 = farClipCorners[3];
+
+        Plane leftPlane = new Plane(A0, A5, A1);
+
+        Plane rightPlane = new Plane(A2, A6, A7);
+
+        Plane downPlane = new Plane(A0, A3, A7);
+
+        Plane upPlane = new Plane(A1, A5, A6);
+
+        Plane nearPlane = new Plane(A0, A1, A2);
+
+        Plane farPlane = new Plane(A4, A7, A6);
+
+        return new Plane[]
+        {
+            leftPlane.flipped,
+            rightPlane.flipped,
+            downPlane.flipped,
+            upPlane.flipped,
+            nearPlane.flipped,
+            farPlane.flipped
+        };
+    }
+
+    private List<Vector3> GetFarClipCorners(Rect selectRect)
+    {
+        var farClipCorners = new Vector3[4];
+        if (equalToCameraFarDistance)
+        {
+            playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        }
+        else
+        {
+            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
+                Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
+        }
+
+        List<Vector3> farClipCornersWorld = new List<Vector3>(farClipCorners.Select((localPoint) =>
+        {
+            return playersCamera.transform.TransformPoint(localPoint);
+        }));
+
+        return farClipCornersWorld;
+    }
+
+    private List<Vector3> GetNearClipCorners(Rect selectRect)
+    {
+        var nearClipCorners = new Vector3[4];
+        playersCamera.CalculateFrustumCorners(selectRect, playersCamera.nearClipPlane, Camera.MonoOrStereoscopicEye.Mono, nearClipCorners);
+        List<Vector3> nearClipCornersWorld = new List<Vector3>(nearClipCorners.Select((localPoint) =>
+        {
+            return playersCamera.transform.TransformPoint(localPoint);
+        }));
+
+        return nearClipCornersWorld;
+    }
+
+    private Rect GetSelectionRectangle()
+    {
+        var topLeft = Vector3.Min(normalizedStartMousePosition, normalizedFinishMousePosition);
+        var bottomRight = Vector3.Max(normalizedStartMousePosition, normalizedFinishMousePosition);
+        Rect selectRect = Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+        return selectRect;
+    }
+
+    private void OnGUI()
+    {
+        rectDrawer.DrawRect(selectionBoxAccuracy, playersCamera);
+    }
+
+    private void RegisterMousePositions()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            isSelecting = true;
+            startMousePosition = Input.mousePosition;
+            normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isSelecting = false;
+            finishMousePosition = Input.mousePosition;
+            normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
+        }
     }
 
     private void AddNewAgentsToCurrentFormation()
     {
         List<Agent> agentsList = new List<Agent>();
 
-        foreach (var selectionBoxObject in latestDetectedSelectionBoxObjects)
+        foreach (var agent in latestDetectedSelectionBoxObjects)
         {
-            if (selectionBoxObject.tag == "Selectable")
+            if (agent != null)
             {
-                Agent agent = selectionBoxObject.GetComponent<Agent>();
                 if (GetComponent<Controller>() == agent.GetController())
                 {
                     agentsList.Add(agent);
@@ -283,9 +335,8 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         // Logic
         List<Agent> agentsList = new List<Agent>();
 
-        foreach (var selectionBoxObject in latestDetectedSelectionBoxObjects)
+        foreach (var agent in latestDetectedSelectionBoxObjects)
         {
-            Agent agent = selectionBoxObject.GetComponent<Agent>();
             if (agent != null)
             {
                 if (GetComponent<Controller>() == agent.GetController())
@@ -336,42 +387,6 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         currentFormation = newCurrentFormation;
         availableFormations.Add(newCurrentFormation);
         MarkAgentsAsSelected(currentFormation);
-    }
-
-    private void BuildColliderMesh()
-    {
-        var topLeft = Vector3.Min(normalizedStartMousePosition, normalizedFinishMousePosition);
-        var bottomRight = Vector3.Max(normalizedStartMousePosition, normalizedFinishMousePosition);
-        Rect selectRect = Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
-
-        var nearClipCorners = new Vector3[4];
-        playersCamera.CalculateFrustumCorners(selectRect, playersCamera.nearClipPlane, Camera.MonoOrStereoscopicEye.Mono, nearClipCorners);
-        List<Vector3> nearClipCornersWorld = new List<Vector3>(nearClipCorners.Select((localPoint) =>
-        {
-            return playersCamera.transform.TransformPoint(localPoint);
-        }));
-
-        var farClipCorners = new Vector3[4];
-        if (equalToCameraFarDistance)
-        {
-            playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
-        }
-        else
-        {
-            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
-                Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
-        }
-
-        List<Vector3> farClipCornersWorld = new List<Vector3>(farClipCorners.Select((localPoint) =>
-        {
-            return playersCamera.transform.TransformPoint(localPoint);
-        }));
-
-        frustumMeshBuilder.SetNearPlanePoints(nearClipCornersWorld);
-        frustumMeshBuilder.SetFarPlanePoints(farClipCornersWorld);
-        frustumMeshBuilder.GenerateNewMesh();
-
-        meshCollider.sharedMesh = frustumMeshBuilder.FrustumMesh;
     }
 
     private void CheckSelectionWithSingleClick()
