@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Sirenix.OdinInspector;
 using Pathfinding;
 using System;
@@ -9,13 +8,16 @@ public class Agent : MonoBehaviour
 {
     [BoxGroup("Projectors")]
     [SerializeField]
-    [Tooltip("Projector used to highlight if unit is in selection list")]
-    private GameObject selectionProjector;
-
-    [BoxGroup("Projectors")]
-    [SerializeField]
-    [Tooltip("Projector used to highlight if unit is main in selection list")]
-    private GameObject mainSelectionProjector;
+    [Tooltip("Selection marker used to mark agents when selected")]
+    [Required]
+    private SelectionMarker selectionMarker;
+    public SelectionMarker SelectionMarker
+    {
+        get
+        {
+            return selectionMarker;
+        }
+    }
 
     [BoxGroup("Settings")]
     [SerializeField]
@@ -247,25 +249,6 @@ public class Agent : MonoBehaviour
     public void ClearCurrentGoal()
     {
         currentGoal = null;
-    }
-    #endregion
-
-    // Selection mark methods
-    #region
-    public void MarkAsSelected()
-    {
-        selectionProjector.SetActive(true);
-    }
-
-    public void MarkAsMainSelected()
-    {
-        mainSelectionProjector.SetActive(true);
-    }
-
-    public void MarkAsUnselected()
-    {
-        selectionProjector.SetActive(false);
-        mainSelectionProjector.SetActive(false);
     }
     #endregion
 

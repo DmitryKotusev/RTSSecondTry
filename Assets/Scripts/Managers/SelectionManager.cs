@@ -92,7 +92,21 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
     public void UnregisterAgent(Agent agent)
     {
         Formation oldAgentsFormation = agent.GetCurrentFormation();
+
+        if (oldAgentsFormation == currentFormation)
+        {
+            agent.SelectionMarker.MarkAsUnselected();
+        }
+
+        bool isAgentLeaderOfCurrentSelection = currentFormation != null ? currentFormation.IsLeader(agent) : false;
+
         oldAgentsFormation?.RemoveAgentFromFormation(agent);
+
+        if (isAgentLeaderOfCurrentSelection)
+        {
+            MarkAgentsAsSelected(currentFormation);
+        }
+
         TryRemoveFormation(oldAgentsFormation);
     }
     #endregion
@@ -462,7 +476,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
                 currentFormation.RemoveAgentFromFormation(newAgent);
                 Formation agentsNewFormation = new Formation(newAgent);
                 availableFormations.Add(agentsNewFormation);
-                newAgent.MarkAsUnselected();
+                newAgent.SelectionMarker.MarkAsUnselected();
             }
         }
         // CurrentFormation == null
@@ -480,7 +494,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
                 availableFormations.Add(agentsNewFormation);
                 currentFormation = agentsNewFormation;
             }
-            newAgent.MarkAsMainSelected();
+            newAgent.SelectionMarker.MarkAsMainSelected();
         }
         // CurrentFormation != null && agentsOldFormation != currentFormation
         else
@@ -488,7 +502,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
             agentsOldFormation.RemoveAgentFromFormation(newAgent);
             TryRemoveFormation(agentsOldFormation);
             currentFormation.AddAgentToFormation(newAgent);
-            newAgent.MarkAsSelected();
+            newAgent.SelectionMarker.MarkAsSelected();
         }
     }
 
@@ -497,6 +511,10 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         if (formation != null && formation.IsEmpty())
         {
             availableFormations.Remove(formation);
+            if (formation == currentFormation)
+            {
+                ClearCurrentSelection();
+            }
         }
     }
 
@@ -506,7 +524,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         {
             foreach (Agent agent in currentFormation)
             {
-                agent.MarkAsUnselected();
+                agent.SelectionMarker.MarkAsUnselected();
             }
             currentFormation = null;
         }
@@ -556,11 +574,11 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     private void MarkAgentsAsSelected(Formation currentFormation)
     {
-        currentFormation.GetFormationLeader()?.MarkAsMainSelected();
+       currentFormation.GetFormationLeader()?.SelectionMarker.MarkAsMainSelected();
 
-        foreach(var agent in currentFormation.GetFormationAgentsWithoutLeader())
-        {
-            agent.MarkAsSelected();
-        }
+       foreach(var agent in currentFormation.GetFormationAgentsWithoutLeader())
+       {
+           agent.SelectionMarker.MarkAsSelected();
+       }
     }
 }
