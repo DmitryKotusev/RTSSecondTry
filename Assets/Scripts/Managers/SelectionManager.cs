@@ -7,21 +7,9 @@ using System.Linq;
 
 public class SelectionManager : MonoBehaviour, IAgentsHandler
 {
-    [BoxGroup("Settings")]
     [SerializeField]
-    [Tooltip("Selection box accuracy")]
-    private float selectionBoxAccuracy = 0.05f;
-
-    [BoxGroup("Settings")]
-    [SerializeField]
-    [Tooltip("Does  frustrum collider distance equal to camera far clip distance")]
-    private bool equalToCameraFarDistance = false;
-
-    [BoxGroup("Settings")]
-    [SerializeField]
-    [Tooltip("Selection distance")]
-    [HideIf("equalToCameraFarDistance")]
-    private float selectionDistance = 50;
+    [Required]
+    private SelectionManagerSettings selectionManagerSettings;
 
     [SerializeField]
     [Required]
@@ -137,7 +125,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     private void CheckSelectionWithRect()
     {
-        if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy)
+        if (Vector3.Distance(startMousePosition, finishMousePosition) <= selectionManagerSettings.SelectionBoxAccuracy)
         {
             return;
         }
@@ -249,13 +237,13 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
     private List<Vector3> GetFarClipCorners(Rect selectRect)
     {
         var farClipCorners = new Vector3[4];
-        if (equalToCameraFarDistance)
+        if (selectionManagerSettings.EqualToCameraFarDistance)
         {
             playersCamera.CalculateFrustumCorners(selectRect, playersCamera.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
         }
         else
         {
-            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
+            playersCamera.CalculateFrustumCorners(selectRect, Mathf.Clamp(selectionManagerSettings.SelectionDistance, playersCamera.nearClipPlane, playersCamera.farClipPlane),
                 Camera.MonoOrStereoscopicEye.Mono, farClipCorners);
         }
 
@@ -289,7 +277,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     private void OnGUI()
     {
-        rectDrawer.DrawRect(selectionBoxAccuracy, playersCamera);
+        rectDrawer.DrawRect(selectionManagerSettings.SelectionBoxAccuracy, playersCamera);
     }
 
     private void RegisterMousePositions()
@@ -405,7 +393,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     private void CheckSelectionWithSingleClick()
     {
-        if (!(Vector3.Distance(startMousePosition, finishMousePosition) <= selectionBoxAccuracy))
+        if (!(Vector3.Distance(startMousePosition, finishMousePosition) <= selectionManagerSettings.SelectionBoxAccuracy))
         {
             return;
         }
@@ -416,7 +404,7 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         }
 
         RaycastHit raycastHit;
-        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, selectionDistance))
+        if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, selectionManagerSettings.SelectionDistance))
         {
             Agent agent = raycastHit.transform.GetComponent<Agent>();
             if (agent != null)

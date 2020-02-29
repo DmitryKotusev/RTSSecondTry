@@ -56,7 +56,7 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    bool CheckIfReachedTarget()
+    private bool CheckIfReachedTarget()
     {
         if (hasReachedTarget)
         {

@@ -29,6 +29,21 @@ public class GunInfo : ScriptableObject
     [Tooltip("Bullets per clip")]
     protected int bulletsPerClip = 30;
 
+    [BoxGroup("Gun Info")]
+    [SerializeField]
+    [Tooltip("Gun fire distance (in meters)")]
+    protected int fireDistance = 60;
+
+    [BoxGroup("Gun Info")]
+    [SerializeField]
+    [Tooltip("Weapon's spread")]
+    protected float spread = 0.1f;
+
+    //[BoxGroup("Gun Info")]
+    //[SerializeField]
+    //[Tooltip("Weapon's spread")]
+    //protected float spread = 0.1f;
+
     public float RateOfFire
     {
         get
@@ -66,6 +81,22 @@ public class GunInfo : ScriptableObject
         get
         {
             return bulletsPerClip;
+        }
+    }
+
+    public int FireDistance
+    {
+        get
+        {
+            return fireDistance;
+        }
+    }
+
+    public float Spread
+    {
+        get
+        {
+            return spread;
         }
     }
 }

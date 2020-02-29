@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using Sirenix.OdinInspector;
 
 public class M16Riffle : BigGun
@@ -19,6 +20,13 @@ public class M16Riffle : BigGun
         GameObject bulletGameObject = PoolsManager.GetObjectPool(PoolsKeys.m16BulletsPoolKey).GetObject();
         bulletGameObject.transform.position = roundEmitter.position;
         bulletGameObject.transform.rotation = roundEmitter.rotation;
+
+        Vector3 accurateShotVector = roundEmitter.forward * gunInfo.ProjectileSpeed;
+        float randomRotationDegree = Random.Range(0, 360);
+        float randomSpreadMagnitude = Random.Range(0, gunInfo.Spread);
+        Vector3 spreadVector = Quaternion.AngleAxis(randomRotationDegree, accurateShotVector) * roundEmitter.right * randomSpreadMagnitude;
+        Vector3 resultVector = spreadVector + accurateShotVector;
+        bulletGameObject.transform.rotation = Quaternion.LookRotation(resultVector);
 
         // Reset tail
         TrailRenderer trailRenderer = bulletGameObject.GetComponent<TrailRenderer>();
@@ -50,6 +58,33 @@ public class M16Riffle : BigGun
         if (timeTillNextShot > 0)
         {
             timeTillNextShot = Mathf.Clamp(timeTillNextShot - Time.deltaTime, 0f, timeTillNextShot);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        RaycastHit raycastHit;
+        if (Physics.Raycast(roundEmitter.position, roundEmitter.forward, out raycastHit))
+        {
+            if (gunInfo.FireDistance >= raycastHit.distance)
+            {
+                Gizmos.color = Color.green;
+                Handles.color = Color.green;
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                Handles.color = Color.red;
+            }
+
+            Vector3 pathVector = raycastHit.point - roundEmitter.position;
+            Gizmos.DrawLine(roundEmitter.position, raycastHit.point);
+            Handles.DrawWireArc(
+                raycastHit.point,
+                pathVector,
+                roundEmitter.right,
+                360,
+                pathVector.magnitude / gunInfo.ProjectileSpeed * gunInfo.Spread);
         }
     }
 }
