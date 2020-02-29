@@ -27,5 +27,7 @@ public abstract class Gun : Item
 
     protected float timeTillNextShot = 0f;
 
+    protected float currentSpread;
+
     public abstract void Fire();
 }

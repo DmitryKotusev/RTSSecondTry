@@ -11,6 +11,8 @@ public class M16Riffle : BigGun
         {
             ShootBullet();
 
+            IncreaseCurrentSpread();
+
             timeTillNextShot = 1 / gunInfo.RateOfFire * 60f;
         }
     }
@@ -23,7 +25,7 @@ public class M16Riffle : BigGun
 
         Vector3 accurateShotVector = roundEmitter.forward * gunInfo.ProjectileSpeed;
         float randomRotationDegree = Random.Range(0, 360);
-        float randomSpreadMagnitude = Random.Range(0, gunInfo.Spread);
+        float randomSpreadMagnitude = Random.Range(0, currentSpread);
         Vector3 spreadVector = Quaternion.AngleAxis(randomRotationDegree, accurateShotVector) * roundEmitter.right * randomSpreadMagnitude;
         Vector3 resultVector = spreadVector + accurateShotVector;
         bulletGameObject.transform.rotation = Quaternion.LookRotation(resultVector);
@@ -48,9 +50,16 @@ public class M16Riffle : BigGun
         shotEffect.ShowEffect();
     }
 
+    private void IncreaseCurrentSpread()
+    {
+        // currentSpread = Mathf.Lerp(currentSpread, gunInfo.MaxSpread, gunInfo.SpreadIncreseSpeed);
+        currentSpread = Mathf.Clamp(currentSpread + gunInfo.SpreadIncreseSpeed, gunInfo.Spread, gunInfo.MaxSpread);
+    }
+
     private void Update()
     {
         UpdateTimeTillNextShot();
+        UpdateCurrentSpead();
     }
 
     private void UpdateTimeTillNextShot()
@@ -59,6 +68,11 @@ public class M16Riffle : BigGun
         {
             timeTillNextShot = Mathf.Clamp(timeTillNextShot - Time.deltaTime, 0f, timeTillNextShot);
         }
+    }
+
+    private void UpdateCurrentSpead()
+    {
+        currentSpread = Mathf.Clamp(currentSpread - gunInfo.SpreadDeacreseSpeed * Time.deltaTime, gunInfo.Spread, gunInfo.MaxSpread);
     }
 
     private void OnDrawGizmosSelected()
@@ -84,7 +98,7 @@ public class M16Riffle : BigGun
                 pathVector,
                 roundEmitter.right,
                 360,
-                pathVector.magnitude / gunInfo.ProjectileSpeed * gunInfo.Spread);
+                pathVector.magnitude / gunInfo.ProjectileSpeed * currentSpread);
         }
     }
 }
