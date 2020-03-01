@@ -15,4 +15,9 @@ public class LevelManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Update()
+    {
+        TeamsVisibleUnitsStore.ClearTeamsVisibleUnits();
+    }
 }

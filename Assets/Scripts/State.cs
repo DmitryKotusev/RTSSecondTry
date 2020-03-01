@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
 using Pathfinding;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 
 abstract public class State
@@ -39,7 +39,14 @@ abstract public class State
         }
     }
 
-    public abstract void Update();
+    public virtual void Update()
+    {
+        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
+
+        List<Unit> unitsInFieldOfView = eyeSightManager.GetEnemyUnitsInFieldOfView(agent.GetSettings().LookDistance, agent.GetTeam());
+
+        TeamsVisibleUnitsStore.RegisterVisibleUnitsRange(agent.GetTeam(), unitsInFieldOfView);
+    }
 
     public virtual Type GetNextStateType()
     {
