@@ -11,7 +11,7 @@ public class M16Riffle : BigGun
         {
             ShootBullet();
 
-            IncreaseCurrentSpread();
+            IncreaseCurrentSpreadForShot();
 
             timeTillNextShot = 1 / gunInfo.RateOfFire * 60f;
         }
@@ -50,16 +50,17 @@ public class M16Riffle : BigGun
         shotEffect.ShowEffect();
     }
 
-    private void IncreaseCurrentSpread()
+    private void IncreaseCurrentSpreadForShot()
     {
         // currentSpread = Mathf.Lerp(currentSpread, gunInfo.MaxSpread, gunInfo.SpreadIncreseSpeed);
-        currentSpread = Mathf.Clamp(currentSpread + gunInfo.SpreadIncreseSpeed, gunInfo.Spread, gunInfo.MaxSpread);
+        currentSpread = Mathf.Clamp(currentSpread + gunInfo.SpreadIncreseSpeedForShot, gunInfo.Spread, gunInfo.MaxSpread);
     }
 
     private void Update()
     {
         UpdateTimeTillNextShot();
-        UpdateCurrentSpead();
+        UpdateCurrentSpeadIncreaseForMove();
+        UpdateCurrentSpeadDeacrease();
     }
 
     private void UpdateTimeTillNextShot()
@@ -70,7 +71,16 @@ public class M16Riffle : BigGun
         }
     }
 
-    private void UpdateCurrentSpead()
+    private void UpdateCurrentSpeadIncreaseForMove()
+    {
+        currentSpread = Mathf.Clamp(
+            currentSpread + gunInfo.SpreadIncreseSpeedForMove * Time.deltaTime * Mathf.Pow((roundEmitter.position - lastFrameEmitterPosition).magnitude, 2),
+            gunInfo.Spread,
+            gunInfo.MaxSpread);
+        lastFrameEmitterPosition = roundEmitter.position;
+    }
+
+    private void UpdateCurrentSpeadDeacrease()
     {
         currentSpread = Mathf.Clamp(currentSpread - gunInfo.SpreadDeacreseSpeed * Time.deltaTime, gunInfo.Spread, gunInfo.MaxSpread);
     }

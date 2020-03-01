@@ -9,7 +9,12 @@ public class AgentSettings : ScriptableObject
     float lookDistance;
 
     [SerializeField]
-    int spreadValue;
+    [Range(0, 100)]
+    float desirableWeaponSpreadPersent = 5;
+
+    [SerializeField]
+    [Range(0, 100)]
+    float maxWeaponSpreadPersent = 60;
 
     public float LookDistance
     {
@@ -19,11 +24,19 @@ public class AgentSettings : ScriptableObject
         }
     }
 
-    public int SpreadValue
+    public float DesirableWeaponSpreadPersent
     {
         get
         {
-            return spreadValue;
+            return desirableWeaponSpreadPersent;
+        } 
+    }
+
+    public float MaxWeaponSpreadPersent
+    {
+        get
+        {
+            return maxWeaponSpreadPersent;
         }
     }
 }

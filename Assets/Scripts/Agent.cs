@@ -139,9 +139,9 @@ public class Agent : MonoBehaviour
         return weaponManager;
     }
 
-    public float GetLookDistance()
+    public AgentSettings GetSettings()
     {
-        return agentSettings.LookDistance;
+        return agentSettings;
     }
 
     public float AgentRadius

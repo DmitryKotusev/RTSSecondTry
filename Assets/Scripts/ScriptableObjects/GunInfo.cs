@@ -52,7 +52,12 @@ public class GunInfo : ScriptableObject
     [BoxGroup("Gun Info")]
     [SerializeField]
     [Tooltip("Weapon's spread increase speed (per shot)")]
-    protected float spreadIncreseSpeed = 0.1f;
+    protected float spreadIncreseSpeedForShot = 0.1f;
+
+    [BoxGroup("Gun Info")]
+    [SerializeField]
+    [Tooltip("Weapon's spread increase speed (per move)")]
+    protected float spreadIncreseSpeedForMove = 10f;
 
     public float RateOfFire
     {
@@ -126,11 +131,19 @@ public class GunInfo : ScriptableObject
         }
     }
 
-    public float SpreadIncreseSpeed
+    public float SpreadIncreseSpeedForShot
     {
         get
         {
-            return spreadIncreseSpeed;
+            return spreadIncreseSpeedForShot;
+        }
+    }
+
+    public float SpreadIncreseSpeedForMove
+    {
+        get
+        {
+            return spreadIncreseSpeedForMove;
         }
     }
 }

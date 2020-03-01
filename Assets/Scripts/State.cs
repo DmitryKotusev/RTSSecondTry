@@ -258,7 +258,7 @@ public class MoveState : State
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
         Unit enemyUnit = (agent.GetCurrentGoal() as AttackGoal).AgentToAttack.SoldierBasic;
 
-        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetLookDistance()))
+        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetSettings().LookDistance))
         {
             return false;
         }
@@ -292,7 +292,7 @@ public class MoveState : State
     private bool FindClosestEnemyOpenBodyPart()
     {
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetLookDistance(), agent.GetController().GetTeam());
+        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetController().GetTeam());
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
@@ -418,7 +418,7 @@ public class IdleState : State
         //////////////
         
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetLookDistance(), agent.GetController().GetTeam());
+        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetController().GetTeam());
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
@@ -449,6 +449,7 @@ public class AttackState : State
     protected float timeSinceEnemySearch = 0f;
     protected Transform visibleEnemyBodyPart = null;
     protected Agent agentToAim = null;
+    private bool isWaitingSpreadReductionCycle = false;
     #endregion
 
     public AttackState(Agent agent, float checkForCloseEnemyPeriod, Transform visibleEnemyBodyPart = null, Agent agentToAim = null) : base(agent)
@@ -529,7 +530,7 @@ public class AttackState : State
 
         Unit enemyUnit = attackGoal.AgentToAttack.SoldierBasic;
 
-        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetLookDistance()))
+        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetSettings().LookDistance))
         {
             return false;
         }
@@ -565,7 +566,7 @@ public class AttackState : State
     {
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
 
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetLookDistance(), agent.GetTeam());
+        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetTeam());
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
@@ -598,10 +599,40 @@ public class AttackState : State
         weaponManager.AgentAimManager.SetTarget(visibleEnemyBodyPart);
         weaponManager.AgentAimManager.SetAgentToAim(agentToAim);
 
-        if (weaponManager.AgentAimManager.IsTargetReachable(visibleEnemyBodyPart))
+        if (!weaponManager.AgentAimManager.IsTargetReachable(visibleEnemyBodyPart))
         {
-            weaponManager.ActiveGun.Fire();
+            return;
         }
+
+        float currentSpreadPercent = weaponManager.ActiveGun.GetCurrentSpreadPercent();
+
+        if (isWaitingSpreadReductionCycle)
+        {
+            if (currentSpreadPercent > agent.GetSettings().DesirableWeaponSpreadPersent)
+            {
+                return;
+            }
+
+            StopWaitSpreadReductionCycle();
+        }
+
+        if (currentSpreadPercent > agent.GetSettings().MaxWeaponSpreadPersent)
+        {
+            StartWaitSpreadReductionCycle();
+            return;
+        }
+
+        weaponManager.ActiveGun.Fire();
+    }
+
+    private void StartWaitSpreadReductionCycle()
+    {
+        isWaitingSpreadReductionCycle = true;
+    }
+
+    private void StopWaitSpreadReductionCycle()
+    {
+        isWaitingSpreadReductionCycle = false;
     }
 
     public override void Stop()
