@@ -6,6 +6,13 @@ public abstract class Gun : Item
     [BoxGroup("Gun Info")]
     [SerializeField]
     protected GunInfo gunInfo;
+    public GunInfo GunInfo
+    {
+        get
+        {
+            return gunInfo;
+        }
+    }
 
     public float ProjectileSpeed
     {

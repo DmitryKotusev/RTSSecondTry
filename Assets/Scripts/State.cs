@@ -39,14 +39,7 @@ abstract public class State
         }
     }
 
-    public virtual void Update()
-    {
-        EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-
-        List<Unit> unitsInFieldOfView = eyeSightManager.GetEnemyUnitsInFieldOfView(agent.GetSettings().LookDistance, agent.GetTeam());
-
-        TeamsVisibleUnitsStore.RegisterVisibleUnitsRange(agent.GetTeam(), unitsInFieldOfView);
-    }
+    public abstract void Update();
 
     public virtual Type GetNextStateType()
     {
@@ -265,7 +258,12 @@ public class MoveState : State
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
         Unit enemyUnit = (agent.GetCurrentGoal() as AttackGoal).AgentToAttack.SoldierBasic;
 
-        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetSettings().LookDistance))
+        if (!LevelManager.Instance.UnitsStore.IsUnitInTeamVisibleUnits(agent.GetTeam(), enemyUnit))
+        {
+            return false;
+        }
+
+        if (!eyeSightManager.IsEnemyReachableAtDistance(enemyUnit, agent.GetWeaponManager().ActiveGun.GunInfo.FireDistance))
         {
             return false;
         }
@@ -299,7 +297,14 @@ public class MoveState : State
     private bool FindClosestEnemyOpenBodyPart()
     {
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetController().GetTeam());
+
+        Unit closestEnemy = LevelManager.Instance.UnitsStore.GetClothestReachableEnemyUnitAtDistance(
+            agent.GetWeaponManager().ActiveGun.GunInfo.FireDistance,
+            agent.GetTeam(),
+            agent.transform,
+            eyeSightManager
+            );
+
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
@@ -425,7 +430,14 @@ public class IdleState : State
         //////////////
         
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetController().GetTeam());
+
+        Unit closestEnemy = LevelManager.Instance.UnitsStore.GetClothestReachableEnemyUnitAtDistance(
+            agent.GetWeaponManager().ActiveGun.GunInfo.FireDistance,
+            agent.GetTeam(),
+            agent.transform,
+            eyeSightManager
+            );
+
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);
@@ -537,7 +549,12 @@ public class AttackState : State
 
         Unit enemyUnit = attackGoal.AgentToAttack.SoldierBasic;
 
-        if (!eyeSightManager.IsEnemyAtLookDistance(enemyUnit, agent.GetSettings().LookDistance))
+        if (!LevelManager.Instance.UnitsStore.IsUnitInTeamVisibleUnits(agent.GetTeam(), enemyUnit))
+        {
+            return false;
+        }
+
+        if (!eyeSightManager.IsEnemyReachableAtDistance(enemyUnit, agent.GetWeaponManager().ActiveGun.GunInfo.FireDistance))
         {
             return false;
         }
@@ -573,7 +590,13 @@ public class AttackState : State
     {
         EyeSightManager eyeSightManager = agent.GetEyeSightManager();
 
-        Unit closestEnemy = eyeSightManager.GetClothestEnemyUnitInFieldOfView(agent.GetSettings().LookDistance, agent.GetTeam());
+        Unit closestEnemy = LevelManager.Instance.UnitsStore.GetClothestReachableEnemyUnitAtDistance(
+            agent.GetWeaponManager().ActiveGun.GunInfo.FireDistance,
+            agent.GetTeam(),
+            agent.transform,
+            eyeSightManager
+            );
+
         if (closestEnemy != null)
         {
             var enemyColliderCostPair = eyeSightManager.GetUnitsVisibleBodyPart(closestEnemy);

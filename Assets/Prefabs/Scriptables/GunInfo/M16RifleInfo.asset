@@ -17,7 +17,7 @@ MonoBehaviour:
   basicDamagePerShot: 1
   projectileSpeed: 300
   bulletsPerClip: 30
-  fireDistance: 60
+  fireDistance: 70
   spread: 3
   maxSpread: 9
   spreadDeacreseSpeed: 5

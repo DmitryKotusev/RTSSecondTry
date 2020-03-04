@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine;
 
-public static class TeamsVisibleUnitsStore
+[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/TeamsVisibleUnitsStore/TeamsVisibleUnitsStore", menuName = "CustomScriptables/TeamsVisibleUnitsStore")]
+public class TeamsVisibleUnitsStore : ScriptableObject
 {
-    private static Dictionary<Team, HashSet<Unit>> teamsVisibleUnits = new Dictionary<Team, HashSet<Unit>>();
+    private Dictionary<Team, HashSet<Unit>> teamsVisibleUnits = new Dictionary<Team, HashSet<Unit>>();
 
-    public static void ClearTeamsVisibleUnits()
+    public void ClearTeamsVisibleUnits()
     {
         foreach (var teamVisibleUnits in teamsVisibleUnits)
         {
@@ -15,7 +17,7 @@ public static class TeamsVisibleUnitsStore
         }
     }
 
-    public static void RegisterVisibleUnit(Team team, Unit unit)
+    public void RegisterVisibleUnit(Team team, Unit unit)
     {
         if (teamsVisibleUnits.ContainsKey(team))
         {
@@ -27,7 +29,7 @@ public static class TeamsVisibleUnitsStore
         }
     }
 
-    public static void RegisterVisibleUnitsRange(Team team, IEnumerable<Unit> units)
+    public void RegisterVisibleUnitsRange(Team team, IEnumerable<Unit> units)
     {
         if (!teamsVisibleUnits.ContainsKey(team))
         {
@@ -40,7 +42,7 @@ public static class TeamsVisibleUnitsStore
         }
     }
 
-    public static HashSet<Unit> GetTeamVisibleUnits(Team team)
+    public HashSet<Unit> GetTeamVisibleUnits(Team team)
     {
         if (teamsVisibleUnits.ContainsKey(team))
         {
@@ -48,5 +50,50 @@ public static class TeamsVisibleUnitsStore
         }
 
         return new HashSet<Unit>();
+    }
+
+    public List<Unit> GetTeamUnitsInFieldOfViewOrderedByDistance(float distance, Team team, Transform transform)
+    {
+        List<Unit> units = new List<Unit>(GetTeamVisibleUnits(team));
+
+        units.Sort((enemyUnit1, enemyUnit2) =>
+        {
+            return (enemyUnit1.transform.position - transform.position).magnitude
+            .CompareTo((enemyUnit2.transform.position - transform.position).magnitude);
+        });
+
+        return units;
+    }
+
+    public Unit GetClothestEnemyUnitAtDistance(float distance, Team team, Transform transform)
+    {
+        List<Unit> enemyUnits = GetTeamUnitsInFieldOfViewOrderedByDistance(distance, team, transform);
+
+        if (enemyUnits.Count != 0)
+        {
+            return enemyUnits[0];
+        }
+
+        return null;
+    }
+
+    public Unit GetClothestReachableEnemyUnitAtDistance(float distance, Team team, Transform transform, EyeSightManager eyeSightManager)
+    {
+        List<Unit> enemies = GetTeamUnitsInFieldOfViewOrderedByDistance(
+            distance,
+            team,
+            transform);
+
+        Unit closestEnemy = enemies.Find((enemy) =>
+        {
+            return eyeSightManager.IsEnemyReachableAtDistance(enemy, distance);
+        });
+
+        return closestEnemy;
+    }
+
+    public bool IsUnitInTeamVisibleUnits(Team team, Unit unit)
+    {
+        return GetTeamVisibleUnits(team).Contains(unit);
     }
 }

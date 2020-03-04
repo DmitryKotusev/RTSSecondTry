@@ -220,7 +220,7 @@ public class Agent : MonoBehaviour
 
     public ColliderCostPair CheckAttackGoalTargetAvailability(AttackGoal attackGoal)
     {
-        if (!eyeSightManager.IsEnemyAtLookDistance(attackGoal.AgentToAttack.SoldierBasic, agentSettings.LookDistance))
+        if (!eyeSightManager.IsEnemyReachableAtDistance(attackGoal.AgentToAttack.SoldierBasic, agentSettings.LookDistance))
         {
             return null;
         }

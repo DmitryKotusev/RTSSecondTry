@@ -13,6 +13,14 @@ public class ControllersHub : ScriptableObject
 
     Dictionary<Team, List<Controller>> controllerLists = new Dictionary<Team, List<Controller>>();
 
+    public Dictionary<Team, List<Controller>> ControllerLists
+    {
+        get
+        {
+            return controllerLists;
+        }
+    }
+
     public void RegisterController(Controller controller)
     {
         Team controllersTeam = controller.GetTeam();

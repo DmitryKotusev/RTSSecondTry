@@ -52,9 +52,9 @@ public class EyeSightManager : MonoBehaviour
         return maxPriorityColliderCostPair;
     }
 
-    public bool IsEnemyAtLookDistance(Unit unit, float lookDistance)
+    public bool IsEnemyReachableAtDistance(Unit unit, float distance)
     {
-        Collider[] agentsColliders = Physics.OverlapSphere(transform.position, lookDistance, agentsMask);
+        Collider[] agentsColliders = Physics.OverlapSphere(transform.position, distance, agentsMask);
 
         foreach (Collider agentCollider in agentsColliders)
         {
@@ -94,9 +94,9 @@ public class EyeSightManager : MonoBehaviour
         return new List<Unit>(enemyUnits);
     }
 
-    public List<Unit> GetEnemyUnitsInFieldOfViewOrderedByDistance(float lookDistance, Team friendlyTeam)
+    public List<Unit> GetEnemyUnitsInFieldOfViewOrderedByDistance(float distance, Team friendlyTeam)
     {
-        List<Unit> enemyUnitsList = GetEnemyUnitsInFieldOfView(lookDistance, friendlyTeam);
+        List<Unit> enemyUnitsList = GetEnemyUnitsInFieldOfView(distance, friendlyTeam);
 
         enemyUnitsList.Sort((enemyUnit1, enemyUnit2) =>
         {
@@ -107,9 +107,9 @@ public class EyeSightManager : MonoBehaviour
         return enemyUnitsList;
     }
 
-    public Unit GetClothestEnemyUnitInFieldOfView(float lookDistance, Team friendlyTeam)
+    public Unit GetClothestEnemyUnitInFieldOfView(float distance, Team friendlyTeam)
     {
-        List<Unit> enemyUnits = GetEnemyUnitsInFieldOfViewOrderedByDistance(lookDistance, friendlyTeam);
+        List<Unit> enemyUnits = GetEnemyUnitsInFieldOfViewOrderedByDistance(distance, friendlyTeam);
 
         if (enemyUnits.Count != 0)
         {
