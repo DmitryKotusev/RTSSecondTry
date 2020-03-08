@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rateOfFire: 300
   cooldown: 3
-  basicDamagePerShot: 1
+  basicDamagePerShot: 5
   projectileSpeed: 300
   bulletsPerClip: 30
-  fireDistance: 70
+  fireDistance: 85
   spread: 3
   maxSpread: 9
   spreadDeacreseSpeed: 5

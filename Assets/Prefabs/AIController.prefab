@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6779111369242389535}
   - component: {fileID: 4822236416319899212}
   - component: {fileID: 6779111369242389731}
+  - component: {fileID: 1873196833857749328}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -62,3 +63,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: {fileID: 11400000, guid: c115a3d684f91f34d87525defd533f61, type: 2}
   controllersHub: {fileID: 11400000, guid: 1c2f63f7d4f06e0499bf258ed9c56ee6, type: 2}
+  agentsHandler: {fileID: 1873196833857749328}
+--- !u!114 &1873196833857749328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779111369242389532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cda979d2dd759254bb0abecef810cb5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

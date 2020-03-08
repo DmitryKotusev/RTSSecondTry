@@ -46,8 +46,6 @@ public class M16Riffle : BigGun
         GameObject effectGameObject = PoolsManager.GetObjectPool(PoolsKeys.m16ShotEffectsPoolKey).GetObject();
         effectGameObject.transform.position = roundEmitter.position;
         effectGameObject.transform.rotation = roundEmitter.rotation;
-        ShotEffect shotEffect = effectGameObject.GetComponent<ShotEffect>();
-        shotEffect.ShowEffect();
     }
 
     private void IncreaseCurrentSpreadForShot()
