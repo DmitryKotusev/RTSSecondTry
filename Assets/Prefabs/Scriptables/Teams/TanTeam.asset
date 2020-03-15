@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamName: Tan
   teamColor: {r: 0.7921569, g: 0.5176471, b: 0.0627451, a: 0}
-  aiControllerPrefab: {fileID: 6779111369242389532, guid: f19bfb87fb6f2af4ab79cb3beaf4f6e5,
+  flagPrefab: {fileID: 5304460499272802033, guid: d401952b9110e43448b632ca203c5544,
     type: 3}
-  availableControllers: []

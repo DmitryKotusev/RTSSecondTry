@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/SelectionManagerSettings/SelectionManagerSettings", menuName = "CustomScriptables/SelectionManagerSettings")]
+[CreateAssetMenu(menuName = "CustomScriptables/SelectionManagerSettings")]
 public class SelectionManagerSettings : ScriptableObject
 {
     [BoxGroup("Settings")]

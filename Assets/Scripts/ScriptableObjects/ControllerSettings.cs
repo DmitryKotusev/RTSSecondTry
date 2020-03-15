@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/ControllerSettings/ControllerSettings", menuName = "CustomScriptables/ControllerSettings")]
+[CreateAssetMenu(menuName = "CustomScriptables/ControllerSettings")]
 public class ControllerSettings : ScriptableObject
 {
     [BoxGroup("Common settings")]

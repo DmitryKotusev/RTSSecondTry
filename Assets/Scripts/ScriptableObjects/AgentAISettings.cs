@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/AgentAISettings/AgentAISettings", menuName = "CustomScriptables/AgentAISettings")]
+[CreateAssetMenu(menuName = "CustomScriptables/AgentAISettings")]
 public class AgentAISettings : ScriptableObject
 {
     [BoxGroup("Attack settings")]

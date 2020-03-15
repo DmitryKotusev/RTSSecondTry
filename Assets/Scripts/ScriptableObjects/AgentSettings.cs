@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/AgentSettings/AgentSettings", menuName = "CustomScriptables/AgentSettings")]
+[CreateAssetMenu(menuName = "CustomScriptables/AgentSettings")]
 public class AgentSettings : ScriptableObject
 {
     [SerializeField]

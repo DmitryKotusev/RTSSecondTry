@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/GunInfo/GunInfo", menuName = "CustomScriptables/GunInfo")]
+[CreateAssetMenu(menuName = "CustomScriptables/GunInfo")]
 public class GunInfo : ScriptableObject
 {
     [BoxGroup("Gun Info")]

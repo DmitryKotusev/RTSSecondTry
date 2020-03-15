@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/Teams/Team", menuName = "CustomScriptables/Team")]
+[CreateAssetMenu(menuName = "CustomScriptables/Team")]
 public class Team : ScriptableObject
 {
     [SerializeField]
@@ -11,6 +11,10 @@ public class Team : ScriptableObject
 
     [SerializeField]
     Color teamColor;
+
+    [SerializeField]
+    [Required]
+    GameObject flagPrefab;
 
     public string TeamName
     {
@@ -25,6 +29,14 @@ public class Team : ScriptableObject
         get
         {
             return teamColor;
+        }
+    }
+
+    public GameObject FlagPrefab
+    {
+        get
+        {
+            return flagPrefab;
         }
     }
 }

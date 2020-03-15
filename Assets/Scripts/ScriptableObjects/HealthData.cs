@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/Health/HealthData", menuName = "CustomScriptables/HealthData")]
+[CreateAssetMenu(menuName = "CustomScriptables/HealthData")]
 public class HealthData : ScriptableObject
 {
     [SerializeField]
