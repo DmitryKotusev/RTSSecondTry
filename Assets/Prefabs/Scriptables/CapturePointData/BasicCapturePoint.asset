@@ -15,3 +15,5 @@ MonoBehaviour:
   captureRadius: 15
   captureSpeed: 15
   dischargeSpeed: 45
+  captureCapacity: 1000
+  detectionCapsuleHeight: 10

@@ -26,6 +26,14 @@ public class CapturePoint : MonoBehaviour
 
     private float currentCaptureProgress;
 
+    public CapturePointData CapturePointData
+    {
+        get
+        {
+            return capturePointData;
+        }
+    }
+
     private void Awake()
     {
         InitCurrentPointHolder();
@@ -138,9 +146,11 @@ public class CapturePoint : MonoBehaviour
         return leaderTeams;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, capturePointData.CaptureRadius);
-    }
+#if UNITY_EDITOR
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.white;
+    //    Gizmos.DrawWireSphere(transform.position, capturePointData.CaptureRadius);
+    //}
+#endif
 }
