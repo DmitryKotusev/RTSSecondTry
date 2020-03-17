@@ -20,6 +20,62 @@ public class Border : MonoBehaviour
     [Required]
     private CapturePoint capturePoint;
 
+    private void Awake()
+    {
+        DrawLineRendererBorder();
+    }
+
+    private void DrawLineRendererBorder()
+    {
+        if (capturePoint == null || capturePoint.CapturePointData == null)
+        {
+            return;
+        }
+
+        float radius = capturePoint.CapturePointData.CaptureRadius;
+
+        float height = capturePoint.CapturePointData.DetectionCapsuleHeight;
+
+        float stepAngle = 360f / oneUnitRadiusPointsCoint / radius;
+
+        float currentAngle = 0f;
+
+        lineRenderer.positionCount = (int)(oneUnitRadiusPointsCoint * radius);
+
+        for (int i = 0; i < oneUnitRadiusPointsCoint * radius; i++)
+        {
+            Vector3 position = transform.position
+                + Quaternion.AngleAxis(currentAngle, transform.up) * transform.forward * radius;
+
+            position = CheckHeight(height, position);
+
+            position += transform.up * terraintOffset;
+
+            lineRenderer.SetPosition(i, position);
+
+            currentAngle += stepAngle;
+        }
+    }
+
+    private Vector3 CheckHeight(float height, Vector3 newPosition)
+    {
+        Vector3 resultPosition = newPosition;
+
+        RaycastHit raycastHit;
+
+        if (Physics.Raycast(newPosition, -transform.up, out raycastHit, height))
+        {
+            resultPosition = raycastHit.point;
+        }
+        else if (Physics.Raycast(newPosition + transform.up * height,
+            -transform.up, out raycastHit, height))
+        {
+            resultPosition = raycastHit.point;
+        }
+
+        return resultPosition;
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -64,25 +120,6 @@ public class Border : MonoBehaviour
 
             oldPosition = newPosition;
         }
-    }
-
-    private Vector3 CheckHeight(float height, Vector3 newPosition)
-    {
-        Vector3 resultPosition = newPosition;
-
-        RaycastHit raycastHit;
-
-        if (Physics.Raycast(newPosition, -transform.up, out raycastHit, height))
-        {
-            resultPosition = raycastHit.point;
-        }
-        else if (Physics.Raycast(newPosition + transform.up * height,
-            -transform.up, out raycastHit, height))
-        {
-            resultPosition = raycastHit.point;
-        }
-
-        return resultPosition;
     }
 #endif
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicCapturePoint
   m_EditorClassIdentifier: 
   captureRadius: 15
-  captureSpeed: 15
-  dischargeSpeed: 45
+  captureSpeed: 30
+  dischargeSpeed: 75
   captureCapacity: 1000
   detectionCapsuleHeight: 10

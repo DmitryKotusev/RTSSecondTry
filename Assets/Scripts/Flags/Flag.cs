@@ -1,7 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class Flag : MonoBehaviour
 {
+    [SerializeField]
+    [Required]
+    private Cloth cloth;
+
+    public Cloth Cloth
+    {
+        get
+        {
+            return cloth;
+        }
+    }
 }

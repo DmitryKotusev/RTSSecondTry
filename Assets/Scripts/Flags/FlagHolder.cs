@@ -26,19 +26,42 @@ public class FlagHolder : MonoBehaviour
     {
         if (team == null)
         {
+            bool isNewFlagSet = currentActiveFlag == whiteFlag;
+            currentActiveFlag = whiteFlag;
+
+            SetFlagProgress(0);
+
+            if (isNewFlagSet)
+            {
+                currentActiveFlag.Cloth.ClearTransformMotion();
+            }
+
             return;
         }
 
-        if (everCapturedTeams.ContainsKey(team))
+        if (!everCapturedTeams.ContainsKey(team))
         {
             Flag newFlagInstance = Instantiate(team.FlagPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Flag>();
 
             everCapturedTeams.Add(team, newFlagInstance);
         }
 
-        currentActiveFlag = everCapturedTeams[team];
+        if (currentActiveFlag != everCapturedTeams[team])
+        {
+            currentActiveFlag.gameObject.SetActive(false);
 
-        SetDefaultFlagTransform();
+            currentActiveFlag = everCapturedTeams[team];
+
+            currentActiveFlag.gameObject.SetActive(true);
+
+            SetDefaultFlagTransform();
+
+            SetFlagProgress(progress);
+
+            currentActiveFlag.Cloth.ClearTransformMotion();
+
+            return;
+        }
 
         SetFlagProgress(progress);
     }

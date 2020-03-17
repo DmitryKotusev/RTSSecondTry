@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Linq;
+using System;
 
 public class CapturePoint : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class CapturePoint : MonoBehaviour
     [SerializeField]
     private Team startPointHolder;
 
+    [SerializeField]
+    [ReadOnly]
     private Team currentPointHolder = null;
 
     private Team currentCaptureCandidate = null;
@@ -42,10 +45,123 @@ public class CapturePoint : MonoBehaviour
     private void Update()
     {
         // Detect teams in circle
-        List<Team> currentLeaderTeams;
-        bool isLeaderTeamSingle;
+        IEnumerable<Team> leaderTeams = DetectTeamsInCaptureRadius();
 
+        if (leaderTeams != null)
+        {
+            LeadersPresentCase(leaderTeams);
 
+            return;
+        }
+
+        LeadersAbsentCase();
+    }
+
+    private void LeadersPresentCase(IEnumerable<Team> leaderTeams)
+    {
+        int leaderTeamsCount = leaderTeams.Count();
+
+        if (leaderTeams.Contains(currentPointHolder))
+        {
+            if (leaderTeamsCount > 1)
+            {
+                return;
+            }
+
+            currentCaptureCandidate = leaderTeams.ElementAt(0);
+
+            IncreaseCurrentCaptureProgress();
+
+            return;
+        }
+
+        if (leaderTeamsCount > 0)
+        {
+            if (currentPointHolder != null)
+            {
+                DecreaseCurrentCaptureProgress();
+
+                return;
+            }
+
+            if (leaderTeamsCount > 1)
+            {
+                return;
+            }
+
+            Team leaderTeam = leaderTeams.ElementAt(0);
+
+            if (currentCaptureCandidate != null && currentCaptureCandidate != leaderTeam)
+            {
+                DecreaseCurrentCaptureProgress();
+
+                CheckCurrentCaptureCandidate();
+
+                return;
+            }
+
+            currentCaptureCandidate = leaderTeam;
+
+            IncreaseCurrentCaptureProgress();
+        }
+    }
+
+    private void CheckCurrentCaptureCandidate()
+    {
+        if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+        {
+            currentCaptureCandidate = null;
+        }
+    }
+
+    private void LeadersAbsentCase()
+    {
+        DecreaseCurrentCaptureProgress();
+
+        CheckCurrentCaptureCandidate();
+    }
+
+    private void IncreaseCurrentCaptureProgress()
+    {
+        currentCaptureProgress = Mathf.Clamp(
+            currentCaptureProgress + capturePointData.CaptureSpeed * Time.deltaTime,
+            0,
+            capturePointData.CaptureCapacity
+            );
+
+        flagHolder.SetCurrentFlag(
+            currentCaptureCandidate,
+            currentCaptureProgress / capturePointData.CaptureCapacity
+            );
+
+        if (currentCaptureCandidate == currentPointHolder)
+        {
+            return;
+        }
+
+        if (Mathf.Abs(currentCaptureProgress - capturePointData.CaptureCapacity) < Mathf.Epsilon)
+        {
+            currentPointHolder = currentCaptureCandidate;
+        }
+    }
+
+    private void DecreaseCurrentCaptureProgress()
+    {
+        currentCaptureProgress = Mathf.Clamp(
+            currentCaptureProgress - capturePointData.DischargeSpeed * Time.deltaTime,
+            0,
+            capturePointData.CaptureCapacity
+            );
+
+        flagHolder.SetCurrentFlag(
+            currentCaptureCandidate,
+            currentCaptureProgress / capturePointData.CaptureCapacity
+            );
+
+        if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+        {
+            currentPointHolder = null;
+        }
     }
 
     private void InitCurrentPointHolder()
@@ -75,7 +191,7 @@ public class CapturePoint : MonoBehaviour
             transform.position + capturePointData.DetectionCapsuleHeight * transform.up,
             transform.position - capturePointData.DetectionCapsuleHeight * transform.up,
             capturePointData.CaptureRadius,
-            Vector3.zero,
+            transform.forward,
             0,
             agentsMask);
 
@@ -98,10 +214,8 @@ public class CapturePoint : MonoBehaviour
             {
                 continue;
             }
-            else
-            {
-                passedAgents.Add(agent);
-            }
+
+            passedAgents.Add(agent);
 
             Team agentsTeam = agent.GetTeam();
             int teamIndex = -1;
@@ -118,11 +232,17 @@ public class CapturePoint : MonoBehaviour
             if (teamIndex == -1)
             {
                 detectedTeamsCounts.Add(new KeyValuePair<Team, int>(agentsTeam, 1));
+
+                if (1 > leaderTeamUnitsCount)
+                {
+                    leaderTeamUnitsCount = 1;
+                }
+
+                continue;
             }
-            else
-            {
-                detectedTeamsCounts[teamIndex] = new KeyValuePair<Team, int>(agentsTeam, detectedTeamsCounts[teamIndex].Value + 1);
-            }
+
+            detectedTeamsCounts[teamIndex]
+                = new KeyValuePair<Team, int>(agentsTeam, detectedTeamsCounts[teamIndex].Value + 1);
 
             if (detectedTeamsCounts[teamIndex].Value > leaderTeamUnitsCount)
             {
@@ -145,12 +265,4 @@ public class CapturePoint : MonoBehaviour
 
         return leaderTeams;
     }
-
-#if UNITY_EDITOR
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.white;
-    //    Gizmos.DrawWireSphere(transform.position, capturePointData.CaptureRadius);
-    //}
-#endif
 }
