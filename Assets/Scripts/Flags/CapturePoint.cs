@@ -25,8 +25,12 @@ public class CapturePoint : MonoBehaviour
     [ReadOnly]
     private Team currentPointHolder = null;
 
+    [SerializeField]
+    [ReadOnly]
     private Team currentCaptureCandidate = null;
 
+    [SerializeField]
+    [ReadOnly]
     private float currentCaptureProgress;
 
     public CapturePointData CapturePointData
@@ -44,123 +48,138 @@ public class CapturePoint : MonoBehaviour
 
     private void Update()
     {
-        // Detect teams in circle
+        ProcessCapture();
+    }
+
+    private void ProcessCapture()
+    {
         IEnumerable<Team> leaderTeams = DetectTeamsInCaptureRadius();
 
-        if (leaderTeams != null)
+        if (leaderTeams.Count() > 0)
         {
             LeadersPresentCase(leaderTeams);
-
-            return;
         }
-
-        LeadersAbsentCase();
+        else
+        {
+            LeadersAbsentCase(leaderTeams);
+        }
     }
 
     private void LeadersPresentCase(IEnumerable<Team> leaderTeams)
     {
-        int leaderTeamsCount = leaderTeams.Count();
-
-        if (leaderTeams.Contains(currentPointHolder))
+        if (currentPointHolder == null)
         {
-            if (leaderTeamsCount > 1)
+            if (currentCaptureCandidate == null)
             {
-                return;
+                if (leaderTeams.Count() == 1)
+                {
+                    currentCaptureCandidate = leaderTeams.ElementAt(0);
+                    currentCaptureProgress = 0;
+                    flagHolder.SetCurrentFlag(currentCaptureCandidate, currentCaptureProgress / capturePointData.CaptureCapacity);
+                }
             }
+            else
+            {
+                if (leaderTeams.Contains(currentCaptureCandidate))
+                {
+                    if (leaderTeams.Count() == 1)
+                    {
+                        if (Mathf.Abs(currentCaptureProgress - capturePointData.CaptureCapacity) >= Mathf.Epsilon)
+                        {
+                            currentCaptureProgress = Mathf.Clamp(
+                            currentCaptureProgress + capturePointData.CaptureSpeed * Time.deltaTime,
+                            0,
+                            capturePointData.CaptureCapacity
+                            );
 
-            currentCaptureCandidate = leaderTeams.ElementAt(0);
+                            flagHolder.SetFlagProgress(currentCaptureProgress / capturePointData.CaptureCapacity);
 
-            IncreaseCurrentCaptureProgress();
+                            if (Mathf.Abs(currentCaptureProgress - capturePointData.CaptureCapacity) < Mathf.Epsilon)
+                            {
+                                currentPointHolder = currentCaptureCandidate;
+                                currentCaptureCandidate = null;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (Mathf.Abs(currentCaptureProgress) >= Mathf.Epsilon)
+                    {
+                        currentCaptureProgress = Mathf.Clamp(
+                        currentCaptureProgress - capturePointData.DischargeSpeed * Time.deltaTime,
+                        0,
+                        capturePointData.CaptureCapacity
+                        );
 
-            return;
+                        flagHolder.SetFlagProgress(currentCaptureProgress / capturePointData.CaptureCapacity);
+
+                        if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+                        {
+                            currentCaptureCandidate = null;
+                            flagHolder.SetCurrentFlag(null, currentCaptureProgress / capturePointData.CaptureCapacity);
+                        }
+                    }
+                }
+            }
         }
-
-        if (leaderTeamsCount > 0)
+        else
         {
-            if (currentPointHolder != null)
+            if (!leaderTeams.Contains(currentPointHolder))
             {
-                DecreaseCurrentCaptureProgress();
+                if (Mathf.Abs(currentCaptureProgress) >= Mathf.Epsilon)
+                {
+                    currentCaptureProgress = Mathf.Clamp(
+                    currentCaptureProgress - capturePointData.DischargeSpeed * Time.deltaTime,
+                    0,
+                    capturePointData.CaptureCapacity
+                    );
 
-                return;
+                    flagHolder.SetFlagProgress(currentCaptureProgress / capturePointData.CaptureCapacity);
+
+                    if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+                    {
+                        currentPointHolder = null;
+                        flagHolder.SetCurrentFlag(null, currentCaptureProgress / capturePointData.CaptureCapacity);
+                    }
+                }
             }
-
-            if (leaderTeamsCount > 1)
-            {
-                return;
-            }
-
-            Team leaderTeam = leaderTeams.ElementAt(0);
-
-            if (currentCaptureCandidate != null && currentCaptureCandidate != leaderTeam)
-            {
-                DecreaseCurrentCaptureProgress();
-
-                CheckCurrentCaptureCandidate();
-
-                return;
-            }
-
-            currentCaptureCandidate = leaderTeam;
-
-            IncreaseCurrentCaptureProgress();
         }
     }
 
-    private void CheckCurrentCaptureCandidate()
+    private void LeadersAbsentCase(IEnumerable<Team> leaderTeams)
     {
-        if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+        if (currentPointHolder == null)
         {
-            currentCaptureCandidate = null;
+            if (Mathf.Abs(currentCaptureProgress) >= Mathf.Epsilon)
+            {
+                currentCaptureProgress = Mathf.Clamp(
+                currentCaptureProgress - capturePointData.DischargeSpeed * Time.deltaTime,
+                0,
+                capturePointData.CaptureCapacity
+                );
+
+                flagHolder.SetFlagProgress(currentCaptureProgress / capturePointData.CaptureCapacity);
+
+                if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
+                {
+                    currentCaptureCandidate = null;
+                    flagHolder.SetCurrentFlag(null, currentCaptureProgress / capturePointData.CaptureCapacity);
+                }
+            }
         }
-    }
-
-    private void LeadersAbsentCase()
-    {
-        DecreaseCurrentCaptureProgress();
-
-        CheckCurrentCaptureCandidate();
-    }
-
-    private void IncreaseCurrentCaptureProgress()
-    {
-        currentCaptureProgress = Mathf.Clamp(
-            currentCaptureProgress + capturePointData.CaptureSpeed * Time.deltaTime,
-            0,
-            capturePointData.CaptureCapacity
-            );
-
-        flagHolder.SetCurrentFlag(
-            currentCaptureCandidate,
-            currentCaptureProgress / capturePointData.CaptureCapacity
-            );
-
-        if (currentCaptureCandidate == currentPointHolder)
+        else
         {
-            return;
-        }
+            if (Mathf.Abs(currentCaptureProgress - capturePointData.CaptureCapacity) >= Mathf.Epsilon)
+            {
+                currentCaptureProgress = Mathf.Clamp(
+                currentCaptureProgress + capturePointData.CaptureSpeed * Time.deltaTime,
+                0,
+                capturePointData.CaptureCapacity
+                );
 
-        if (Mathf.Abs(currentCaptureProgress - capturePointData.CaptureCapacity) < Mathf.Epsilon)
-        {
-            currentPointHolder = currentCaptureCandidate;
-        }
-    }
-
-    private void DecreaseCurrentCaptureProgress()
-    {
-        currentCaptureProgress = Mathf.Clamp(
-            currentCaptureProgress - capturePointData.DischargeSpeed * Time.deltaTime,
-            0,
-            capturePointData.CaptureCapacity
-            );
-
-        flagHolder.SetCurrentFlag(
-            currentCaptureCandidate,
-            currentCaptureProgress / capturePointData.CaptureCapacity
-            );
-
-        if (Mathf.Abs(currentCaptureProgress) < Mathf.Epsilon)
-        {
-            currentPointHolder = null;
+                flagHolder.SetFlagProgress(currentCaptureProgress / capturePointData.CaptureCapacity);
+            }
         }
     }
 
@@ -252,7 +271,7 @@ public class CapturePoint : MonoBehaviour
 
         if (detectedTeamsCounts.Count == 0)
         {
-            return null;
+            return new List<Team>();
         }
 
         IEnumerable<Team> leaderTeams = detectedTeamsCounts.FindAll((detectedTeamsCount) =>

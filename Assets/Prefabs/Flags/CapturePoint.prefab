@@ -176,6 +176,9 @@ MonoBehaviour:
   flagHolder: {fileID: 21785806292676736}
   capturePointData: {fileID: 11400000, guid: 22cae54822038ab4da015f22eac03d65, type: 2}
   startPointHolder: {fileID: 0}
+  currentPointHolder: {fileID: 0}
+  currentCaptureCandidate: {fileID: 0}
+  currentCaptureProgress: 0
 --- !u!1 &9070830261641223306
 GameObject:
   m_ObjectHideFlags: 0

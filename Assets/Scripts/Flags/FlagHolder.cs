@@ -26,8 +26,16 @@ public class FlagHolder : MonoBehaviour
     {
         if (team == null)
         {
-            bool isNewFlagSet = currentActiveFlag == whiteFlag;
-            currentActiveFlag = whiteFlag;
+            bool isNewFlagSet = currentActiveFlag != whiteFlag;
+
+            if (isNewFlagSet)
+            {
+                currentActiveFlag.gameObject.SetActive(false);
+
+                currentActiveFlag = whiteFlag;
+
+                currentActiveFlag.gameObject.SetActive(true);
+            }
 
             SetFlagProgress(0);
 
@@ -66,6 +74,15 @@ public class FlagHolder : MonoBehaviour
         SetFlagProgress(progress);
     }
 
+    public void SetFlagProgress(float progress)
+    {
+        float flagProgress = Mathf.Clamp01(progress);
+
+        Vector3 flagPosition = Vector3.Lerp(minFlagLocalPosition, maxFlagLocalPosition, progress);
+
+        currentActiveFlag.transform.localPosition = flagPosition;
+    }
+
     private void Awake()
     {
         InitCurrentFlag();
@@ -85,14 +102,5 @@ public class FlagHolder : MonoBehaviour
     {
         currentActiveFlag.transform.localPosition = maxFlagLocalPosition;
         currentActiveFlag.transform.localRotation = Quaternion.identity;
-    }
-
-    private void SetFlagProgress(float progress)
-    {
-        float flagProgress = Mathf.Clamp01(progress);
-
-        Vector3 flagPosition = Vector3.Lerp(minFlagLocalPosition, maxFlagLocalPosition, progress);
-
-        currentActiveFlag.transform.localPosition = flagPosition;
     }
 }
