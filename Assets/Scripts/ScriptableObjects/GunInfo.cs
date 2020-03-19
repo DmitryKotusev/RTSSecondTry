@@ -59,6 +59,10 @@ public class GunInfo : ScriptableObject
     [Tooltip("Weapon's spread increase speed (per move)")]
     protected float spreadIncreseSpeedForMove = 10f;
 
+    [SerializeField]
+    [Required]
+    private AnimationClip reloadAnimation;
+
     public float RateOfFire
     {
         get
@@ -144,6 +148,14 @@ public class GunInfo : ScriptableObject
         get
         {
             return spreadIncreseSpeedForMove;
+        }
+    }
+
+    public AnimationClip ReloadAnimation
+    {
+        get
+        {
+            return reloadAnimation;
         }
     }
 }

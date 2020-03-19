@@ -31,12 +31,24 @@ public class AgentWeaponManager : MonoBehaviour
     FullBodyBipedIK fullBodyBipedIK;
 
     [SerializeField]
+    [Required]
     AgentAimManager agentAimManager;
     public AgentAimManager AgentAimManager
     {
         get
         {
             return agentAimManager;
+        }
+    }
+
+    [SerializeField]
+    [Required]
+    AgentReloadManager agentReloadManager;
+    public AgentReloadManager AgentReloadManager
+    {
+        get
+        {
+            return agentReloadManager;
         }
     }
 

@@ -2733,6 +2733,7 @@ GameObject:
   - component: {fileID: 2455718137106811799}
   - component: {fileID: 4988163454208310025}
   - component: {fileID: 4988163454208310024}
+  - component: {fileID: 1053706594945206616}
   - component: {fileID: 4988163454208310027}
   - component: {fileID: 4988163454208310026}
   - component: {fileID: 4988163454208310029}
@@ -2902,8 +2903,23 @@ MonoBehaviour:
   activeHelmet: {fileID: 2676240227616247006}
   fullBodyBipedIK: {fileID: 3654057765903267796}
   agentAimManager: {fileID: 4988163454208310027}
+  agentReloadManager: {fileID: 1053706594945206616}
   animatorHandler: {fileID: 4988163454208310026}
   aimIK: {fileID: 4988163454208310017}
+--- !u!114 &1053706594945206616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4988163454208310018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50125fb8cd0aca4982b0781c7d442ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatorHandler: {fileID: 4988163454208310026}
+  weaponManager: {fileID: 4988163454208310024}
 --- !u!114 &4988163454208310027
 MonoBehaviour:
   m_ObjectHideFlags: 0

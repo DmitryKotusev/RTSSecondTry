@@ -23,3 +23,4 @@ MonoBehaviour:
   spreadDeacreseSpeed: 5
   spreadIncreseSpeedForShot: 2
   spreadIncreseSpeedForMove: 12000
+  reloadAnimation: {fileID: 7400000, guid: 4f34bb05c0fa2604db3d2ef56e685e3f, type: 2}
