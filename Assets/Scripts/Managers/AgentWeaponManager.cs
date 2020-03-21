@@ -9,6 +9,13 @@ public class AgentWeaponManager : MonoBehaviour
 {
     [SerializeField]
     SoldierBasic soldierBasic;
+    public SoldierBasic SoldierBasic
+    {
+        get
+        {
+            return soldierBasic;
+        }
+    }
 
     [SerializeField]
     Gun activeGun;
@@ -29,6 +36,13 @@ public class AgentWeaponManager : MonoBehaviour
 
     [SerializeField]
     FullBodyBipedIK fullBodyBipedIK;
+    public FullBodyBipedIK FullBodyBipedIK
+    {
+        get
+        {
+            return fullBodyBipedIK;
+        }
+    }
 
     [SerializeField]
     [Required]
@@ -58,6 +72,22 @@ public class AgentWeaponManager : MonoBehaviour
     [SerializeField]
     AimIK aimIK;
 
+    [Button("Reload active gun")]
+    public void ReloadActiveGun()
+    {
+        if (activeGun == null)
+        {
+            return;
+        }
+
+        if (activeGun.CurrentClipRoundsLeft == activeGun.GunInfo.BulletsPerClip)
+        {
+            return;
+        }
+
+        agentReloadManager.StartReloading();
+    }
+
     private void Start()
     {
         fullBodyBipedIK.enabled = false;
@@ -66,6 +96,11 @@ public class AgentWeaponManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (agentReloadManager.IsReloading)
+        {
+            return;
+        }
+
         agentAimManager.UpdateAimManager();
 
         AdjustHandsOnWeapons();

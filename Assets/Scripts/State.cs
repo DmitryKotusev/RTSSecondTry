@@ -124,7 +124,16 @@ public class MoveState : State
         {
             return;
         }
-        
+
+        AgentWeaponManager weaponManager = agent.GetWeaponManager();
+
+        if (weaponManager.ActiveGun != null
+            && weaponManager.ActiveGun.IsReloadRequired()
+            && !weaponManager.AgentReloadManager.IsReloading)
+        {
+            weaponManager.ReloadActiveGun();
+        }
+
         if (agent.GetCurrentGoal() is MoveGoal)
         {
             MoveGoalMovement();
@@ -373,6 +382,15 @@ public class IdleState : State
             return;
         }
 
+        AgentWeaponManager weaponManager = agent.GetWeaponManager();
+
+        if (weaponManager.ActiveGun != null
+            && weaponManager.ActiveGun.IsReloadRequired()
+            && !weaponManager.AgentReloadManager.IsReloading)
+        {
+            weaponManager.ReloadActiveGun();
+        }
+
         if (CheckGoals())
         {
             Stop();
@@ -481,6 +499,20 @@ public class AttackState : State
     public override void Update()
     {
         if (isStopped)
+        {
+            return;
+        }
+
+        AgentWeaponManager weaponManager = agent.GetWeaponManager();
+
+        if (weaponManager.ActiveGun != null
+            && weaponManager.ActiveGun.IsReloadRequired()
+            && !weaponManager.AgentReloadManager.IsReloading)
+        {
+            weaponManager.ReloadActiveGun();
+        }
+
+        if (weaponManager.AgentReloadManager.IsReloading)
         {
             return;
         }

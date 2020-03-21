@@ -48,6 +48,22 @@ abstract public class BigGun : Gun
         }
     }
 
+    public Vector3 СatridgeDefaultLocalPosition
+    {
+        get
+        {
+            return catridgeDefaultLocalPosition;
+        }
+    }
+
+    public Quaternion CatridgeDefaultLocalRotation
+    {
+        get
+        {
+            return catridgeDefaultLocalRotation;
+        }
+    }
+
     public void ReturnCatridgeToPlace()
     {
         if (catridgeClip == null)

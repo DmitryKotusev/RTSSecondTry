@@ -7,7 +7,7 @@ public class M16Riffle : BigGun
     [Button("Check fire")]
     public override void Fire()
     {
-        if (timeTillNextShot <= 0)
+        if (!IsReloadRequired() && timeTillNextShot <= 0)
         {
             ShootBullet();
 
@@ -46,6 +46,8 @@ public class M16Riffle : BigGun
         GameObject effectGameObject = PoolsManager.GetObjectPool(PoolsKeys.m16ShotEffectsPoolKey).GetObject();
         effectGameObject.transform.position = roundEmitter.position;
         effectGameObject.transform.rotation = roundEmitter.rotation;
+
+        currentClipRoundsLeft--;
     }
 
     private void IncreaseCurrentSpreadForShot()

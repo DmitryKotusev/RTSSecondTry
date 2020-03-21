@@ -15,6 +15,7 @@ public class AnimatorHandler : MonoBehaviour
     public readonly int NoWeaponsStandLayerIndex = 0;
     public readonly int BothHandsRiffleWeaponLayerIndex = 1;
     public readonly int FullBodyRifleAimStandLayer = 2;
+    public readonly int UpperBodyReloadLayer = 3;
 
     void Start()
     {
@@ -38,6 +39,16 @@ public class AnimatorHandler : MonoBehaviour
         Vector3 localVelocity = transform.InverseTransformDirection(velocity);
 
         animator.SetFloat("MovingSpeed", localVelocity.z);
+    }
+
+    public void PlayAnimation(string stateName, int layer)
+    {
+        animator.Play(stateName, layer, 0);
+    }
+
+    public void SetReloadAnimationMultiplier(float speedMultiplier)
+    {
+        animator.SetFloat("ReloadAnimationMultiplier", speedMultiplier);
     }
 
     public void UpdateLayerWeight(int layerIndex, float weight)

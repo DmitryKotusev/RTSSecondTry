@@ -75,6 +75,11 @@ public class CommandsManager : MonoBehaviour
             CheckMoveCommand();
             CheckAttackCommand();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GiveReloadCommand();
+        }
     }
 
     private void CheckMoveCommand()
@@ -116,6 +121,23 @@ public class CommandsManager : MonoBehaviour
                 ShowAttackClickWavesEffects(agent.transform.position);
                 CurrentGoalToCommand = new AttackGoal(agent, agent.transform.position);
             }
+        }
+    }
+
+    private void GiveReloadCommand()
+    {
+        Formation currentFormation = playerController.SelectionManager.GetCurrentFormation();
+
+        if (currentFormation == null)
+        {
+            return;
+        }
+
+        List<Agent> agents = currentFormation.GetAllFormationAgents();
+
+        for (int i = 0; i < agents.Count; i++)
+        {
+            agents[i].GetWeaponManager().ReloadActiveGun();
         }
     }
 

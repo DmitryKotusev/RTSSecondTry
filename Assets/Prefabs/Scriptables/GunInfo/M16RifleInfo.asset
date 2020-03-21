@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: M16RifleInfo
   m_EditorClassIdentifier: 
   rateOfFire: 300
-  cooldown: 3
+  cooldown: 6
+  cooldownPreparationRatio: 0.1
+  cooldownFinishRatio: 0.3
   basicDamagePerShot: 0
   projectileSpeed: 300
   bulletsPerClip: 30
@@ -24,3 +26,6 @@ MonoBehaviour:
   spreadIncreseSpeedForShot: 2
   spreadIncreseSpeedForMove: 12000
   reloadAnimation: {fileID: 7400000, guid: 4f34bb05c0fa2604db3d2ef56e685e3f, type: 2}
+  usualClipHandInfo:
+    clipHandPosition: {x: 0.0114, y: 0.0706, z: 0.0466}
+    clipHandRotation: {x: -0.29715654, y: -0.73386854, z: -0.3845449, w: 0.4746159}

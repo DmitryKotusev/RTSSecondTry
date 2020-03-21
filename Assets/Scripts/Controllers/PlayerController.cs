@@ -23,6 +23,8 @@ public class PlayerController : Controller
     [Required]
     ControllerSettings controllerSettings;
 
+    public SelectionManager SelectionManager => selectionManager;
+
     override public IAgentsHandler GetAgentsHandler()
     {
         return selectionManager;
