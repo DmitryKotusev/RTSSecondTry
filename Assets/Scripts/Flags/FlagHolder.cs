@@ -30,7 +30,7 @@ public class FlagHolder : MonoBehaviour
 
             if (isNewFlagSet)
             {
-                currentActiveFlag.gameObject.SetActive(false);
+                currentActiveFlag?.gameObject.SetActive(false);
 
                 currentActiveFlag = whiteFlag;
 

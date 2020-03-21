@@ -2742,8 +2742,6 @@ GameObject:
   - component: {fileID: 4988163454208310030}
   - component: {fileID: 4988163454208310017}
   - component: {fileID: 3654057765903267796}
-  - component: {fileID: 3654057767400660570}
-  - component: {fileID: 3654057767400660569}
   - component: {fileID: 7145192492272375348}
   m_Layer: 9
   m_Name: TanRifleMan
@@ -2836,7 +2834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localOffset: {x: 0, y: 1, z: 0}
-  pooledObject: {fileID: 3654057767400660570}
+  pooledObject: {fileID: 0}
   agent: {fileID: 4988163454208310028}
   deathParticlesKey: TanGuysDeathParticlesPoolKey
 --- !u!114 &4988163454208310025
@@ -3590,33 +3588,6 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
---- !u!114 &3654057767400660570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4988163454208310018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4824547d45f952545ab39373551dc712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pool: {fileID: 0}
---- !u!114 &3654057767400660569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4988163454208310018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cafb9845f872df4d996d891468fa77f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pooledObject: {fileID: 3654057767400660570}
-  poolKey: TanRifleManPoolKey
 --- !u!114 &7145192492272375348
 MonoBehaviour:
   m_ObjectHideFlags: 0

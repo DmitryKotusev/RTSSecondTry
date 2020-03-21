@@ -16,7 +16,7 @@ MonoBehaviour:
   cooldown: 6
   cooldownPreparationRatio: 0.1
   cooldownFinishRatio: 0.3
-  basicDamagePerShot: 0
+  basicDamagePerShot: 10
   projectileSpeed: 300
   bulletsPerClip: 30
   fireDistance: 85

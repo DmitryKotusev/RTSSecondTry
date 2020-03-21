@@ -4476,8 +4476,6 @@ GameObject:
   - component: {fileID: 8614354840003571646}
   - component: {fileID: 8614354840003571633}
   - component: {fileID: 726950756}
-  - component: {fileID: 1351863018}
-  - component: {fileID: 1351863017}
   - component: {fileID: 1638616037}
   m_Layer: 9
   m_Name: GreenRifleMan
@@ -4570,7 +4568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localOffset: {x: 0, y: 1, z: 0}
-  pooledObject: {fileID: 1351863018}
+  pooledObject: {fileID: 0}
   agent: {fileID: 8614354840003571644}
   deathParticlesKey: GreenGuysDeathParticlesPoolKey
 --- !u!114 &8614354840003571641
@@ -5324,33 +5322,6 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
---- !u!114 &1351863018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8614354840003571634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4824547d45f952545ab39373551dc712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pool: {fileID: 0}
---- !u!114 &1351863017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8614354840003571634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cafb9845f872df4d996d891468fa77f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pooledObject: {fileID: 1351863018}
-  poolKey: GreenRifleManPoolKey
 --- !u!114 &1638616037
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,8 +14,6 @@ public class PoolsManager : SerializedMonoBehaviour
         { PoolsKeys.greenGuysDeathParticlesPoolKey, null },
         { PoolsKeys.tanGuysDeathParticlesPoolKey, null },
         { PoolsKeys.attackClickEffectsPoolKey, null },
-        { PoolsKeys.greenRifleManPoolKey, null },
-        { PoolsKeys.tanRifleManPoolKey, null },
         { PoolsKeys.m16RifleGreenSoldierHitEffectPoolKey, null },
         { PoolsKeys.m16RifleTanSoldierHitEffectPoolKey, null },
     };

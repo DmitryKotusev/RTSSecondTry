@@ -6,8 +6,6 @@
     static public readonly string attackClickEffectsPoolKey = "AttackClickEffectsPoolKey";
     static public readonly string greenGuysDeathParticlesPoolKey = "GreenGuysDeathParticlesPoolKey";
     static public readonly string tanGuysDeathParticlesPoolKey = "TanGuysDeathParticlesPoolKey";
-    static public readonly string greenRifleManPoolKey = "GreenRifleManPoolKey";
-    static public readonly string tanRifleManPoolKey = "TanRifleManPoolKey";
     static public readonly string m16RifleGreenSoldierHitEffectPoolKey = "M16RifleGreenSoldierHitEffectPoolKey";
     static public readonly string m16RifleTanSoldierHitEffectPoolKey = "M16RifleTanSoldierHitEffectPoolKey";
 }

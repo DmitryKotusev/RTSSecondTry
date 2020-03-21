@@ -8,10 +8,6 @@ public class DeathManager : MonoBehaviour
 
     [SerializeField]
     [Required]
-    protected PooledObject pooledObject;
-
-    [SerializeField]
-    [Required]
     protected Agent agent;
 
     [SerializeField]
@@ -25,13 +21,6 @@ public class DeathManager : MonoBehaviour
             particlesObject.transform.position = transform.position + transform.InverseTransformVector(localOffset);
         }
 
-        if (pooledObject.pool != null)
-        {
-            pooledObject.pool.ReturnObject(gameObject);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
+        Destroy(gameObject);
     }
 }
