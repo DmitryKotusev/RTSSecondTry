@@ -49,7 +49,8 @@ public class FlagHolder : MonoBehaviour
 
         if (!everCapturedTeams.ContainsKey(team))
         {
-            Flag newFlagInstance = Instantiate(team.FlagPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Flag>();
+            Flag newFlagInstance
+                = Instantiate(team.FlagPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Flag>();
 
             everCapturedTeams.Add(team, newFlagInstance);
         }
