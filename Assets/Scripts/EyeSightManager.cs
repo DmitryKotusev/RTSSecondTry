@@ -28,8 +28,10 @@ public class EyeSightManager : MonoBehaviour
         List<ColliderCostPair> colliderCostPairsInSight = unitsColliderCostPairs.FindAll((unitsColliderCostPair) =>
         {
             RaycastHit raycastHit;
-            if (Physics.Raycast(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position - lookAroundPoint.position, out raycastHit,
-                Vector3.Distance(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position)))
+            if (Physics.Raycast(lookAroundPoint.position,
+                unitsColliderCostPair.collider.transform.position - lookAroundPoint.position,
+                out raycastHit,
+                (unitsColliderCostPair.collider.transform.position - lookAroundPoint.position).magnitude))
             {
                 // Debug.DrawRay(lookAroundPoint.position, unitsColliderCostPair.collider.transform.position - lookAroundPoint.position, Color.white, 1f);
                 if (raycastHit.collider.transform == unitsColliderCostPair.collider.transform)
@@ -54,44 +56,41 @@ public class EyeSightManager : MonoBehaviour
 
     public bool IsEnemyReachableAtDistance(Unit unit, float distance)
     {
-        Collider[] agentsColliders = Physics.OverlapSphere(transform.position, distance, agentsMask);
-
-        foreach (Collider agentCollider in agentsColliders)
-        {
-            Agent agentInfo = agentCollider.attachedRigidbody.GetComponent<Agent>();
-
-            if (agentInfo != null)
-            {
-                if (agentInfo.SoldierBasic == unit)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return (transform.position - unit.transform.position).sqrMagnitude < Mathf.Pow(distance, 2);
     }
 
     public List<Unit> GetEnemyUnitsInFieldOfView(float lookDistance, Team friendlyTeam)
     {
-        Collider[] agentsColliders = Physics.OverlapSphere(transform.position, lookDistance, agentsMask);
+        List<Unit> allUnits = LevelManager.Instance.GetAllUnits();
 
-        HashSet<Unit> enemyUnits = new HashSet<Unit>();
+        List<Unit> visibleEnemyUnits = new List<Unit>();
 
-        foreach (Collider agentCollider in agentsColliders)
+        foreach (Unit enemyUnit in allUnits)
         {
-            Agent agentInfo = agentCollider.attachedRigidbody.GetComponent<Agent>();
-
-            if (agentInfo != null && agentInfo.GetController().GetTeam() != friendlyTeam)
+            if (enemyUnit.Agent.GetTeam() == friendlyTeam)
             {
-                if (GetUnitsVisibleBodyPart(agentInfo.SoldierBasic) != null)
+                continue;
+            }
+
+            foreach (ColliderCostPair colliderCostPair in enemyUnit.GetHitCollidersCosts())
+            {
+                RaycastHit raycastHit;
+                if (Physics.Raycast(lookAroundPoint.position,
+                    colliderCostPair.collider.transform.position - lookAroundPoint.position,
+                    out raycastHit,
+                    lookDistance))
                 {
-                    enemyUnits.Add(agentInfo.SoldierBasic);
+                    if (raycastHit.collider.transform == colliderCostPair.collider.transform)
+                    {
+                        visibleEnemyUnits.Add(enemyUnit);
+
+                        break;
+                    }
                 }
             }
         }
 
-        return new List<Unit>(enemyUnits);
+        return visibleEnemyUnits;
     }
 
     public List<Unit> GetEnemyUnitsInFieldOfViewOrderedByDistance(float distance, Team friendlyTeam)

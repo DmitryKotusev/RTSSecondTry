@@ -21,6 +21,29 @@ public class ControllersHub : ScriptableObject
         }
     }
 
+    public void GetAllUnits(List<Unit> units)
+    {
+        units.Clear();
+
+        foreach (KeyValuePair<Team, List<Controller>> controllerList in controllerLists)
+        {
+            Team team = controllerList.Key;
+            List<Controller> oneTeamControllers = controllerList.Value;
+
+            foreach (Controller controller in oneTeamControllers)
+            {
+                IAgentsHandler agentsHandler = controller.GetAgentsHandler();
+
+                List<Agent> agents = agentsHandler.GetAllAvailableAgents();
+
+                foreach (Agent agent in agents)
+                {
+                    units.Add(agent.SoldierBasic);
+                }
+            }
+        }
+    }
+
     public void RegisterController(Controller controller)
     {
         Team controllersTeam = controller.GetTeam();

@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Assets/Prefabs/Scriptables/TeamsVisibleUnitsStore/TeamsVisibleUnitsStore", menuName = "CustomScriptables/TeamsVisibleUnitsStore")]
-public class TeamsVisibleUnitsStore : ScriptableObject
+public class TeamsVisibleUnitsStore
 {
     private Dictionary<Team, HashSet<Unit>> teamsVisibleUnits = new Dictionary<Team, HashSet<Unit>>();
 
