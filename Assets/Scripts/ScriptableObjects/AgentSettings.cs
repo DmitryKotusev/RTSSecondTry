@@ -6,15 +6,21 @@ using UnityEngine;
 public class AgentSettings : ScriptableObject
 {
     [SerializeField]
-    float lookDistance;
+    private float lookDistance;
 
     [SerializeField]
     [Range(0, 100)]
-    float desirableWeaponSpreadPersent = 5;
+    private float desirableWeaponSpreadPersent = 5;
 
     [SerializeField]
     [Range(0, 100)]
-    float maxWeaponSpreadPersent = 60;
+    private float maxWeaponSpreadPersent = 60;
+
+    [SerializeField]
+    private float spawnDistance = 2f;
+
+    [SerializeField]
+    private float moveDistance = 2f;
 
     public float LookDistance
     {
@@ -37,6 +43,22 @@ public class AgentSettings : ScriptableObject
         get
         {
             return maxWeaponSpreadPersent;
+        }
+    }
+
+    public float SpawnDistance
+    {
+        get
+        {
+            return spawnDistance;
+        }
+    }
+
+    public float MoveDistance
+    {
+        get
+        {
+            return moveDistance;
         }
     }
 }

@@ -105,10 +105,6 @@ public class CommandsManager : MonoBehaviour
             {
                 return;
             }
-            if (raycastHit.rigidbody.tag != "Selectable")
-            {
-                return;
-            }
 
             Agent agent = raycastHit.rigidbody.GetComponent<Agent>();
             if (agent == null)

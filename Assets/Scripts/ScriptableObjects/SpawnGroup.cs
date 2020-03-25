@@ -1,12 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(menuName = "CustomScriptables/SpawnGroup")]
 public class SpawnGroup : ScriptableObject
 {
     [SerializeField]
-    private List<KeyValuePair<GameObject, int>> spawnPairs;
+    private List<UnitCountInfo> spawnPairs;
 
-    public List<KeyValuePair<GameObject, int>> SpawnPairs => spawnPairs;
+    public List<UnitCountInfo> SpawnPairs => spawnPairs;
+}
+
+[Serializable]
+public struct UnitCountInfo
+{
+    public GameObject prefab;
+
+    public int count;
 }

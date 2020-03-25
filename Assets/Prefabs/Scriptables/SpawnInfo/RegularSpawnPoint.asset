@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be7a3f0d8e61f645983c2f2fb67cd8e, type: 3}
-  m_Name: RifleManAgentSettings
+  m_Script: {fileID: 11500000, guid: a54cf72327c44a74bab275ae1bc92b88, type: 3}
+  m_Name: RegularSpawnPoint
   m_EditorClassIdentifier: 
-  lookDistance: 60
-  desirableWeaponSpreadPersent: 5
-  maxWeaponSpreadPersent: 60
-  spawnDistance: 2
-  moveDistance: 3
+  defaultSpawnDistance: 2
