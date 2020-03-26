@@ -12,11 +12,16 @@ public class SpawnPointInfo : ScriptableObject
     private float spawnHeightCheckDistance = 20f;
 
     [SerializeField]
+    private float spawnHeightObstacleDistance = 5f;
+
+    [SerializeField]
     private int tryFindStartTries = 1000;
 
     public float DefaultSpawnDistance => defaultSpawnDistance;
 
     public float SpawnHeightCheckDistance => spawnHeightCheckDistance;
+
+    public float SpawnHeightObstacleDistance => spawnHeightObstacleDistance;
 
     public int TryFindStartTries => tryFindStartTries;
 }
