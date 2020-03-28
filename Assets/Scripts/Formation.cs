@@ -29,10 +29,9 @@ public class Formation : IEnumerable<Agent>
             }
         }
 
-        RemoveAgentFromFormation(formationLeader);
+        SetFormationLeader(formationLeader);
 
-        this.formationLeader = formationLeader;
-        formationLeader.SetCurrentFormation(this);
+        formationLeader?.SetCurrentFormation(this);
     }
 
     public bool DoesBelongToFormation(Agent agent)
@@ -65,11 +64,21 @@ public class Formation : IEnumerable<Agent>
 
     public void SetFormationLeader(Agent formationLeader)
     {
+        if (this.formationLeader == formationLeader)
+        {
+            return;
+        }
+
         Agent oldLeader = this.formationLeader;
         this.formationLeader = formationLeader;
         formationAgents.Remove(formationLeader);
-        formationAgents.Add(oldLeader);
-        formationLeader.SetCurrentFormation(this);
+
+        if (oldLeader != null)
+        {
+            formationAgents.Add(oldLeader);
+        }
+
+        formationLeader?.SetCurrentFormation(this);
     }
 
     public List<Agent> GetFormationAgentsWithoutLeader()

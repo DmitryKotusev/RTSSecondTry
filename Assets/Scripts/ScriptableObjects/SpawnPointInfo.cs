@@ -17,6 +17,9 @@ public class SpawnPointInfo : ScriptableObject
     [SerializeField]
     private int tryFindStartTries = 1000;
 
+    [SerializeField]
+    private List<Vector3> spawnPointOffsets = new List<Vector3>();
+
     public float DefaultSpawnDistance => defaultSpawnDistance;
 
     public float SpawnHeightCheckDistance => spawnHeightCheckDistance;
@@ -24,4 +27,6 @@ public class SpawnPointInfo : ScriptableObject
     public float SpawnHeightObstacleDistance => spawnHeightObstacleDistance;
 
     public int TryFindStartTries => tryFindStartTries;
+
+    public List<Vector3> SpawnPointOffsets => new List<Vector3>(spawnPointOffsets);
 }

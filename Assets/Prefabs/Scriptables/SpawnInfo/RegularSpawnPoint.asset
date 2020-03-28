@@ -13,3 +13,15 @@ MonoBehaviour:
   m_Name: RegularSpawnPoint
   m_EditorClassIdentifier: 
   defaultSpawnDistance: 2
+  spawnHeightCheckDistance: 20
+  spawnHeightObstacleDistance: 5
+  tryFindStartTries: 1000
+  spawnPointOffsets:
+  - {x: 10, y: 0, z: 0}
+  - {x: 0, y: 0, z: 10}
+  - {x: -10, y: 0, z: 0}
+  - {x: 0, y: 0, z: -10}
+  - {x: 10, y: 0, z: 10}
+  - {x: -10, y: 0, z: -10}
+  - {x: 10, y: 0, z: -10}
+  - {x: -10, y: 0, z: 10}

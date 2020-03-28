@@ -112,8 +112,28 @@ public class ControllersHub : ScriptableObject
             return aiController;
         }
 
-        // TODO: Rework logic for AI
-        return controllerLists[agentsTeam][0];
+        return FindControllerWithLeastUnits(agentsTeam);
+    }
+
+    private Controller FindControllerWithLeastUnits(Team agentsTeam)
+    {
+        float leastUnitsCount
+            = controllerLists[agentsTeam][0].GetAgentsHandler().GetAllAvailableAgents().Count;
+
+        Controller leastUnitsController = controllerLists[agentsTeam][0];
+
+        for (int i = 1; i < controllerLists[agentsTeam].Count; i++)
+        {
+            if (leastUnitsCount > controllerLists[agentsTeam][i].GetAgentsHandler().GetAllAvailableAgents().Count)
+            {
+                leastUnitsCount
+                    = controllerLists[agentsTeam][i].GetAgentsHandler().GetAllAvailableAgents().Count;
+
+                leastUnitsController = controllerLists[agentsTeam][i];
+            }
+        }
+
+        return leastUnitsController;
     }
 
     private Controller SpawnAIController()

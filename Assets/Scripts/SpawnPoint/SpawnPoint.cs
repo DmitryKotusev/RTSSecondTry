@@ -37,7 +37,10 @@ public class SpawnPoint : MonoBehaviour
                 continue;
             }
 
-            objectsToSpawn.Add(unitCountInfo.prefab);
+            for (int i = 0; i < unitsCount; i++)
+            {
+                objectsToSpawn.Add(unitCountInfo.prefab);
+            }
         }
 
         List<Vector3> spawnPoints = new List<Vector3>();
@@ -47,9 +50,50 @@ public class SpawnPoint : MonoBehaviour
             return false;
         }
 
-        // Spawn objects on their points
+        SpawnObjects(objectsToSpawn, spawnPoints);
 
         return true;
+    }
+
+    private void SpawnObjects(List<GameObject> objectsToSpawn, List<Vector3> spawnPoints)
+    {
+        List<Agent> spawnedAgents = new List<Agent>();
+
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            Agent newAgent = Instantiate(objectsToSpawn[i], spawnPoints[i], transform.rotation)
+                .GetComponent<Agent>();
+
+            if (newAgent != null)
+            {
+                spawnedAgents.Add(newAgent);
+
+                if (controller != null)
+                {
+                    newAgent.ClearControllerInfo();
+                }
+                
+            }
+        }
+
+        GiveAgentsToController(spawnedAgents);
+    }
+
+    private void GiveAgentsToController(List<Agent> spawnedAgents)
+    {
+        if (controller == null)
+        {
+            return;
+        }
+
+        if (spawnedAgents.Count == 0)
+        {
+            return;
+        }
+
+        IAgentsHandler agentsHandler = controller.GetAgentsHandler();
+
+        agentsHandler.RegisterAgents(spawnedAgents);
     }
 
     private bool FindSpawnPoints(
@@ -59,7 +103,7 @@ public class SpawnPoint : MonoBehaviour
     {
         int squareRoot = (int)Mathf.Sqrt(objectsToSpawn.Count);
 
-        Vector3 currentVerticalSpawnPoint = transform.position;
+        Vector3 currentVerticalSpawnPoint = GetStartPoint();
 
         for (int index = 0; index < objectsToSpawn.Count; index += squareRoot)
         {
@@ -76,32 +120,24 @@ public class SpawnPoint : MonoBehaviour
                     return false;
                 }
 
-                currentVerticalSpawnPoint -= transform.forward * maxRadius;
-
                 Vector3 groundPoint = GetGroundPoint(currentVerticalSpawnPoint);
 
-                if (groundPoint == Vector3.positiveInfinity)
+                if (!IsPointValid(groundPoint, maxRadius))
                 {
+                    currentVerticalSpawnPoint -= transform.forward * maxRadius;
                     continue;
                 }
-
-                if (IsObstaclePresent(groundPoint))
-                {
-                    continue;
-                }
-
-                spawnPoints.Add(groundPoint);
 
                 break;
             }
+
+            Vector3 currentHorizontalSpawnPoint = currentVerticalSpawnPoint;
 
             for (; subIndex < objectsToSpawn.Count && subIndex < index + squareRoot; subIndex++)
             {
                 int j = subIndex % squareRoot;
 
                 maxRadius = FindMaxRadius(objectsToSpawn, i, j, squareRoot);
-
-                Vector3 currentHorizontalSpawnPoint = currentVerticalSpawnPoint;
 
                 for (int tryIndex = 0; tryIndex <= spawnPointInfo.TryFindStartTries; tryIndex++)
                 {
@@ -110,17 +146,11 @@ public class SpawnPoint : MonoBehaviour
                         return false;
                     }
 
-                    currentHorizontalSpawnPoint += transform.right * maxRadius;
-
                     Vector3 groundPoint = GetGroundPoint(currentHorizontalSpawnPoint);
 
-                    if (groundPoint == Vector3.positiveInfinity)
+                    if (!IsPointValid(groundPoint, maxRadius))
                     {
-                        continue;
-                    }
-
-                    if (IsObstaclePresent(groundPoint))
-                    {
+                        currentHorizontalSpawnPoint += transform.right * maxRadius;
                         continue;
                     }
 
@@ -128,10 +158,44 @@ public class SpawnPoint : MonoBehaviour
 
                     break;
                 }
+
+                currentHorizontalSpawnPoint += transform.right * maxRadius;
             }
+
+            currentVerticalSpawnPoint -= transform.forward * maxRadius;
         }
 
         return true;
+    }
+
+    private Vector3 GetStartPoint()
+    {
+        Vector3 startPoint = transform.position;
+
+        Vector3 groundPoint = GetGroundPoint(startPoint);
+
+        if (!IsPointValid(groundPoint, spawnPointInfo.DefaultSpawnDistance))
+        {
+            foreach (Vector3 offset in spawnPointInfo.SpawnPointOffsets)
+            {
+                startPoint = transform.position + offset;
+
+                groundPoint = GetGroundPoint(startPoint);
+
+                if (IsPointValid(groundPoint, spawnPointInfo.DefaultSpawnDistance))
+                {
+                    break;
+                }
+            }
+        }
+
+        return startPoint;
+    }
+
+    private bool IsPointValid(Vector3 point, float radius)
+    {
+        return !(point.ToString() == Vector3.positiveInfinity.ToString()
+            || IsObstaclePresent(point, radius));
     }
 
     private Vector3 GetGroundPoint(Vector3 point)
@@ -176,17 +240,21 @@ public class SpawnPoint : MonoBehaviour
 
     private bool IsObstaclePresent(Vector3 point, float spawnDistance)
     {
-        Vector3 point1 = point + Vector3.up * spawnDistance;
+        //Vector3 point1 = point + Vector3.up * spawnDistance;
+
+        Vector3 point1 = point + Vector3.up * 0.01f;
 
         Vector3 point2 = point1 + spawnPointInfo.SpawnHeightObstacleDistance * Vector3.up;
 
-        return Physics.CapsuleCast(
-           point1,
-           point2,
-           spawnDistance,
-           Vector3.up,
-           0,
-           obstacleLayerMask);
+        //return Physics.SphereCast(
+        //   point1,
+        //   spawnDistance,
+        //   point2 - point1,
+        //   out raycastHit,
+        //   spawnPointInfo.SpawnHeightObstacleDistance,
+        //   obstacleLayerMask);
+
+        return Physics.Raycast(point1, point2 - point1, spawnPointInfo.SpawnHeightObstacleDistance, obstacleLayerMask);
     }
 
     private float FindMaxRadius(List<GameObject> objectsToSpawn, int i, int j, int squareRoot)
@@ -195,7 +263,7 @@ public class SpawnPoint : MonoBehaviour
 
         float upRadius = GetUnitSpawnRadius(objectsToSpawn, i - 1, j, squareRoot);
 
-        float centerRadius = GetUnitSpawnRadius(objectsToSpawn, i, j - 1, squareRoot);
+        float centerRadius = GetUnitSpawnRadius(objectsToSpawn, i, j, squareRoot);
 
         float maxRadius = Mathf.Max(leftRadius, upRadius, centerRadius);
 
@@ -218,7 +286,7 @@ public class SpawnPoint : MonoBehaviour
 
         Agent agent = objectsToSpawn[index].GetComponent<Agent>();
 
-        float radius = agent == null ? 0 : agent.GetSettings().SpawnDistance;
+        float radius = agent == null ? spawnPointInfo.DefaultSpawnDistance : agent.GetSettings().SpawnDistance;
 
         return radius;
     }

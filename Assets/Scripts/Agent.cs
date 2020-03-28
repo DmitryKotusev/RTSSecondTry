@@ -262,6 +262,13 @@ public class Agent : MonoBehaviour
         controllersHub.FindControllerForAgent(this);
     }
 
+    public void ClearControllerInfo()
+    {
+        IAgentsHandler agentsHandler = controller?.GetAgentsHandler();
+        agentsHandler?.UnregisterAgent(this);
+        controller = null;
+    }
+
     private void OnEnable()
     {
         FindRandomControllerForAgent();
@@ -276,13 +283,6 @@ public class Agent : MonoBehaviour
     {
         CheckCurrentState();
         CurrentBehaviour();
-    }
-
-    private void ClearControllerInfo()
-    {
-        IAgentsHandler agentsHandler = controller?.GetAgentsHandler();
-        agentsHandler?.UnregisterAgent(this);
-        controller = null;
     }
 
     private void CheckCurrentState()

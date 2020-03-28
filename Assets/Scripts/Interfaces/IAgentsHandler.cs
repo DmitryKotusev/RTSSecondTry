@@ -8,5 +8,7 @@ public interface IAgentsHandler
 
     void RegisterAgent(Agent newAgent);
 
+    void RegisterAgents(IEnumerable<Agent> newAgents);
+
     void UnregisterAgent(Agent oldAgent);
 }

@@ -9,6 +9,10 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 {
     [SerializeField]
     [Required]
+    private Controller controller;
+
+    [SerializeField]
+    [Required]
     private SelectionManagerSettings selectionManagerSettings;
 
     [SerializeField]
@@ -73,8 +77,20 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         {
             Formation agentsNewFormation = new Formation(agent);
             availableFormations.Add(agentsNewFormation);
-            Debug.Log("Available formations count:" + availableFormations.Count);
+            agent.SetController(controller);
         }
+    }
+
+    public void RegisterAgents(IEnumerable<Agent> newAgents)
+    {
+        foreach (Agent agent in newAgents)
+        {
+            UnregisterAgent(agent);
+            agent.SetController(controller);
+        }
+
+        Formation agentsNewFormation = new Formation(newAgents.ElementAt(0), newAgents);
+        availableFormations.Add(agentsNewFormation);
     }
 
     public void UnregisterAgent(Agent agent)
