@@ -12,7 +12,15 @@ abstract public class Controller : MonoBehaviour
 {
     [SerializeField]
     [Required]
-    Team team;
+    private BattlePointsManager battlePointsManager;
+
+    [SerializeField]
+    [Required]
+    private Spawner spawner;
+
+    [SerializeField]
+    [Required]
+    private Team team;
 
     [SerializeField]
     [Tooltip("Controllers' hub where controller should register when game starts")]
@@ -31,6 +39,8 @@ abstract public class Controller : MonoBehaviour
         Debug.Log("Controller " + name + " unregistered");
     }
 
+    public BattlePointsManager BattlePointsManager => battlePointsManager;
+
     // Getters and setters
     #region
     public void SetTeam(Team team)
@@ -44,7 +54,7 @@ abstract public class Controller : MonoBehaviour
     }
     #endregion
 
-    virtual public IAgentsHandler GetAgentsHandler()
+    public virtual IAgentsHandler GetAgentsHandler()
     {
         return null;
     }

@@ -16,3 +16,5 @@ MonoBehaviour:
   - prefab: {fileID: 4988163454208310018, guid: c4fe1d0e08b1adc46bdb3800e4b9412f,
       type: 3}
     count: 5
+  pointsCost: 100
+  spawnIcon: {fileID: 2800000, guid: 37e910a7e4c96ea43be52fd22d436a06, type: 3}

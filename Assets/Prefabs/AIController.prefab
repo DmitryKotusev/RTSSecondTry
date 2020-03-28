@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4822236416319899212}
   - component: {fileID: 6779111369242389731}
   - component: {fileID: 1873196833857749328}
+  - component: {fileID: 6248306363843348667}
+  - component: {fileID: 6082467919901256771}
   m_Layer: 0
   m_Name: AIController
   m_TagString: Untagged
@@ -61,6 +63,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c329cbd485d792142929da636b0c7d28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battlePointsManager: {fileID: 6248306363843348667}
+  spawner: {fileID: 6082467919901256771}
   team: {fileID: 11400000, guid: c115a3d684f91f34d87525defd533f61, type: 2}
   controllersHub: {fileID: 11400000, guid: 1c2f63f7d4f06e0499bf258ed9c56ee6, type: 2}
   agentsHandler: {fileID: 1873196833857749328}
@@ -77,3 +81,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 6779111369242389731}
+--- !u!114 &6248306363843348667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779111369242389532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa0c21daac7a17f42bd064c18c9c77dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointsInfo: {fileID: 11400000, guid: 78a13ffb32e80644bbcfada3cc64ff14, type: 2}
+  availableGroupsInfo: {fileID: 11400000, guid: da48b8c7bf685c046b06d2086f29faa2,
+    type: 2}
+--- !u!114 &6082467919901256771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6779111369242389532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37cbf81fb155d14ca0353b01c9cd064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battlePointsManager: {fileID: 6248306363843348667}
+  spawnPoint: {fileID: 0}
+  agentsHandler: {fileID: 1873196833857749328}
