@@ -43,5 +43,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5635734d85144b41869963646c02644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitsStore: {fileID: 11400000, guid: ce5741a7f94805148bfda34b30fc5791, type: 2}
   controllersHub: {fileID: 11400000, guid: 1c2f63f7d4f06e0499bf258ed9c56ee6, type: 2}
+  levelUI: {fileID: 0}
+  matchController:
+    matchControllerSettings: {fileID: 11400000, guid: 5d5d7ca4b675bf044b8838af90ecec0f,
+      type: 2}
+    participatingTeams:
+    - {fileID: 11400000, guid: 4ebf381d6f8df2540a33a759196ecb9e, type: 2}
+    - {fileID: 11400000, guid: c115a3d684f91f34d87525defd533f61, type: 2}
+    victoryScore: 150
+    uIEventsHub: {fileID: 11400000, guid: 88a55f859113ca04c948d7c7a1667551, type: 2}
+    allCapturePoints:
+    - {fileID: 0}

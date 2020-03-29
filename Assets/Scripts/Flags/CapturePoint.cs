@@ -41,6 +41,8 @@ public class CapturePoint : MonoBehaviour
         }
     }
 
+    public Team CurrentPointHolder => currentPointHolder;
+
     private void Awake()
     {
         InitCurrentPointHolder();

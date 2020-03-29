@@ -10,6 +10,9 @@ public class TeamScoreCell : MonoBehaviour
     [SerializeField]
     private TMP_Text score;
 
+    [SerializeField]
+    private Team team;
+
     public Texture Flag
     {
         get
@@ -23,6 +26,19 @@ public class TeamScoreCell : MonoBehaviour
         }
     }
 
+    public Color FontColor
+    {
+        get
+        {
+            return score.color;
+        }
+
+        set
+        {
+            score.color = value;
+        }
+    }
+
     public string Score
     {
         get
@@ -33,6 +49,23 @@ public class TeamScoreCell : MonoBehaviour
         set
         {
             score.text = value;
+        }
+    }
+
+    public Team Team
+    {
+        get
+        {
+            return team;
+        }
+
+        set
+        {
+            team = value;
+
+            Flag = team.FlagTexture;
+
+            FontColor = team.TeamColor;
         }
     }
 }

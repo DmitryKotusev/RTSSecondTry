@@ -7,36 +7,24 @@ using UnityEngine;
 public class Team : ScriptableObject
 {
     [SerializeField]
-    string teamName;
+    private string teamName;
 
     [SerializeField]
-    Color teamColor;
+    private Color teamColor;
 
     [SerializeField]
     [Required]
-    GameObject flagPrefab;
+    private GameObject flagPrefab;
 
-    public string TeamName
-    {
-        get
-        {
-            return teamName;
-        }
-    }
+    [SerializeField]
+    [Required]
+    private Texture2D flagTexture;
 
-    public Color TeamColor
-    {
-        get
-        {
-            return teamColor;
-        }
-    }
+    public string TeamName => teamName;
 
-    public GameObject FlagPrefab
-    {
-        get
-        {
-            return flagPrefab;
-        }
-    }
+    public Color TeamColor => teamColor;
+
+    public GameObject FlagPrefab => flagPrefab;
+
+    public Texture2D FlagTexture => flagTexture;
 }

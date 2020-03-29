@@ -41,6 +41,16 @@ abstract public class Controller : MonoBehaviour
 
     public BattlePointsManager BattlePointsManager => battlePointsManager;
 
+    public Spawner Spawner
+    {
+        get => spawner;
+
+        set
+        {
+            spawner = value;
+        }
+    }
+
     // Getters and setters
     #region
     public void SetTeam(Team team)

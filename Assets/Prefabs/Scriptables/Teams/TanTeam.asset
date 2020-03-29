@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TanTeam
   m_EditorClassIdentifier: 
   teamName: Tan
-  teamColor: {r: 0.7921569, g: 0.5176471, b: 0.0627451, a: 0}
+  teamColor: {r: 0.7921569, g: 0.5176471, b: 0.0627451, a: 1}
   flagPrefab: {fileID: 5304460499272802033, guid: d401952b9110e43448b632ca203c5544,
     type: 3}
+  flagTexture: {fileID: 2800000, guid: 0411fd4a450ef2c4181a0400c8a97144, type: 3}

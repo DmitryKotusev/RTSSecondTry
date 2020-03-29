@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d69c1f5dc42029c42860776b5e1dffc1, type: 3}
   m_Name: StandardPointsInfo
   m_EditorClassIdentifier: 
-  pointsLimit: 5000
-  pointsIncreaseSpeed: 10
+  battlePointsLimit: 5000
+  commandPointsLimit: 100
+  battlePointsIncreaseSpeed: 2

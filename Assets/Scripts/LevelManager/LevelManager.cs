@@ -8,6 +8,13 @@ public class LevelManager : MonoBehaviour
     [Required]
     private ControllersHub controllersHub;
 
+    [SerializeField]
+    [Required]
+    private LevelUI levelUI;
+
+    [SerializeField]
+    private MatchController matchController = new MatchController();
+
     private AgentsVisibilitySynchronizer visibilitySynchronizer = new AgentsVisibilitySynchronizer();
 
     private List<Unit> currentFrameUnits = new List<Unit>();
@@ -35,6 +42,8 @@ public class LevelManager : MonoBehaviour
 
     public TeamsVisibleUnitsStore UnitsStore { get; } = new TeamsVisibleUnitsStore();
 
+    public LevelUI LevelUI => levelUI;
+
     public List<Unit> GetAllUnits()
     {
         return currentFrameUnits;
@@ -48,6 +57,8 @@ public class LevelManager : MonoBehaviour
             {
                 instance = this;
 
+                matchController.Awake();
+
                 return;
             }
         }
@@ -60,6 +71,8 @@ public class LevelManager : MonoBehaviour
         FindAllCurrentFrameUnits();
 
         visibilitySynchronizer.UpdateUnitsInFieldOfViewOfEachTeam(UnitsStore, controllersHub);
+
+        matchController.Update();
     }
 
     private void FindAllCurrentFrameUnits()

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: GreenTeam
   m_EditorClassIdentifier: 
   teamName: Green
-  teamColor: {r: 0.12941177, g: 0.42745098, b: 0.13333334, a: 0}
+  teamColor: {r: 0.12941177, g: 0.42745098, b: 0.13333334, a: 1}
   flagPrefab: {fileID: 5617339184365439914, guid: 5c601cfee23add54997a5a32460b333f,
     type: 3}
+  flagTexture: {fileID: 2800000, guid: 61032d0c0ec150f42b0f6c55efe882bc, type: 3}
