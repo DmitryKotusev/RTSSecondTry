@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System;
+using UnityEngine.EventSystems;
 
 public class CommandsManager : MonoBehaviour
 {
@@ -70,13 +69,13 @@ public class CommandsManager : MonoBehaviour
     public void CheckCommands()
     {
         CurrentGoalToCommand = null;
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) && !EventSystem.current.IsPointerOverGameObject())
         {
             CheckMoveCommand();
             CheckAttackCommand();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !EventSystem.current.IsPointerOverGameObject())
         {
             GiveReloadCommand();
         }

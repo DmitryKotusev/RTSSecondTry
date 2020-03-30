@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 public class MouseCursorHandler : MonoBehaviour
 {
@@ -62,7 +63,9 @@ public class MouseCursorHandler : MonoBehaviour
 
     private void CursorControl()
     {
-        if (selectionManager.GetCurrentFormation() != null && !selectionManager.IsSelecting)
+        if (selectionManager.GetCurrentFormation() != null
+            && !selectionManager.IsSelecting
+            && !EventSystem.current.IsPointerOverGameObject())
         {
             if (CheckAttackCursor())
             {
@@ -92,6 +95,7 @@ public class MouseCursorHandler : MonoBehaviour
             {
                 return false;
             }
+
             if (raycastHit.rigidbody.tag != "Selectable")
             {
                 return false;
@@ -120,22 +124,6 @@ public class MouseCursorHandler : MonoBehaviour
 
     private bool CheckMoveCursor()
     {
-        //RaycastHit raycastHit;
-        //if (Physics.Raycast(playersCamera.ScreenPointToRay(Input.mousePosition), out raycastHit, commandsManager.CommandDistance))
-        //{
-        //    if (((int)Mathf.Pow(2, raycastHit.transform.gameObject.layer) & commandsManager.WalkableLayerMask.value) != 0)
-        //    {
-        //        currentCursor = moveCursor;
-        //        //if (currentCursor != moveCursor)
-        //        //{
-        //        //    currentCursor = moveCursor;
-        //        //    Cursor.SetCursor(moveCursor, new Vector2(moveCursor.width / 2, moveCursor.height / 2), CursorMode.Auto);
-        //        //}
-
-        //        return true;
-        //    }
-        //}
-
         if (currentCursor != moveCursor)
         {
             currentCursor = moveCursor;

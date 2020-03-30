@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -102,7 +103,7 @@ public class CameraController : MonoBehaviour
     private void RotationUpdate()
     {
         var easeFactor = 10f;
-        bool midMouseButtonPressDown = Input.GetMouseButtonDown(2);
+        bool midMouseButtonPressDown = Input.GetMouseButtonDown(2) && !EventSystem.current.IsPointerOverGameObject();
         if (midMouseButtonPressDown)
         {
             mouseX = Input.mousePosition.x;
@@ -135,8 +136,8 @@ public class CameraController : MonoBehaviour
 
     private void VerticalPositionUpdate()
     {
-        bool mouseWheelUp = Input.GetAxis("Mouse ScrollWheel") > 0;
-        bool mouseWheelDown = Input.GetAxis("Mouse ScrollWheel") < 0;
+        bool mouseWheelUp = Input.GetAxis("Mouse ScrollWheel") > 0 && !EventSystem.current.IsPointerOverGameObject();
+        bool mouseWheelDown = Input.GetAxis("Mouse ScrollWheel") < 0 && !EventSystem.current.IsPointerOverGameObject();
         // Move down
         if (mouseWheelUp)
         {

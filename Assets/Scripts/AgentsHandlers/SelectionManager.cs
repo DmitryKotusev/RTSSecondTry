@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class SelectionManager : MonoBehaviour, IAgentsHandler
 {
@@ -147,6 +146,11 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         }
 
         if (!Input.GetMouseButtonUp(0))
+        {
+            return;
+        }
+
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
@@ -298,14 +302,19 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
 
     private void RegisterMousePositions()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             isSelecting = true;
             startMousePosition = Input.mousePosition;
             normalizedStartMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
         {
+            if (!isSelecting)
+            {
+                startMousePosition = Input.mousePosition;
+            }
+
             isSelecting = false;
             finishMousePosition = Input.mousePosition;
             normalizedFinishMousePosition = playersCamera.ScreenToViewportPoint(Input.mousePosition);
@@ -415,6 +424,11 @@ public class SelectionManager : MonoBehaviour, IAgentsHandler
         }
 
         if (!Input.GetMouseButtonUp(0))
+        {
+            return;
+        }
+
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }

@@ -4568,7 +4568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localOffset: {x: 0, y: 1, z: 0}
-  pooledObject: {fileID: 0}
   agent: {fileID: 8614354840003571644}
   deathParticlesKey: GreenGuysDeathParticlesPoolKey
 --- !u!114 &8614354840003571641

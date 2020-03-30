@@ -16,7 +16,7 @@ public abstract class BattlePointsManager : MonoBehaviour
 
         set
         {
-            currentPointsAmount = Mathf.Clamp(value, 0, pointsInfo.BattlePointsIncreaseSpeed);
+            currentPointsAmount = Mathf.Clamp(value, 0, pointsInfo.BattlePointsLimit);
         }
     }
 

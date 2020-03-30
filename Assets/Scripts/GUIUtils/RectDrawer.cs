@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class RectDrawer
 {
@@ -30,27 +31,14 @@ public class RectDrawer
 
     public void MouseClickControl()
     {
-        //if (selectionManager.IsSelectionCycleFinished)
-        //{
-        //    // If we press the left mouse button, save mouse location and begin selection
-        //    if (Input.GetMouseButtonDown(0))
-        //    {
-        //        isSelecting = true;
-        //        startMousePosition = Input.mousePosition;
-        //    }
-        //    // If we let go of the left mouse button, end selection
-        //    if (Input.GetMouseButtonUp(0))
-        //        isSelecting = false;
-        //}
-
         // If we press the left mouse button, save mouse location and begin selection
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             isSelecting = true;
             startMousePosition = Input.mousePosition;
         }
         // If we let go of the left mouse button, end selection
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
             isSelecting = false;
     }
 
