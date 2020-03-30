@@ -1978,7 +1978,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3897981122559208490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0712, z: 0.1917}
+  m_LocalPosition: {x: -0, y: 0.241, z: 0.017}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5714874877111360555}
@@ -2834,7 +2834,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localOffset: {x: 0, y: 1, z: 0}
-  pooledObject: {fileID: 0}
   agent: {fileID: 4988163454208310028}
   deathParticlesKey: TanGuysDeathParticlesPoolKey
 --- !u!114 &4988163454208310025
