@@ -213,7 +213,7 @@ MonoBehaviour:
   attackableLayerMask:
     serializedVersion: 2
     m_Bits: 512
-  commandDistance: 100
+  commandDistance: 250
   clickWavesEffectGroundOffset: 0.05
   moveAngle: 40
   playerController: {fileID: 2087484017487523541}

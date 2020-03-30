@@ -85,6 +85,7 @@ public class M16Riffle : BigGun
         currentSpread = Mathf.Clamp(currentSpread - gunInfo.SpreadDeacreseSpeed * Time.deltaTime, gunInfo.Spread, gunInfo.MaxSpread);
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         RaycastHit raycastHit;
@@ -111,4 +112,5 @@ public class M16Riffle : BigGun
                 pathVector.magnitude / gunInfo.ProjectileSpeed * currentSpread);
         }
     }
+#endif
 }
