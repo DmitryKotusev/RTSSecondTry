@@ -8,15 +8,27 @@ public abstract class BattlePointsManager : MonoBehaviour
     [Required]
     protected PointsInfo pointsInfo;
 
-    protected float currentPointsAmount = 0;
+    protected float currentBattlePointsAmount = 0;
 
-    public float CurrentPointsAmount
+    protected float currentCommandPointsAmount = 0;
+
+    public virtual float CurrentBattlePointsAmount
     {
-        get => currentPointsAmount;
+        get => currentBattlePointsAmount;
 
         set
         {
-            currentPointsAmount = Mathf.Clamp(value, 0, pointsInfo.BattlePointsLimit);
+            currentBattlePointsAmount = Mathf.Clamp(value, 0, pointsInfo.BattlePointsLimit);
+        }
+    }
+
+    public virtual float CurrentCommandPointsAmount
+    {
+        get => currentCommandPointsAmount;
+
+        set
+        {
+            currentCommandPointsAmount = Mathf.Clamp(value, 0, pointsInfo.CommandPointsLimit);
         }
     }
 
@@ -24,10 +36,9 @@ public abstract class BattlePointsManager : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (GetComponent<Controller>() != LevelManager.Instance.LevelUI.PlayerController)
-        {
-            return;
-        }
+        CurrentBattlePointsAmount = 0;
+
+        CurrentCommandPointsAmount = 0;
     }
 
     protected virtual void Update()
@@ -37,8 +48,8 @@ public abstract class BattlePointsManager : MonoBehaviour
 
     protected virtual void IncreasePointsAmount()
     {
-        currentPointsAmount
-            = Mathf.Clamp(currentPointsAmount + Time.deltaTime * pointsInfo.BattlePointsIncreaseSpeed,
+        currentBattlePointsAmount
+            = Mathf.Clamp(currentBattlePointsAmount + Time.deltaTime * pointsInfo.BattlePointsIncreaseSpeed,
             0, pointsInfo.BattlePointsLimit);
     }
 }

@@ -8,9 +8,9 @@ public class UIEventsHub : ScriptableObject
 
     public event Action<string> ChangeBattlePointsIncomeSpeed;
 
-    public event Action<string> ChangeBattlePointsTotal;
+    public event Action<int, int> ChangeBattlePointsTotal;
 
-    public event Action<string> ChangeCommandPointsTotal;
+    public event Action<int, int> ChangeCommandPointsTotal;
 
     public event Action<Team, string> ChangeTeamScore;
 
@@ -24,14 +24,14 @@ public class UIEventsHub : ScriptableObject
         ChangeBattlePointsIncomeSpeed?.Invoke(incomeSpeed);
     }
 
-    public void TriggerChangeBattlePointsTotal(string totalBattlePoints)
+    public void TriggerChangeBattlePointsTotal(int totalBattlePoints, int maxBattlePoints)
     {
-        ChangeBattlePointsTotal?.Invoke(totalBattlePoints);
+        ChangeBattlePointsTotal?.Invoke(totalBattlePoints, maxBattlePoints);
     }
 
-    public void TriggerChangeCommandPointsTotal(string totalCommandPoints)
+    public void TriggerChangeCommandPointsTotal(int totalCommandPoints, int maxCommandPoints)
     {
-        ChangeCommandPointsTotal?.Invoke(totalCommandPoints);
+        ChangeCommandPointsTotal?.Invoke(totalCommandPoints, maxCommandPoints);
     }
 
     public void TriggerChangeTeamScore(Team team, string newScore)

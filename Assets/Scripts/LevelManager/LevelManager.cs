@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -27,9 +28,8 @@ public class LevelManager : MonoBehaviour
         {
             if (instance == null)
             {
-                GameObject newInstance = new GameObject();
-
-                instance = newInstance.AddComponent<LevelManager>();
+                // Instantiate prefab
+                throw new Exception("Instance call when instance is null");
             }
 
             return instance;

@@ -94,6 +94,11 @@ public class SpawnPoint : MonoBehaviour
         IAgentsHandler agentsHandler = controller.GetAgentsHandler();
 
         agentsHandler.RegisterAgents(spawnedAgents);
+
+        foreach (Agent agent in spawnedAgents)
+        {
+            agent.IncreaseControllersCommandPoints();
+        }
     }
 
     private bool FindSpawnPoints(

@@ -54,14 +54,14 @@ public class BattlePointPanel : MonoBehaviour
         BattlePointsIncomeSpeed = incomeSpeed;
     }
 
-    public void OnChangeBattlePointsTotal(string totalBattlePoints)
+    public void OnChangeBattlePointsTotal(int totalBattlePoints, int maxBattlePoints)
     {
-        BattlePointsTotal = totalBattlePoints;
+        BattlePointsTotal = $"{totalBattlePoints}/{maxBattlePoints}";
     }
 
-    public void OnChangeCommandPointsTotal(string totalCommandPoints)
+    public void OnChangeCommandPointsTotal(int totalCommandPoints, int maxCommandPoints)
     {
-        CommandPointsTotal = totalCommandPoints;
+        CommandPointsTotal = $"{totalCommandPoints}/{maxCommandPoints}";
     }
 
     private void OnEnable()

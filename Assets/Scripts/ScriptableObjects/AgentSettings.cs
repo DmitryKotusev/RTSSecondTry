@@ -22,43 +22,18 @@ public class AgentSettings : ScriptableObject
     [SerializeField]
     private float moveDistance = 2f;
 
-    public float LookDistance
-    {
-        get
-        {
-            return lookDistance;
-        }
-    }
+    [SerializeField]
+    private float agentSpawnWeight = 2f;
 
-    public float DesirableWeaponSpreadPersent
-    {
-        get
-        {
-            return desirableWeaponSpreadPersent;
-        } 
-    }
+    public float LookDistance => lookDistance;
 
-    public float MaxWeaponSpreadPersent
-    {
-        get
-        {
-            return maxWeaponSpreadPersent;
-        }
-    }
+    public float DesirableWeaponSpreadPersent => desirableWeaponSpreadPersent;
 
-    public float SpawnDistance
-    {
-        get
-        {
-            return spawnDistance;
-        }
-    }
+    public float MaxWeaponSpreadPersent => maxWeaponSpreadPersent;
 
-    public float MoveDistance
-    {
-        get
-        {
-            return moveDistance;
-        }
-    }
+    public float SpawnDistance => spawnDistance;
+
+    public float MoveDistance => moveDistance;
+
+    public float AgentSpawnWeight => agentSpawnWeight;
 }

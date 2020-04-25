@@ -260,12 +260,34 @@ public class Agent : MonoBehaviour
         }
 
         controllersHub.FindControllerForAgent(this);
+
+        IncreaseControllersCommandPoints();
+    }
+
+    public void IncreaseControllersCommandPoints()
+    {
+        BattlePointsManager battlePointsManager = controller.BattlePointsManager;
+
+        battlePointsManager.CurrentCommandPointsAmount += GetSettings().AgentSpawnWeight;
+    }
+
+    public void DecreaseControllersCommandPoints()
+    {
+        BattlePointsManager battlePointsManager = controller?.BattlePointsManager;
+
+        if (battlePointsManager != null)
+        {
+            battlePointsManager.CurrentCommandPointsAmount -= GetSettings().AgentSpawnWeight;
+        }
     }
 
     public void ClearControllerInfo()
     {
         IAgentsHandler agentsHandler = controller?.GetAgentsHandler();
         agentsHandler?.UnregisterAgent(this);
+
+        DecreaseControllersCommandPoints();
+
         controller = null;
     }
 

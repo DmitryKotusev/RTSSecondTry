@@ -26,14 +26,14 @@ public abstract class Spawner : MonoBehaviour
             return false;
         }
 
-        if (battlePointsManager.CurrentPointsAmount < spawnGroup.PointsCost)
+        if (battlePointsManager.CurrentBattlePointsAmount < spawnGroup.PointsCost)
         {
             return false;
         }
 
         if (spawnPoint.SpawnGroup(spawnGroup))
         {
-            battlePointsManager.CurrentPointsAmount -= spawnGroup.PointsCost;
+            battlePointsManager.CurrentBattlePointsAmount -= spawnGroup.PointsCost;
 
             return true;
         }
