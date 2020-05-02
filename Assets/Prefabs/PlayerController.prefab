@@ -193,7 +193,7 @@ MonoBehaviour:
   minVerticalRotation: 0
   maxVerticalRotation: 65
   minVerticalPosition: 10
-  maxVerticalPosition: 25
+  maxVerticalPosition: 40
 --- !u!114 &7858940874721320903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsInfo: {fileID: 11400000, guid: 78a13ffb32e80644bbcfada3cc64ff14, type: 2}
+  pointsStartConfiguration: {fileID: 11400000, guid: 8d64c2e0be5dd3e4b905f4ac6694712a,
+    type: 2}
+  currentBattlePointsAmount: 0
+  currentCommandPointsAmount: 0
   uIEventsHub: {fileID: 11400000, guid: 88a55f859113ca04c948d7c7a1667551, type: 2}
 --- !u!114 &4436494501240235515
 MonoBehaviour:

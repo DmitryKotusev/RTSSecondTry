@@ -8,8 +8,16 @@ public abstract class BattlePointsManager : MonoBehaviour
     [Required]
     protected PointsInfo pointsInfo;
 
+    [SerializeField]
+    [Required]
+    protected PointsStartConfiguration pointsStartConfiguration;
+
+    [SerializeField]
+    [ReadOnly]
     protected float currentBattlePointsAmount = 0;
 
+    [SerializeField]
+    [ReadOnly]
     protected float currentCommandPointsAmount = 0;
 
     public virtual float CurrentBattlePointsAmount
@@ -36,7 +44,7 @@ public abstract class BattlePointsManager : MonoBehaviour
 
     protected virtual void Awake()
     {
-        CurrentBattlePointsAmount = 0;
+        CurrentBattlePointsAmount = pointsStartConfiguration.BattlePointsStartAmount;
 
         CurrentCommandPointsAmount = 0;
     }

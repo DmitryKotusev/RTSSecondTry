@@ -27,13 +27,13 @@ abstract public class Controller : MonoBehaviour
     [Required]
     private ControllersHub controllersHub;
 
-    public void Awake()
+    public virtual void Awake()
     {
         controllersHub.RegisterController(this);
         Debug.Log("Controller " + name + " registered");
     }
 
-    public void OnDestroy()
+    public virtual void OnDestroy()
     {
         controllersHub.UnregisterController(this);
         Debug.Log("Controller " + name + " unregistered");

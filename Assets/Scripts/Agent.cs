@@ -284,9 +284,10 @@ public class Agent : MonoBehaviour
     public void ClearControllerInfo()
     {
         IAgentsHandler agentsHandler = controller?.GetAgentsHandler();
-        agentsHandler?.UnregisterAgent(this);
 
         DecreaseControllersCommandPoints();
+
+        agentsHandler?.UnregisterAgent(this);
 
         controller = null;
     }

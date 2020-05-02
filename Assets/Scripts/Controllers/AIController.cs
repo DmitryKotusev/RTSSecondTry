@@ -7,10 +7,30 @@ public class AIController : Controller
 {
     [SerializeField]
     [Required]
-    AIAgentsHandler agentsHandler;
+    private AILogic aiLogicSample;
+
+    [SerializeField]
+    [Required]
+    private AIAgentsHandler agentsHandler;
+
+    private AILogic aILogic;
 
     public override IAgentsHandler GetAgentsHandler()
     {
         return agentsHandler;
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        aILogic = Instantiate(aiLogicSample);
+
+        aILogic?.Init(this);
+    }
+
+    private void Update()
+    {
+        aILogic.Update();
     }
 }

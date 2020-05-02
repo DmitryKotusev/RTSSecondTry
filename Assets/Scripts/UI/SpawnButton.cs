@@ -72,21 +72,7 @@ public class SpawnButton : MonoBehaviour
 
     public float GetGroupSpawnWeight()
     {
-        float totalWeight = 0;
-
-        foreach (UnitCountInfo spawnPair in spawnGroup.SpawnPairs)
-        {
-            GameObject prefab = spawnPair.prefab;
-
-            Agent agent = prefab.GetComponent<Agent>();
-
-            if (agent != null)
-            {
-                totalWeight += agent.GetSettings().AgentSpawnWeight * spawnPair.count;
-            }
-        }
-
-        return totalWeight;
+        return spawnGroup.CommandPointsCost;
     }
 
     public float GetGroupSpawnCost()

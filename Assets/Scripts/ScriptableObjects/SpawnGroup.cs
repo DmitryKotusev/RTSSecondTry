@@ -20,6 +20,43 @@ public class SpawnGroup : ScriptableObject
 
     public float PointsCost => pointsCost;
 
+    public float CommandPointsCost
+    {
+        get
+        {
+            float totalWeight = 0;
+
+            foreach (UnitCountInfo spawnPair in spawnPairs)
+            {
+                GameObject prefab = spawnPair.prefab;
+
+                Agent agent = prefab.GetComponent<Agent>();
+
+                if (agent != null)
+                {
+                    totalWeight += agent.GetSettings().AgentSpawnWeight * spawnPair.count;
+                }
+            }
+
+            return totalWeight;
+        }
+    }
+
+    public int AgentsCount
+    {
+        get
+        {
+            int agentsCount = 0;
+
+            foreach (UnitCountInfo spawnPair in spawnPairs)
+            {
+                agentsCount += spawnPair.count;
+            }
+
+            return agentsCount;
+        }
+    }
+
     public Texture2D SpawnIcon => spawnIcon;
 }
 

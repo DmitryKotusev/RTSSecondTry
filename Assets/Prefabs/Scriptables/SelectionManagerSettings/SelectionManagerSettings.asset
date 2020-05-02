@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionBoxAccuracy: 0.05
   equalToCameraFarDistance: 0
-  selectionDistance: 50
+  selectionDistance: 100
