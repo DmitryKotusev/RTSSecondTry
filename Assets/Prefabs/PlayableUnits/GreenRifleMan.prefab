@@ -4477,6 +4477,7 @@ GameObject:
   - component: {fileID: 8614354840003571633}
   - component: {fileID: 726950756}
   - component: {fileID: 1638616037}
+  - component: {fileID: 8993363728811276466}
   m_Layer: 9
   m_Name: GreenRifleMan
   m_TagString: Selectable
@@ -5335,6 +5336,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionProjector: {fileID: 337131157722207068}
   mainSelectionProjector: {fileID: 337131156115912871}
+--- !u!114 &8993363728811276466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8614354840003571634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 560112f876f5746c780eca0d404e7139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 2
+  radiusBackingField: 0.5
+  heightBackingField: 2
+  centerBackingField: 1
+  locked: 0
+  lockWhenNotMoving: 0
+  agentTimeHorizon: 2
+  obstacleTimeHorizon: 2
+  maxNeighbours: 10
+  layer: 1
+  collidesWith: -1
+  wallAvoidForce: 1
+  wallAvoidFalloff: 1
+  priority: 0.5
+  debug: 0
 --- !u!1 &8704666027941295339
 GameObject:
   m_ObjectHideFlags: 0

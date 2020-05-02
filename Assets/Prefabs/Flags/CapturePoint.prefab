@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 1595557341}
-  oneUnitRadiusPointsCoint: 10
+  oneUnitRadiusPointsCoint: 36
   terraintOffset: 0.1
   capturePoint: {fileID: 8880069475355044271}
 --- !u!1001 &1915456190499324075
@@ -239,11 +239,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlagPole
       objectReference: {fileID: 0}
-    - target: {fileID: 1934427238131920939, guid: d2f28494d641b9440a57106552ec10c5,
-        type: 3}
-      propertyPath: whiteFlag
-      value: 
-      objectReference: {fileID: 6322823585095348148}
     - target: {fileID: 4143089747753747362, guid: d2f28494d641b9440a57106552ec10c5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -299,6 +294,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1934427238131920939, guid: d2f28494d641b9440a57106552ec10c5,
+        type: 3}
+      propertyPath: whiteFlag
+      value: 
+      objectReference: {fileID: 6322823585095348148}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2f28494d641b9440a57106552ec10c5, type: 3}
 --- !u!4 &2587924285366846217 stripped
